@@ -14,28 +14,30 @@ import json
 from pathlib import Path
 
 
-hjs = (Style('html.dark .hljs-copy-button {background-color: #e0e0e0; color: #2d2b57;}'),
+hjs = (Style(''' .hljs-copy-button {background-color: #2d2b57;}
+             html.dark .hljs-copy-button {background-color: #e0e0e0; color: #2d2b57;}'''),
                 Link(rel='stylesheet', href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/atom-one-dark.css', disabled=True),
                 Link(rel='stylesheet', href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/atom-one-light.css', disabled=True),
                 Script(src='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js'),
                 Script(src='https://cdn.jsdelivr.net/gh/arronhunt/highlightjs-copy/dist/highlightjs-copy.min.js'),
                 Link(rel='stylesheet', href='https://cdn.jsdelivr.net/gh/arronhunt/highlightjs-copy/dist/highlightjs-copy.min.css'),
-                Style('.hljs-copy-button {background-color: #2d2b57;}'),
                 Script(src='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/python.min.js'),
-                Script("hljs.addPlugin(new CopyButtonPlugin());\r\nhljs.configure({'cssSelector': 'pre code'});\r\nhtmx.onLoad(hljs.highlightAll);", type='module'),
-                Script('''htmx.on("htmx:beforeHistorySave", () => {document.querySelectorAll("uk-icon").forEach((elt) => {elt.innerHTML = '';});});'''),
-                
-                Script('''hljs.configure({
-                    ignoreUnescapedHTML: true
-                });'''),
-                Script('''const observer = new MutationObserver(mutations => {
-                          mutations.forEach(mutation => {
-                            if (mutation.target.tagName === 'HTML' && mutation.attributeName === 'class') {
-                              const isDark = mutation.target.classList.contains('dark');
-                              document.querySelector('link[href*="atom-one-dark.css"]').disabled = !isDark;
-                              document.querySelector('link[href*="atom-one-light.css"]').disabled = isDark;
-                            }
-                          });
+                Script('''
+                        hljs.addPlugin(new CopyButtonPlugin());
+                        hljs.configure({
+                            cssSelector: 'pre code',
+                            ignoreUnescapedHTML: true
+                        });
+                        htmx.onLoad(hljs.highlightAll);
+
+                        const observer = new MutationObserver(mutations => {
+                            mutations.forEach(mutation => {
+                                if (mutation.target.tagName === 'HTML' && mutation.attributeName === 'class') {
+                                    const isDark = mutation.target.classList.contains('dark');
+                                    document.querySelector('link[href*="atom-one-dark.css"]').disabled = !isDark;
+                                    document.querySelector('link[href*="atom-one-light.css"]').disabled = isDark;
+                                }
+                            });
                         });
 
                         observer.observe(document.documentElement, { attributes: true });
@@ -44,7 +46,7 @@ hjs = (Style('html.dark .hljs-copy-button {background-color: #e0e0e0; color: #2d
                         const isDark = document.documentElement.classList.contains('dark');
                         document.querySelector('link[href*="atom-one-dark.css"]').disabled = !isDark;
                         document.querySelector('link[href*="atom-one-light.css"]').disabled = isDark;
-                        '''))
+                    ''', type='module'))
 
 def create_flippable_card(content, source_code, extra_cls=None):
     "Creates a card that flips between content and source code"
@@ -57,7 +59,7 @@ def create_flippable_card(content, source_code, extra_cls=None):
             DivFullySpaced(UkIcon('corner-down-right', 20, 20, 3),"See Output"), 
             uk_toggle=f"target: #{_id}", id=_id, cls=ButtonT.primary, hidden=True),
         Div(content, id=_id),
-        Div(Pre(Code(source_code, cls="hljs language-python")), id=_id, hidden=True, cls="mockup-code"),
+        Div(Pre(Code(source_code, cls="hljs language-python")), id=_id, hidden=True),#, cls="mockup-code"
         cls='my-8')
     return Div(_card, cls=extra_cls) if extra_cls else _card
 

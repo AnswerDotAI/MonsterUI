@@ -6,7 +6,10 @@ from utils import hjs, render_nb
 from pathlib import Path
 
 # Setup the app
-app,rt = fast_app(pico=False, hdrs=(*Theme.blue.headers(),*hjs))
+
+
+
+app,rt = fast_app(pico=False, hdrs=(*Theme.blue.headers(),*hjs, Link(rel="icon", type="image/x-icon", href="/favicon.ico")))
 
 def is_htmx(request=None): 
     "Check if the request is an HTMX request"
