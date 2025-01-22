@@ -52,12 +52,12 @@ explore. While LLMs cannot code for you, they can be helpful assistants.
 You must check, refactor, test, and vet any code any LLM generates for
 you - but they are helpful productivity tools.
 
-- [llms.txt](https://raw.githubusercontent.com/AnswerDotAI/monsterui/refs/heads/main/nbs/llms.txt):
+- [llms.txt](https://raw.githubusercontent.com/AnswerDotAI/monsterui/refs/heads/main/docs/llms.txt):
   Links to the neccesary reference documents to use the MonsterUI
   library effectively. Contains very little information directly in the
   document.
-- [llms-ctx.txt](https://raw.githubusercontent.com/AnswerDotAI/monsterui/refs/heads/main/nbs/llms-ctx.txt):
+- [llms-ctx.txt](https://raw.githubusercontent.com/AnswerDotAI/monsterui/refs/heads/main/docs/llms-ctx.txt):
   MonsterUI specific context only (does not include FastHTML specific
   context)
-- [llm-ctx-full.txt](https://raw.githubusercontent.com/AnswerDotAI/monsterui/refs/heads/main/nbs/llms-ctx-full.txt):
+- [llm-ctx-full.txt](https://raw.githubusercontent.com/AnswerDotAI/monsterui/refs/heads/main/docs/llms-ctx-full.txt):
   All inclusive FastHTML + MonsterUI context
