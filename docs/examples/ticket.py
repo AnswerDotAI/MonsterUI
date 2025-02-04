@@ -59,8 +59,8 @@ def NewTicketModal():
                 LabelSelect(Options("Low", "Medium", "High"), label="Priority Level",  id="priority"),
                 LabelTextArea("Description", id="description", placeholder="Please provide detailed information about your issue"),
                 DivRAligned(
-                    Button("Cancel", cls=ButtonT.ghost, uk_toggle="target: #new-ticket"),
-                    Button(Loading(cls=LoadingT.spinner), "Submit Ticket", cls=ButtonT.primary, uk_toggle="target: #success-toast; target: #new-ticket")),
+                    Button("Cancel", cls=ButtonT.ghost, data_uk_toggle="target: #new-ticket"),
+                    Button(Loading(cls=LoadingT.spinner), "Submit Ticket", cls=ButtonT.primary, data_uk_toggle="target: #success-toast; target: #new-ticket")),
                 cls='space-y-8')),
             id="new-ticket")
 
@@ -82,7 +82,7 @@ def index():
         Section(
             DivFullySpaced(
                 H2("Active Tickets"),
-                Button(UkIcon("plus-circle", cls="mr-2"), "New Ticket", cls=ButtonT.primary, uk_toggle="target: #new-ticket"),
+                Button(UkIcon("plus-circle", cls="mr-2"), "New Ticket", cls=ButtonT.primary, data_uk_toggle="target: #new-ticket"),
                 cls='mb-8'),
             Grid(*[TicketCard(**ticket) for ticket in tickets], cols=1),
             cls="my-6"),

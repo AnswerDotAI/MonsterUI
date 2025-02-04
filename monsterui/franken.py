@@ -93,8 +93,8 @@ def CodeBlock(*c: str, # Contents of Code tag (often text)
     "CodeBlock with Styling"
     return Div(
         Pre(Code(*c, cls=('uk-codeblock', stringify(code_cls)), **kwargs),
-            cls=(f'bg-gray-100 dark:bg-gray-800 {TextT.gray} p-0.4 rounded text-sm font-mono')),
-#             cls=('bg-gray-100 dark:bg-gray-800 dark:text-gray-200 p-0.4 rounded text-sm font-mono')),
+            cls=(f'bg-gray-100 dark:bg-gray-800 {TextT.gray} p-0.4 rounded-sm text-sm font-mono')),
+#             cls=('bg-gray-100 dark:bg-gray-800 dark:text-gray-200 p-0.4 rounded-sm text-sm font-mono')),
         cls=('uk-block', stringify(cls)))
 
 # %% ../nbs/02_franken.ipynb
@@ -285,7 +285,7 @@ def Kbd(*c:FT|str, # Contents of Kbd tag (keyboard input)
         **kwargs # Additional args for Kbd tag
         )->FT:
     "Styled keyboard input with subtle background"
-    return fh.Kbd(*c, cls=('font-mono px-1.5 py-0.5 text-sm bg-secondary border border-gray-300 dark:border-gray-600 rounded shadow-sm', stringify(cls)), **kwargs)
+    return fh.Kbd(*c, cls=('font-mono px-1.5 py-0.5 text-sm bg-secondary border border-gray-300 dark:border-gray-600 rounded-sm shadow-xs', stringify(cls)), **kwargs)
 
 # %% ../nbs/02_franken.ipynb
 def Samp(*c:FT|str, # Contents of Samp tag (sample output)
@@ -293,7 +293,7 @@ def Samp(*c:FT|str, # Contents of Samp tag (sample output)
          **kwargs # Additional args for Samp tag
          )->FT:
     "Styled sample output with subtle background"
-    return fh.Samp(*c, cls=('font-mono bg-secondary px-1 rounded', TextT.gray, stringify(cls)), **kwargs)
+    return fh.Samp(*c, cls=('font-mono bg-secondary px-1 rounded-sm', TextT.gray, stringify(cls)), **kwargs)
 
 def Var(*c:FT|str, # Contents of Var tag (variable)
         cls:Enum|str|tuple=(), # Additional classes
@@ -332,7 +332,7 @@ def Data(*c:FT|str, # Contents of Data tag
          )->FT:
     "Styled data element"
     if value: kwargs['value'] = value
-    return fh.Data(*c, cls=('font-mono text-sm bg-secondary px-1 rounded', stringify(cls)), **kwargs)
+    return fh.Data(*c, cls=('font-mono text-sm bg-secondary px-1 rounded-sm', stringify(cls)), **kwargs)
 
 def Meter(*c:FT|str, # Contents of Meter tag
           value:float=None, # Current value
@@ -345,7 +345,7 @@ def Meter(*c:FT|str, # Contents of Meter tag
     if value is not None: kwargs['value'] = value
     if min is not None: kwargs['min'] = min
     if max is not None: kwargs['max'] = max
-    return fh.Meter(*c, cls=('w-full h-2 bg-secondary rounded', stringify(cls)), **kwargs)
+    return fh.Meter(*c, cls=('w-full h-2 bg-secondary rounded-sm', stringify(cls)), **kwargs)
 
 # %% ../nbs/02_franken.ipynb
 def S(*c:FT|str, # Contents of S tag (strikethrough)
@@ -371,7 +371,7 @@ def Output(*c:FT|str, # Contents of Output tag
     "Styled output element for form results"
     if form: kwargs['form'] = form
     if for_: kwargs['for'] = for_  # Note: 'for' is reserved in Python
-    return fh.Output(*c, cls=('font-mono bg-secondary px-2 py-1 rounded', 
+    return fh.Output(*c, cls=('font-mono bg-secondary px-2 py-1 rounded-sm', 
                              stringify(cls)), **kwargs)
 
 # %% ../nbs/02_franken.ipynb
@@ -394,7 +394,7 @@ def PicSumImg(h:int=200,           # Height in pixels
 # %% ../nbs/02_franken.ipynb
 class ButtonT(VEnum):
     "Options for styling Buttons"
-    def _generate_next_value_(name, start, count, last_values): return str2ukcls('button', name)
+    def _generate_next_value_(name, start, count, last_values): return str2ukcls('btn', name)
     default = auto()
     primary = auto()
     secondary = auto()
@@ -408,10 +408,10 @@ def Button(*c: Union[str, FT], # Contents of `Button` tag (often text)
            cls: Union[str, Enum]=ButtonT.default, # Classes in addition to `Button` styling (use `ButtonT` for built in styles)
            submit=True, # Whether the button should submit a form
            **kwargs # Additional args for `Button` tag
-           ) -> FT: # Button(..., cls='uk-button')
+           ) -> FT: # Button(..., cls='uk-btn')
     "Button with Styling (defaults to `submit` for form submission)"
     if 'type' not in kwargs: kwargs['type'] = 'submit' if submit else 'button'
-    return fh.Button(*c, cls=('uk-button', stringify(cls)), **kwargs)
+    return fh.Button(*c, cls=('uk-btn', stringify(cls)), **kwargs)
 
 # %% ../nbs/02_franken.ipynb
 class ContainerT(VEnum):
@@ -1186,7 +1186,7 @@ def NavBar(nav_links:dict|List[FT], # List of Li(A(...)) components or dict of {
     _click = f"htmx.find('#{_id}').classList.toggle('hidden')"
     menu_icon = UkIcon("menu", width=30, height=30, cls="md:hidden", hx_on_click=_click)
     
-    _cls = 'sticky top-4 bg-base-100/80 backdrop-blur-sm z-50' if sticky else ''
+    _cls = 'sticky top-4 bg-base-100/80 backdrop-blur-xs z-50' if sticky else ''
     _uk_scrollspy_nav = False
     if uk_scrollspy_nav:
         if isinstance(uk_scrollspy_nav, bool):  _uk_scrollspy_nav = 'closest: li; scroll: true' if uk_scrollspy_nav else False

@@ -28,7 +28,7 @@ def playground_navbar():
     rnav = Div(
         UkSelect(*Options(*preset_options), name='preset', optgroup_label="Examples",
                  placeholder='Load a preset', searchable=True, cls='h-9 w-[200px] lg:w-[300px]'),
-        Button("Save",         cls=ButtonT.secondary, uk_toggle="#save"),save_modal,
+        Button("Save",         cls=ButtonT.secondary, data_uk_toggle="#save"),save_modal,
         Button("View Code",    cls=ButtonT.secondary),
         Button("Share",        cls=ButtonT.secondary),DropDownNavContainer(share_dd),
         Button(UkIcon(icon="ellipsis"), cls=ButtonT.secondary),

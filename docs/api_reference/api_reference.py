@@ -565,7 +565,7 @@ docs_forms = create_doc_section(
 
 def ex_modal():
     return Div(
-        Button("Open Modal",uk_toggle="target: #my-modal" ),
+        Button("Open Modal",data_uk_toggle="target: #my-modal" ),
         Modal(ModalTitle("Simple Test Modal"), 
               P("With some somewhat brief content to show that it works!", cls=TextPresets.muted_sm),
               footer=ModalCloseButton("Close", cls=ButtonT.primary),id='my-modal'))

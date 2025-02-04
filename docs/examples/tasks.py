@@ -66,7 +66,7 @@ table_controls =(Input(cls='w-[250px]',placeholder='Filter task'),
      DropDownNavContainer(map(NavCloseLi,[A(DivFullySpaced(LAlignedCheckTxt(a['priority']), a['count']),cls=TextT.capitalize) for a in priority_dd])),
      Button("View"),
      DropDownNavContainer(map(NavCloseLi,[A(LAlignedCheckTxt(o)) for o in ['Title','Status','Priority']])),
-     Button('Create Task',cls=(ButtonT.primary, TextPresets.bold_sm), uk_toggle="target: #TaskForm"))
+     Button('Create Task',cls=(ButtonT.primary, TextPresets.bold_sm), data_uk_toggle="target: #TaskForm"))
 
 def task_dropdown():
     return Div(Button(UkIcon('ellipsis')),

@@ -40,7 +40,7 @@ def _create_page(content, # The content to display (without the layout/sidebar)
 def with_layout(sidebar_section, content):
     "Puts the sidebar and content into a layout"
     return Title(f"MonsterUI"), Div(cls="flex flex-col md:flex-row w-full")(
-            Button(UkIcon("menu",50,50,cls='mt-4'), cls="md:hidden mb-4", uk_toggle="target: #mobile-sidebar"),
+            Button(UkIcon("menu",50,50,cls='mt-4'), cls="md:hidden mb-4", data_uk_toggle="target: #mobile-sidebar"),
             Div(sidebar(sidebar_section), id='mobile-sidebar', hidden=True),
             Div(cls="md:flex w-full")(
                 Div(sidebar(sidebar_section), cls="hidden md:block w-1/5"),

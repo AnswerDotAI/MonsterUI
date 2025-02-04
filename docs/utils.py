@@ -20,10 +20,10 @@ def create_flippable_card(content, source_code, extra_cls=None):
     _card = Card(
         Button(
             DivFullySpaced(UkIcon('corner-down-right', 20, 20, 3),"See Source"), 
-            uk_toggle=f"target: #{_id}", id=_id, cls=ButtonT.primary),
+            data_uk_toggle=f"target: #{_id}", id=_id, cls=ButtonT.primary),
         Button(
             DivFullySpaced(UkIcon('corner-down-right', 20, 20, 3),"See Output"), 
-            uk_toggle=f"target: #{_id}", id=_id, cls=ButtonT.primary, hidden=True),
+            data_uk_toggle=f"target: #{_id}", id=_id, cls=ButtonT.primary, hidden=True),
         Div(content, id=_id),
         Div(Pre(Code(source_code, cls="hljs language-python")), id=_id, hidden=True),
         cls='my-8')
