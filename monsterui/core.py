@@ -204,7 +204,7 @@ class Theme(Enum):
                     {left: '$$', right: '$$', display: true},
                     {left: '$', right: '$', display: false}
                   ],
-                  ignoredClasses: ['nomath']
+                  ignoredClasses: ['nomath', 'monaco-editor']
                 };
 
                 document.addEventListener('htmx:load', evt => {
