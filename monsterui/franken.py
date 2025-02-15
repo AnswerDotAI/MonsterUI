@@ -1494,7 +1494,7 @@ def render_md(md_content:str, # Markdown content
     return NotStr(apply_classes(html_content, class_map, class_map_mods))
 
 # %% ../nbs/02_franken.ipynb
-def ThemePicker(color=True, radii=True, shadows=True, font=True, mode=True, cls='p-4'):
+def ThemePicker(color=True, radii=True, shadows=True, font=True, mode=True, cls='p-4', custom_themes=[]):
     "Theme picker component with configurable sections"
     def _opt(val, txt, **kwargs): return Option(txt, value=val, **kwargs)
     def _optgrp(key, lbl, opts): return fh.Optgroup(data_key=key, label=lbl)(*opts)
@@ -1506,7 +1506,7 @@ def ThemePicker(color=True, radii=True, shadows=True, font=True, mode=True, cls=
           [('Slate','#64748b'),('Stone','#78716c'),('Gray','#6b7280'),
            ('Neutral','#737373'),('Red','#dc2626'),('Rose','#e11d48'),
            ('Orange','#f97316'),('Green','#16a34a'),('Blue','#2563eb'),
-           ('Yellow','#facc15'),('Violet','#7c3aed')]]]))
+           ('Yellow','#facc15'),('Violet','#7c3aed'),*custom_themes]]]))
     if radii: groups.append(_optgrp('radii', 'Radii', [
         _opt('uk-radii-none','None'), _opt('uk-radii-sm','Small'),
         _opt('uk-radii-md','Medium',selected=True), _opt('uk-radii-lg','Large')]))
