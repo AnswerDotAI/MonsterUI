@@ -82,6 +82,8 @@ app, rt = fast_app(hdrs=Theme.slate.headers())
 > *The color option can be any of the theme options available out of the
 > box*
 
+> `katex` and `highlightjs` are not included by default. To include them set `katex=True` or `highlightjs=True` when calling `.headers`. (i.e. `Theme.slate.headers(katex=True)`)*
+
 From here, you can explore the API Reference & examples to see how to
 implement the components. You can also check out these demo videos to as
 a quick start guide:
