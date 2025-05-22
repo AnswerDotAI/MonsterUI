@@ -413,10 +413,10 @@ def ex_alerts3():
         cls=AlertT.error)
 
 def ex_toasts1():
-    return Toast("First Example Toast", cls=(ToastHT.start, ToastVT.bottom))
+    return Toast("First Example Toast", cls=(ToastHT.start, ToastVT.bottom), dur=300)
 
 def ex_toasts2():
-    return Toast("Second Example Toast", alert_cls=AlertT.info)
+    return Toast("Second Example Toast", alert_cls=AlertT.info, dur=300)
 
 docs_notifications = create_doc_section(
     H1("Alerts & Toasts API Reference"),
@@ -434,6 +434,7 @@ docs_notifications = create_doc_section(
     fn2code_string(ex_toasts1), 
     P("To define toast colors, set the class of the alert wrapped by the toast:"),
     fn2code_string(ex_toasts2),
+    P("Toasts will disappear automatically after 5 seconds. To change the duration of the toast set the `dur` param like this `Toast('Content', dur=10)`."),
     Toast, ToastHT, ToastVT,
     title="Alerts & Toasts")
 
