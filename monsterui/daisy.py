@@ -109,8 +109,11 @@ class ToastVT(VEnum):
 def Toast(*c, # Content for toast (often test)
           cls='', # Classes for toast (often `ToastHT` and `ToastVT` options)
           alert_cls='', # classes for altert (often `AlertT` options)
+          dur=5.0, # no. of seconds before the toast disappears
           **kwargs # Additional args for outer container (`Div` tag)
          )->FT: # Div(Alert(...), cls='toast')
     "Toasts are stacked announcements, positioned on the corner of page."
     a = Alert(*c, cls=alert_cls)
-    return Div(a, cls=('toast', stringify(cls)), **kwargs)
+    _id = fh.unqid()
+    js = '''(() => setTimeout(() => document.querySelector('[data-mui="%s"]').remove(),%s))()'''%(_id,dur*1000)
+    return Div(a, NotStr(f"<script>{js}</script>"), data_mui=_id, cls=('toast', stringify(cls)), **kwargs)
