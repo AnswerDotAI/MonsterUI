@@ -1165,3 +1165,218 @@ docs_loading = create_doc_section(
     LoadingT,
     title="Loading")
 
+
+# Charts
+def ex_line_chart():
+    # return Apex_Chart(
+    #     series=[{"name": "Desktops", "data": [186, 305, 237, 73, 209, 214, 355]}],
+    #     categories=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    #     cls='max-w-md max-h-md'
+    # )
+    return ApexChart(apex={
+                        "series":[{"name":"Desktops","data":[186,305,237,73,209,214,355]}],
+                        "chart":{"type":"line","toolbar":{"show":False}},
+                        "dataLabels":{"enabled":False},
+                        "stroke":{"curve":"smooth","width":2},
+                        "colors":["hsl(var(--chart-1))"],
+                        "grid":{"row":{"colors":[]},"borderColor":"hsl(var(--border))"},
+                        "tooltip":{"title":{"show":False}},
+                        "yaxis":{"labels":{"show":False}},
+                        "xaxis":{
+                            "categories":["Jan","Feb","Mar","Apr","May","Jun","Jul"],
+                            "tooltip":{"enabled":False},
+                            "labels":{"style":{"colors":"hsl(var(--muted-foreground))"}},
+                            "axisBorder":{"show":False},
+                            "axisTicks":{"show":False}
+                        }
+                     },
+                     cls='max-w-md max-h-md')
+
+def ex_area_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.area,
+            series=[
+                {"name": "2024", "data": [45, 52, 38, 24, 33, 26]},
+            {"name": "2025", "data": [35, 41, 62, 42, 13, 18]},
+            ],
+            categories=["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            fill={"type": "gradient", "gradient": {"shadeIntensity": 1, "opacityFrom": 0.4, "opacityTo": 0.1}}
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_area_chart2():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type="area",
+            series=[
+                {"name": "2024", "data": [45, 52, 38, 24, 33, 26]},
+                {"name": "2025", "data": [35, 41, 62, 42, 13, 18]},
+            ],  
+            categories=["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            fill={"type": "gradient", "gradient": {"shadeIntensity": 1, "opacityFrom": 0.4, "opacityTo": 0.1}}
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_donut_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.donut,
+            series=[44, 55, 13, 43],
+            labels=["Apples", "Mangoes", "Pears", "Oranges"]
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_heatmap_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.heatmap,
+            series=[{"name": f"W{i}", "data": [i * j for j in range(1, 8)]} for i in range(1, 4)],
+            plotOptions={"heatmap": {"colorScale": {"ranges": [
+                {"from": 0, "to": 7, "color": "#90caf9"},
+                {"from": 8, "to": 15, "color": "#42a5f5"},
+                {"from": 16, "to": 23, "color": "#1e88e5"},
+            ]}}}
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_multi_line_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.line,
+            series=[
+                {"name": "2024", "data": [31, 40, 28, 51, 42, 63, 56]}, 
+                {"name": "2025", "data": [11, 32, 45, 32, 34, 52, 41]},
+                {"name": "2026", "data": [15, 11, 32, 18, 9, 24, 11]},
+            ],
+            categories=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+            colors=["#2E93fA", "#66DA26", "#E91E63"]
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_rainbow_bars_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.bar,
+            series=[{"name": "Sales", "data": [44, 55, 41, 67, 22, 43]}],
+            categories=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            colors=["#F44336", "#E91E63", "#9C27B0", "#2196F3", "#00BCD4", "#4CAF50"],
+            plotOptions={"bar": {"distributed": True}}
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_gradient_lines_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.area,
+            series=[
+                {"name": "North", "data": [23, 42, 35, 27, 43, 22]},
+                {"name": "South", "data": [16, 32, 18, 26, 12, 30]},
+            ],
+            categories=["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            colors=["#673AB7", "#FF9800"],
+            fill={
+                "type": "gradient",
+                "gradient": {
+                    "shade": "dark",
+                    "gradientToColors": ["#9575CD", "#FFB74D"]  # matches series index
+                },
+            }
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_cpu_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.line,
+            series=[{"name": "Node-A", "data": [35, 40, 38]},
+                {"name": "Node-B", "data": [30, 45, 41]}],
+            categories=["09:00", "09:30", "10:00"],
+            enable_zoom=True,
+            show_toolbar=True
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_rainbow_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.bar,
+            series=[{"name": "Sales", "data": [44, 55, 67, 22, 43]}],
+            categories=["Mon", "Tue", "Wed", "Thu", "Fri"],
+            distributed=True,
+            colors=["#F44336", "#E91E63", "#9C27B0", "#2196F3", "#4CAF50"]
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+def ex_area_chart():
+    return ApexChart(
+        apex=apex_json_formater(
+            chart_type=ChartT.area,
+            series=[{"name": "Revenue", "data": [21, 35, 27, 43, 22, 30]}],
+            categories=["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            fill={
+                "type": "gradient",
+                "gradient": {
+                    "shade": "dark",
+                    "gradientToColors": ["#9575CD"],  # grad end per series
+                },
+            },
+            show_tooltip_title=False,
+        ),
+        cls='max-w-md max-h-md'
+    )
+
+docs_charts = create_doc_section(
+    H1("Charts API Reference"),    
+    P(CodeSpan("Apex_Chart")," component is a wrapper around the ApexCharts library and examples from ",
+        A( "Franken UI",href='https://franken-ui.dev/docs/2.0/chart-introduction')," documentation."
+    ),
+    H2("Example usage", cls="mt-4"),
+    H4("Simple line chart", cls="mt-4"),
+    P("A minimal single-series line chart that relies on the default ",CodeSpan('smooth')," stroke to illustrate a trend across a category X-axis."),
+    fn2code_string(ex_line_chart),
+    H4("Area chart with gradient fill", cls="mt-4"),
+    P("This two-series area example layers a vertical gradient beneath each series and compares volumes while soft-fading toward transparency."),
+    fn2code_string(ex_area_chart2),
+    H4("Donut chart", cls="mt-4"),
+    P("Transforms a pie into a donut by setting ",CodeSpan('ChartT.donut'),", leaving the centre hollow for totals or labels and highlighting proportional composition of four categories."),
+    fn2code_string(ex_donut_chart),
+    H4("Heatmap chart", cls="mt-4"),
+    P("Shows a three-row heatmap where each cell’s shade is driven by custom ",CodeSpan('colorScale.ranges'),", turning numeric intensity into visual cues. "),
+    fn2code_string(ex_heatmap_chart),
+        H4("Multi-series line chart", cls="mt-4"),
+    P("Contrasts three independent trends by supplying a three-color palette to the global ",CodeSpan('colors')," array."),
+    fn2code_string(ex_multi_line_chart),
+    H4("Rainbow bars chart", cls="mt-4"),
+    P("Enables ",CodeSpan('plotOptions.bar.distributed')," so every bar cycles through the palette, giving each column a distinct hue—useful when every data-point stands for a unique label."),
+    fn2code_string(ex_rainbow_bars_chart),
+
+    H4("Gradient lines chart", cls="mt-4"),
+    P("Applies per-series ",CodeSpan('gradientToColors')," values, creating two independently fading ribbons that improve separation while retaining a shared style language."),
+    fn2code_string(ex_gradient_lines_chart),
+
+    H4("Chart with toolbar", cls="mt-4"),
+    P("Demonstrates interactive features by setting ",CodeSpan('enable_zoom')," and ",CodeSpan('show_toolbar'),", adding zoom/selection tools and export buttons for on-the-fly analysis."),
+    fn2code_string(ex_cpu_chart),
+
+    H4("Rainbow chart", cls="mt-4"),
+    P("A condensed distributed-bar variant that repeats the rainbow technique on a five-day slice, reinforcing how the flag colors individual data-points."),
+    fn2code_string(ex_rainbow_chart),
+
+    H4("Single-series gradient area", cls="mt-4"),
+    P("Uses a lone gradient-filled area combined with ",CodeSpan('show_tooltip_title')," to keep tooltips lean—ideal when space is tight but context still matters."),
+    fn2code_string(ex_area_chart),
+    ChartT,
+    ApexChart,
+    apex_json_formater,
+    title="Charts")
+

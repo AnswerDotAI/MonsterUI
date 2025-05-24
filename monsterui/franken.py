@@ -17,17 +17,17 @@ __all__ = ['franken_class_map', 'TextT', 'TextPresets', 'CodeSpan', 'CodeBlock',
            'SliderNav', 'Slider', 'DropDownNavContainer', 'TabContainer', 'CardT', 'CardTitle', 'CardHeader',
            'CardBody', 'CardFooter', 'CardContainer', 'Card', 'TableT', 'Table', 'Td', 'Th', 'Tbody', 'TableFromLists',
            'TableFromDicts', 'apply_classes', 'render_md', 'get_franken_renderer', 'ThemePicker', 'LightboxContainer',
-           'LightboxItem']
+           'LightboxItem', 'ChartT', 'apex_json_formater', 'ApexChart']
 
 # %% ../nbs/02_franken.ipynb
 import fasthtml.common as fh
 from .foundations import *
 from fasthtml.common import Div, P, Span, FT
 from enum import Enum, auto
-from fasthtml.components import Uk_select,Uk_input_tag,Uk_icon,Uk_input_range
+from fasthtml.components import Uk_select,Uk_input_tag,Uk_icon,Uk_input_range, Uk_chart
 from functools import partial
 from itertools import zip_longest
-from typing import Union, Tuple, Optional, Sequence
+from typing import Union, Tuple, Optional, Sequence, Literal, List, Dict
 from fastcore.all import *
 import copy, re, httpx, os
 import pathlib
@@ -36,6 +36,8 @@ from mistletoe.span_token import Image
 import mistletoe
 from lxml import html, etree
 import fasthtml.components as fh_comp
+import json
+from copy import deepcopy
 
 # %% ../nbs/02_franken.ipynb
 class TextT(VEnum):
@@ -1627,3 +1629,99 @@ def LightboxItem(*c, # Component that when clicked will open the lightbox (often
                 )->FT: # A(... href, data_alt, cls., ...)
     "Anchor tag with appropriate structure to go inside a `LightBoxContainer`"
     return fh.A(*c, href=href, data_alt=data_alt, cls=stringify(cls), **kwargs)
+
+# %% ../nbs/02_franken.ipynb
+class ChartT(str, Enum):
+    line = "line"
+    area = "area"
+    bar = "bar"
+    column = "column"
+    histogram = "histogram"
+    pie = "pie"
+    donut = "donut"
+    radar = "radar"
+    scatter = "scatter"
+    bubble = "bubble"
+    candlestick = "candlestick"
+    heatmap = "heatmap"
+    radialBar = "radialBar"
+    rangeBar = "rangeBar"
+    rangeArea = "rangeArea"
+    treemap = "treemap"
+    polarArea = "polarArea"
+    boxPlot = "boxPlot"
+    waterfall = "waterfall"
+    timeline = "timeline"
+
+def _deep_merge(a: Dict, b: Dict) -> Dict:
+    out = deepcopy(a)
+    for k, v in b.items():
+        if k in out and isinstance(out[k], dict) and isinstance(v, dict):
+            out[k] = _deep_merge(out[k], v)
+        else:
+            out[k] = deepcopy(v)
+    return out
+
+def apex_json_formater(
+    *,
+    series: Union[List[Dict], List[float]],  # Data to plot. For axis charts, pass a list of series-objects; for pie/donut/radialBar, pass a flat list of values. See Apex “Working with Data” docs. :contentReference[oaicite:turn0search11]{index=0}
+    chart_type: ChartT = ChartT.line,        # One of Apex’s supported chart types (line, area, bar, pie, donut, heatmap, etc.). :contentReference[oaicite:turn0search1]{index=1}
+    categories: List[str] | None = None,     # X-axis categories for axis charts (ignored by pie/donut). :contentReference[oaicite:turn0search2]{index=2}
+    enable_zoom: bool | None = None,         # Toggle interactive zoom (None = Apex default). :contentReference[oaicite:turn0search3]{index=3}
+    show_toolbar: bool = False,              # Show the chart toolbar (download, zoom buttons). :contentReference[oaicite:turn0search4]{index=4}
+    data_labels: bool = False,               # Show numeric labels on points/bars. :contentReference[oaicite:turn0search5]{index=5}
+    show_yaxis_labels: bool = False,         # Render y-axis tick labels. :contentReference[oaicite:turn0search6]{index=6}
+    show_tooltip_title: bool = False,        # Display the tooltip title section. :contentReference[oaicite:turn0search7]{index=7}
+    distributed: bool = False,               # Color each bar individually (bar/column charts only). :contentReference[oaicite:turn0search8]{index=8}
+    curve: Literal["smooth", "straight", "stepline"] = "smooth",  # Stroke curve style for line/area. :contentReference[oaicite:turn0search9]{index=9}
+    stroke_width: int = 2,                   # Width (px) of line/area strokes. :contentReference[oaicite:turn0search9]{index=10}
+    colors: List[str] | None = None,         # Palette array or callback for series/points. :contentReference[oaicite:turn0search10]{index=11}
+    **extra_options,                         # Arbitrary ApexCharts options to deep-merge over the defaults.
+) -> Div:
+    """
+    Helpert function that constructs basic Apex Charts json string.
+    All boolean parameters default to *False* (or *None*) to avoid surprising side-effects; pass ``True`` to opt-in.
+    Any key you pass via ``extra_options`` overrides the baked-in defaults without losing the design-system styles.   
+    """
+    base = {
+        "series": series,
+        "chart": {
+            "type": chart_type,
+            # If caller leaves enable_zoom=None we fall back to Apex default
+            **({"zoom": {"enabled": enable_zoom}} if enable_zoom is not None else {}),
+            "toolbar": {"show": show_toolbar},
+        },
+        "dataLabels": {"enabled": data_labels},
+        "stroke": {"curve": curve, "width": stroke_width},
+        "colors": colors or [f"hsl(var(--chart-{i+1}))" for i in range(len(series))],
+        "grid": {"row": {"colors": []}, "borderColor": "hsl(var(--border))"},
+        "tooltip": {"title": {"show": show_tooltip_title}},
+        "yaxis": {"labels": {"show": show_yaxis_labels}},
+    }
+
+    # Axis scaffolding only when caller passes categories
+    if categories is not None:
+        base["xaxis"] = {
+            "categories": categories,
+            "tooltip": {"enabled": False},
+            "labels": {"style": {"colors": "hsl(var(--muted-foreground))"}},
+            "axisBorder": {"show": False},
+            "axisTicks": {"show": False},
+        }
+
+    # Per-bar colouring option for bar/column charts
+    if distributed and chart_type in ("bar", "column"):
+        base.setdefault("plotOptions", {}).setdefault("bar", {})["distributed"] = True
+
+    merged = _deep_merge(base, extra_options)
+    return merged
+    # return json.dumps(merged, separators=(",", ":"))
+
+def ApexChart(*, 
+              apex, # Apex chart json
+              cls='', # Class for the chart Div container
+              **kws # Additional args for the chart Div container
+              )->FT: 
+    "Apex chart component"
+    js=NotStr(f"<script type='application/json'>{json.dumps(apex)}</script>")
+    return Div(Uk_chart(js), cls=stringify(cls), **kws)
