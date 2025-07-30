@@ -821,7 +821,7 @@ def Options(*c,                    # Content for an `Option`
 def Select(*option,            # Options for the select dropdown (can use `Options` helper function to create)
           inp_cls=(),         # Additional classes for the select input
           cls=('h-10',),      # Classes for the outer div (default h-10 for consistent height)
-          cls_custom='button: uk-input-fake dropdown: w-full', # Classes for the Uk_Select web component
+          cls_custom='button: uk-input-fake; dropdown: w-full', # Classes for the Uk_Select web component
           id="",              # ID for the select input
           name="",            # Name attribute for the select input
           placeholder="",     # Placeholder text for the select input
