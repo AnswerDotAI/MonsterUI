@@ -6,16 +6,16 @@
 - [API List](https://raw.githubusercontent.com/AnswerDotAI/MonsterUI/refs/heads/main/docs/apilist.txt): Complete API Reference
 
 ## Examples
-- [Music](https://monsterui.answer.ai/music/md): FrankenUI Music Example build with MonsterUI (Original design by ShadCN)
-- [Mail](https://monsterui.answer.ai/mail/md): FrankenUI Mail Example built with MonsterUI (original design by ShadCN)
-- [Cards](https://monsterui.answer.ai/cards/md): FrankenUI Cards Example built with MonsterUI (original design by ShadCN)
-- [Playground](https://monsterui.answer.ai/playground/md): FrankenUI Playground Example built with MonsterUI (original design by ShadCN)
-- [Tasks](https://monsterui.answer.ai/tasks/md): FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)
 - [Dashboard](https://monsterui.answer.ai/dashboard/md): FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)
-- [Ticket](https://monsterui.answer.ai/ticket/md): MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components
 - [Forms](https://monsterui.answer.ai/forms/md): FrankenUI Forms Example built with MonsterUI (original design by ShadCN)
 - [Auth](https://monsterui.answer.ai/auth/md): FrankenUI Auth Example built with MonsterUI (original design by ShadCN)
+- [Mail](https://monsterui.answer.ai/mail/md): FrankenUI Mail Example built with MonsterUI (original design by ShadCN)
+- [Tasks](https://monsterui.answer.ai/tasks/md): FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)
+- [Music](https://monsterui.answer.ai/music/md): FrankenUI Music Example build with MonsterUI (Original design by ShadCN)
 - [Scrollspy](https://monsterui.answer.ai/scrollspy/md): MonsterUI Scrollspy Example application
+- [Cards](https://monsterui.answer.ai/cards/md): FrankenUI Cards Example built with MonsterUI (original design by ShadCN)
+- [Ticket](https://monsterui.answer.ai/ticket/md): MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components
+- [Playground](https://monsterui.answer.ai/playground/md): FrankenUI Playground Example built with MonsterUI (original design by ShadCN)
 
 ## Optional
 - [Accordion | Link](https://monsterui.answer.ai/api_ref/docs_accordion_link/md): Accordion API Reference
