@@ -1630,35 +1630,14 @@ def ApexChart(*,
 # %% ../nbs/02_franken.ipynb
 def ScrollSpy(headings=[1,2,3,4,5], # Heading levels to map section/links from
               active_styles:str='color: hsl(var(--foreground));font-weight:600', # Styles applied to active link
-              target_sel:str='body', # Container to render scrollspy links from,
+              target_sel:str='body', # Container to render scrollspy links from
+              offset:int=100,        # Offset from top of viewport to set section as active
+              section_sel:str='.spy-section', # Selector/s that contain heading + contents
               **kwargs
               )->FT:
     "Standalone javascript scrollspy implementation, mapping heading levels into link/sections"
-    js = """
-import scrollSpy from 'https://cdn.jsdelivr.net/npm/@sidsbrmnn/scrollspy@1.x/+esm';
-(() => {
-    const sel='%s', hs=Array.from(htmx.findAll(htmx.find('%s'), sel));
-    if(!hs.length) return;
-    const cnt={}, slug=t=>{t=t.toLowerCase().trim().replace(/[^a-z0-9\\s-]/g,'').replace(/\\s+/g,'-').replace(/-+/g,'-')||'section';
-    const c=cnt[t]=(cnt[t]||0)+1;return c>1?`${t}-${c-1}`:t};
-    const nav=document.querySelector('#scrollspy-nav ol');
-    for(const h of hs){
-        const id=slug(h.textContent), p=h.parentNode;
-        if(!p.id) p.id=id;
-        if(p.matches('section')) continue;
-        if(!p.classList.contains('uk-section')) {
-            const s=document.createElement('section');
-            s.id=id; p.insertBefore(s,h); s.appendChild(h);
-            let n=s.nextSibling;
-            while(n && !(n.matches && n.matches(sel))){const nx=n.nextSibling; s.appendChild(n); n=nx;}}
-        const li=document.createElement('li'), a=document.createElement('a');
-        a.href='#'+id; a.textContent=h.textContent.trim();
-        a.style.textIndent = `${((parseInt(h.tagName[1])-1)*0.75)}rem`;
-        li.className='border-l-4 has-[.active]:border-l-[hsl(var(--primary))]';
-        a.className=`p-1 hover:underline scrollspy-item block text-sm text-muted-foreground truncate`;
-        li.appendChild(a); nav.appendChild(li);}
-    const sp = scrollSpy('#scrollspy-nav',{sectionSelector:'section,.uk-section',activeClass:'active',targetSelector:'.scrollspy-item',offset:100});
-})()""" % (','.join([f'h{i}' for i in headings]), target_sel)
+    js = """import P from"https://cdn.jsdelivr.net/npm/@sidsbrmnn/scrollspy@1/+esm";var Q="%s",K="%s",J="%s",T=%d,L=document.querySelector(K),B=L?L.querySelectorAll(Q):null;if(!B?.length)throw Error("No headings found.");if(L&&B.length){let E=J.startsWith(".")?J.slice(1):J,M=Object.create(null),O=(k="")=>{let q=k.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,"").replace(/\s+/g,"-").replace(/-+/g,"-")||"section",w=M[q]=(M[q]||0)+1;return w>1?`${q}-${w-1}`:q},D=[...new Set([...B].map((k)=>k.closest(`${K} > *`)).filter(Boolean))];for(let k of D){k.classList.add(E);let q=[...B].find((w)=>k.contains(w));k.id=O(q?.textContent||"section")}for(let k=0;k<D.length;k++){let q=D[k],w=D[k+1]||null,z=q.nextSibling;while(z&&z!==w){let F=z;z=z.nextSibling,q.appendChild(F)}}let N=document.querySelector("#scrollspy-nav ol");if(N){let k=document.createDocumentFragment();for(let w of B){let z=w.closest(`${K} > .${E}`);if(!z?.id)continue;let F=parseInt(w.tagName.slice(1),10)||6,G=document.createElement("li");G.className="border-l-[3px] has-[.active]:border-l-[hsl(var(--primary))]";let A=document.createElement("a");A.href=`#${CSS.escape(z.id)}`,A.textContent=(w.textContent||"").trim(),A.className="p-1 hover:underline scrollspy-item block text-sm text-muted-foreground truncate",A.style.textIndent=`${(F-1)*0.75}rem`,G.appendChild(A),k.appendChild(G)}N.appendChild(k);P("#scrollspy-nav",{sectionSelector:`.${E}`,activeClass:"active",targetSelector:".scrollspy-item",offset:T})}}
+""" % (','.join([f'h{i}' for i in headings]),target_sel,section_sel,offset)
     return Nav(id='scrollspy-nav', cls='pr-1.5', **kwargs)(
             Style(f'a.active {{ {active_styles}; }}'),
             Ol(cls='empty:hidden flex flex-col h-full divide-y border-y'),
