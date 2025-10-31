@@ -518,7 +518,7 @@
 - `def ApexChart(**kws)`
     Apex chart component
 
-- `def ScrollSpy(headings, active_styles, target_sel, **kwargs)`
+- `def ScrollSpy(headings, active_styles, target_sel, offset, section_sel, **kwargs)`
     Standalone javascript scrollspy implementation, mapping heading levels into link/sections
 
 - `def LoaderButton(*c, **kwargs)`
