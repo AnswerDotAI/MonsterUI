@@ -518,8 +518,8 @@
 - `def ApexChart(**kws)`
     Apex chart component
 
-- `def ScrollSpy(headings, active_styles, target_sel, offset, section_sel, **kwargs)`
-    Standalone javascript scrollspy implementation, mapping heading levels into link/sections
+- `def ScrollSpy(headings, target_sel, offset, nav_id, smooth_scroll, **kwargs)`
+    Standalone Scrollspy nav menu, mapping heading tags from target into link
 
 - `def LoaderButton(*c, **kwargs)`
     A button that displays a loading spinner when an HTMX request is in flight
