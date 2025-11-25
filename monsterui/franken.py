@@ -1630,7 +1630,7 @@ def ApexChart(*,
     return Div(Uk_chart(js), cls=stringify(cls), **kws)
 
 # %% ../nbs/02_franken.ipynb
-spy_js = '''
+spy_js = r'''
 const slug = (s) => s.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
 const frag = document.createDocumentFragment();
 
