@@ -12,6 +12,7 @@ from enum import Enum, auto
 from fastcore.all import *
 import httpx
 from pathlib import Path
+import re
 
 # %% ../nbs/01_core.ipynb
 @delegates(fh.fast_app, but=['pico'])
@@ -98,12 +99,19 @@ HEADER_URLS = {
 }
 
 def _download_resource(url, static_dir):
-    "Download a single resource and return its local path"
+    "Download a single resource and return its name"
     static = Path(static_dir)
-    fname = static/f"{url[0]}.{'js' if 'js' in url[1] else 'css'}"
+    fname = static / _resource_filename(url)
     content = httpx.get(url[1], follow_redirects=True).content
     fname.write_bytes(content)
-    return (url[0], f"/{static_dir}/{fname.name}")
+    return (url[0], fname.name)
+
+def _resource_filename(url):
+    "Return a filename for the resource"
+    if url[0] == 'tailwind':
+        return 'tailwind.js'
+    return f"{url[0]}.{'js' if re.search(r'\bjs\b', url[1]) else 'css'}"
+
 
 # %% ../nbs/01_core.ipynb
 daisy_styles = Style("""
@@ -167,6 +175,9 @@ scrollspy_style= Style('''
 ''')
 
 # %% ../nbs/01_core.ipynb
+from typing import Any
+
+
 class Theme(Enum):
     "Selector to choose theme and get all headers needed for app.  Includes frankenui + tailwind + daisyui + highlight.js options"
     def _generate_next_value_(name, start, count, last_values): return name
@@ -262,3 +273,8 @@ class Theme(Enum):
         Path(static_dir).mkdir(exist_ok=True)
         local_urls = dict([_download_resource(url, static_dir) for url in HEADER_URLS.items()])
         return self._create_headers(local_urls, mode=mode, icons=icons, daisy=daisy, highlightjs=highlightjs, katex=katex, apex_charts=apex_charts, radii=radii, shadows=shadows, font=font)
+
+    def served_headers(self, mode='auto', serve_from='/static', icons=True, daisy=True, highlightjs=False, katex=False, apex_charts=False, radii='md', shadows='sm', font='sm'):
+        "Create headers with url or route to static files (previously downloaded)"
+        urls = dict([(url[0], f"{serve_from}/{_resource_filename(url)}") for url in HEADER_URLS.items()])
+        return self._create_headers(urls, mode=mode, icons=icons, daisy=daisy, highlightjs=highlightjs, katex=katex, apex_charts=apex_charts, radii=radii, shadows=shadows, font=font)
