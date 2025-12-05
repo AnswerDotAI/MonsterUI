@@ -2,6 +2,18 @@
 
 <!-- do not remove -->
 
+## 1.0.33
+
+### New Features
+
+- Add `Textarea` alias for consistency with FastHTML ([#146](https://github.com/AnswerDotAI/MonsterUI/pull/146)), thanks to [@erikgaas](https://github.com/erikgaas)
+
+
+### Bugs Squashed
+
+- Fix SyntaxWarning: use raw string for spy_js regex ([#147](https://github.com/AnswerDotAI/MonsterUI/pull/147)), thanks to [@erikgaas](https://github.com/erikgaas)
+
+
 ## 1.0.32
 
 ### New Features
