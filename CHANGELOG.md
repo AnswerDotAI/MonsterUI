@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.0.35
+
+### Bugs Squashed
+
+- `label_kw` not used in `ToggleBtn` ([#149](https://github.com/AnswerDotAI/MonsterUI/issues/149))
+
+
 ## 1.0.34
 
 ### New Features
