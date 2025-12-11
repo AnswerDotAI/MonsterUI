@@ -1675,5 +1675,10 @@ def LoaderButton(*c, cls='uk-btn-default', icon_func=partial(UkIcon, icon='loade
 # %% ../nbs/02_franken.ipynb
 def ToggleBtn(*c, cls='uk-btn-default', checked_cls='bg-primary', label_kw={}, **kwargs):
     "Styled toggle button component, acts like a switch"
-    return fh.Label(c, Input(type='checkbox', hidden=True, **kwargs), tabindex="0",
-                    cls=stringify(('uk-btn text-nowrap cursor-pointer', cls, *[f'has-[:checked]:{c}' for c in checked_cls.split()])))
+    hascls = [f'has-[:checked]:{c}' for c in checked_cls.split()]
+    return fh.Label(
+        c, Input(type='checkbox', hidden=True, **kwargs),
+        tabindex="0",
+        cls=stringify(('uk-btn text-nowrap cursor-pointer', cls, *hascls)),
+        **label_kw
+    )
