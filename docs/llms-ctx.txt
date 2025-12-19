@@ -518,7 +518,7 @@
 - `def ApexChart(**kws)`
     Apex chart component
 
-- `def ScrollSpy(headings, target_sel, offset, nav_id, smooth_scroll, **kwargs)`
+- `def ScrollSpy(headings, target_sel, offset, nav_id, smooth_scroll, auto_scroll, cls, **kwargs)`
     Standalone Scrollspy nav menu, mapping heading tags from target into link
 
 - `def LoaderButton(*c, **kwargs)`
