@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.0.36
+
+### Bugs Squashed
+
+- Scrollspy duplicate heading fix ([#150](https://github.com/AnswerDotAI/MonsterUI/pull/150)), thanks to [@curtis-allan](https://github.com/curtis-allan)
+
+
+
 ## 1.0.35
 
 ### Bugs Squashed
