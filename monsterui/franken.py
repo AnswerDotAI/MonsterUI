@@ -1575,7 +1575,9 @@ def render_md(md_content:str, # Markdown content
     "Renders markdown using mistletoe and lxml with custom image handling"
     if md_content=='': return md_content
     html_content = mistletoe.markdown(md_content, partial(renderer, img_dir=img_dir))
-    return NotStr(apply_classes(html_content, class_map, class_map_mods))
+    if (class_map or class_map is None) or class_map_mods:
+        html_content = apply_classes(html_content, class_map, class_map_mods)
+    return NotStr(html_content)
 
 # %% ../nbs/02_franken.ipynb
 def ThemePicker(color=True, radii=True, shadows=True, font=True, mode=True, cls='p-4', custom_themes=[]):
