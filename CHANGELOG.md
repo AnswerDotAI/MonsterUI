@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.0.37
+
+### New Features
+
+- Skip `apply_classes` in `render_md` when `class_map` is explicitly False ([#151](https://github.com/AnswerDotAI/MonsterUI/issues/151))
+
+
 ## 1.0.36
 
 ### Bugs Squashed
