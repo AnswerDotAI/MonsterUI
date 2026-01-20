@@ -1643,8 +1643,9 @@ document.querySelector('%s').querySelectorAll('%s').forEach((h,i) => {
   const id = slug(text)+'_'+i; h.id = id;
   const li = document.createElement('li'), a = document.createElement('a');
   const l = parseInt(h.tagName[1]) || 6;
-  li.className = `[&.uk-active]:bg-[hsl(var(--primary)/0.4)] uk-rounded pl-[${(l - 1) * 0.75}rem] text-sm`;
+  li.className = `[&.uk-active]:bg-[hsl(var(--primary)/0.4)] rounded-sm text-sm`;
   a.href = '#'+id; a.textContent = text;
+  li.style.paddingLeft = `${(l - 1) * 0.75}rem`;
   a.className = '!line-clamp-1';
   li.append(a); frag.append(li);
 });
