@@ -2,7 +2,7 @@
 
 # %% auto #0
 __all__ = ['HEADER_URLS', 'daisy_styles', 'scrollspy_style', 'fast_app', 'FastHTML', 'ThemeRadii', 'ThemeShadows', 'ThemeFont',
-           'Theme']
+           'headers_theme', 'Theme']
 
 # %% ../nbs/01_core.ipynb #30ffe3c5
 import fasthtml.common as fh
@@ -50,7 +50,7 @@ class ThemeFont:
     default = 'uk-font-base'
 
 # %% ../nbs/01_core.ipynb #d91013c7
-def _headers_theme(color, mode='auto', radii=ThemeRadii.sm, shadows=ThemeShadows.sm, font=ThemeFont.sm):
+def headers_theme(color, mode='auto', radii=ThemeRadii.sm, shadows=ThemeShadows.sm, font=ThemeFont.sm):
     franken_init = '''
           const __FRANKEN__ = JSON.parse(localStorage.getItem("__FRANKEN__") || "{}");
     '''
@@ -194,7 +194,7 @@ class Theme(Enum):
         darkMode: 'selector',
     }
     """),
-            _headers_theme(self.value, mode=mode, radii=radii, shadows=shadows, font=font),
+            headers_theme(self.value, mode=mode, radii=radii, shadows=shadows, font=font),
             scrollspy_style]
 
         if icons: hdrs.append(fh.Script(type="module", src=urls['franken_icons']))
