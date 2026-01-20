@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.0.38
+
+### New Features
+
+- Use mistlefoot for markdown ([#152](https://github.com/AnswerDotAI/MonsterUI/issues/152))
+
+
 ## 1.0.37
 
 ### New Features
