@@ -32,7 +32,7 @@ from typing import Union, Tuple, Optional, Sequence
 from fastcore.all import *
 import copy, re, httpx, os
 import pathlib
-from mistletoe.html_renderer import HTMLRenderer
+from mistlefoot import ExtendedHtmlRenderer
 from mistletoe.span_token import Image
 import mistletoe
 from lxml import html, etree
@@ -1548,13 +1548,11 @@ def apply_classes(html_str:str, # Html string
     except (etree.ParserError,ValueError): return html_str
 
 # %% ../nbs/02_franken.ipynb #a2417a54
-class FrankenRenderer(HTMLRenderer):
+class FrankenRenderer(ExtendedHtmlRenderer):
     "Custom renderer for Franken UI that handles image paths"
     def __init__(self, *args, img_dir=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.img_dir = img_dir
-
-    
     
     def render_image(self, token):
         "Modify image paths if they're relative and self.img_dir is specified"
