@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.0.40
+
+### New Features
+
+- Use style over class for dynamic padding ([#153](https://github.com/AnswerDotAI/MonsterUI/pull/153)), thanks to [@curtis-allan](https://github.com/curtis-allan)
+
+
 ## 1.0.39
 
 ### New Features
