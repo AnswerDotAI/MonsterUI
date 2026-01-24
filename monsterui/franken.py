@@ -17,8 +17,8 @@ __all__ = ['Textarea', 'franken_class_map', 'spy_js', 'spy_scrolling', 'TextT', 
            'ScrollspyT', 'NavBar', 'SliderContainer', 'SliderItems', 'SliderNav', 'Slider', 'DropDownNavContainer',
            'TabContainer', 'CardT', 'CardTitle', 'CardHeader', 'CardBody', 'CardFooter', 'CardContainer', 'Card',
            'TableT', 'Table', 'Td', 'Th', 'Tbody', 'TableFromLists', 'TableFromDicts', 'apply_classes',
-           'FrankenRenderer', 'render_md', 'ThemePicker', 'LightboxContainer', 'LightboxItem', 'ApexChart', 'ScrollSpy',
-           'LoaderButton', 'ToggleBtn']
+           'FrankenRenderer', 'normalize_html', 'render_md', 'ThemePicker', 'LightboxContainer', 'LightboxItem',
+           'ApexChart', 'ScrollSpy', 'LoaderButton', 'ToggleBtn']
 
 # %% ../nbs/02_franken.ipynb #a9b7e605
 import fasthtml.common as fh
@@ -1563,7 +1563,12 @@ class FrankenRenderer(ExtendedHtmlRenderer):
             src = f'{pathlib.Path(self.img_dir)}/{src}'
         return template.format(src, token.children[0].content if token.children else '', title)
 
-# %% ../nbs/02_franken.ipynb #b31876df
+# %% ../nbs/02_franken.ipynb #1213ae59
+from bs4 import BeautifulSoup
+
+# %% ../nbs/02_franken.ipynb #cc4d2c00
+def normalize_html(s): return BeautifulSoup(s, 'lxml').body.decode_contents(formatter='html')
+
 def render_md(md_content:str, # Markdown content
              class_map=None, # Class map
              class_map_mods=None, # Additional class map
@@ -1575,6 +1580,7 @@ def render_md(md_content:str, # Markdown content
     html_content = mistletoe.markdown(md_content, partial(renderer, img_dir=img_dir))
     if (class_map or class_map is None) or class_map_mods:
         html_content = apply_classes(html_content, class_map, class_map_mods)
+    else: html_content = normalize_html(html_content)
     return NotStr(html_content)
 
 # %% ../nbs/02_franken.ipynb #6a69f18f

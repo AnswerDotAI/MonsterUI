@@ -222,4 +222,5 @@ d = { 'settings': { 'branch': 'main',
                                    'monsterui.franken.Var': ('franken.html#var', 'monsterui/franken.py'),
                                    'monsterui.franken._TableCell': ('franken.html#_tablecell', 'monsterui/franken.py'),
                                    'monsterui.franken.apply_classes': ('franken.html#apply_classes', 'monsterui/franken.py'),
+                                   'monsterui.franken.normalize_html': ('franken.html#normalize_html', 'monsterui/franken.py'),
                                    'monsterui.franken.render_md': ('franken.html#render_md', 'monsterui/franken.py')}}}
