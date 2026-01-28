@@ -3,19 +3,16 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name="monsterui"
+name = "monsterui"
 dynamic = ["version"]
 description = "The simplicity of FastHTML with the power of Tailwind"
 readme = "README.md"
-requires-python=">=3.10"
+requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 authors = [{name = "isaac flath", email = "isaac.flath@gmail.com"}]
 keywords = ['nbdev', 'jupyter', 'notebook', 'python']
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-]
-dependencies = ["python-fasthtml","fastcore","lxml","mistletoe","mistlefoot>=0.0.2","beautifulsoup4"]
+classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
+dependencies = ['python-fasthtml', 'fastcore', 'lxml', 'mistletoe', 'mistlefoot>=0.0.2', 'beautifulsoup4']
 
 [project.urls]
 Repository = "https://github.com/AnswerDotAI/MonsterUI"
@@ -24,14 +21,14 @@ Documentation = "https://monsterui.answer.ai/MonsterUI"
 [project.entry-points.nbdev]
 monsterui = "monsterui._modidx:d"
 
+[project.optional-dependencies]
+dev = ['pandas', 'jinja2', 'llms-txt', 'pysymbol_llm']
+
 [tool.setuptools.dynamic]
 version = {attr = "monsterui.__version__"}
 
 [tool.setuptools.packages.find]
 include = ["monsterui"]
-
-[project.optional-dependencies]
-dev = ["pandas","jinja2","llms-txt","pysymbol_llm"]
 
 [tool.nbdev]
 custom_sidebar = false
