@@ -15,7 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
 ]
-dependencies = []
+dependencies = ["python-fasthtml","fastcore","lxml","mistletoe","mistlefoot>=0.0.2","beautifulsoup4"]
 
 [project.urls]
 Repository = "https://github.com/AnswerDotAI/MonsterUI"
@@ -29,6 +29,9 @@ version = {attr = "monsterui.__version__"}
 
 [tool.setuptools.packages.find]
 include = ["monsterui"]
+
+[project.optional-dependencies]
+dev = ["pandas","jinja2","llms-txt","pysymbol_llm"]
 
 [tool.nbdev]
 custom_sidebar = false
