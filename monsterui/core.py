@@ -6,7 +6,7 @@ __all__ = ['HEADER_URLS', 'daisy_styles', 'scrollspy_style', 'fast_app', 'FastHT
 
 # %% ../nbs/01_core.ipynb #30ffe3c5
 import fasthtml.common as fh
-from .foundations import *
+from monsterui.foundations import *
 from fasthtml.common import FastHTML, fast_app
 from enum import Enum, auto
 from fastcore.all import *

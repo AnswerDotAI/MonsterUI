@@ -22,7 +22,7 @@ __all__ = ['Textarea', 'franken_class_map', 'spy_js', 'spy_scrolling', 'TextT', 
 
 # %% ../nbs/02_franken.ipynb #a9b7e605
 import fasthtml.common as fh
-from .foundations import *
+from monsterui.foundations import *
 from fasthtml.common import Div, P, Span, FT
 from enum import Enum, auto
 from fasthtml.components import Uk_select,Uk_input_tag,Uk_icon,Uk_input_range, Uk_chart

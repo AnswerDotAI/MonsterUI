@@ -1,11 +1,34 @@
 [build-system]
-requires = ["setuptools>=64.0"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name="monsterui"
+name="MonsterUI"
+dynamic = ["version"]
+description = "The simplicity of FastHTML with the power of Tailwind"
+readme = "README.md"
 requires-python=">=3.10"
-dynamic = [ "keywords", "description", "version", "dependencies", "optional-dependencies", "readme", "license", "authors", "classifiers", "entry-points", "scripts", "urls"]
+license = {text = "Apache-2.0"}
+authors = [{name = "isaac flath", email = "isaac.flath@gmail.com"}]
+keywords = ['nbdev', 'jupyter', 'notebook', 'python']
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+]
+dependencies = []
 
-[tool.uv]
-cache-keys = [{ file = "pyproject.toml" }, { file = "settings.ini" }, { file = "setup.py" }]
+[project.urls]
+Repository = "https://github.com/AnswerDotAI/MonsterUI"
+Documentation = "https://monsterui.answer.ai/MonsterUI"
+
+[project.entry-points.nbdev]
+monsterui = "monsterui._modidx:d"
+
+[tool.setuptools.dynamic]
+version = {attr = "monsterui.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["monsterui"]
+
+[tool.nbdev]
+custom_sidebar = false
