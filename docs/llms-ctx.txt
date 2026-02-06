@@ -1,3 +1,14 @@
+{'title': 'API List', 'url': 'https://raw.githubusercontent.com/AnswerDotAI/MonsterUI/refs/heads/main/docs/apilist.txt', 'desc': 'Complete API Reference'}
+{'title': 'Dashboard', 'url': 'https://monsterui.answer.ai/dashboard/md', 'desc': 'FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Forms', 'url': 'https://monsterui.answer.ai/forms/md', 'desc': 'FrankenUI Forms Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Auth', 'url': 'https://monsterui.answer.ai/auth/md', 'desc': 'FrankenUI Auth Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Mail', 'url': 'https://monsterui.answer.ai/mail/md', 'desc': 'FrankenUI Mail Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Tasks', 'url': 'https://monsterui.answer.ai/tasks/md', 'desc': 'FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Music', 'url': 'https://monsterui.answer.ai/music/md', 'desc': 'FrankenUI Music Example build with MonsterUI (Original design by ShadCN)'}
+{'title': 'Scrollspy', 'url': 'https://monsterui.answer.ai/scrollspy/md', 'desc': 'MonsterUI Scrollspy Example application'}
+{'title': 'Cards', 'url': 'https://monsterui.answer.ai/cards/md', 'desc': 'FrankenUI Cards Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Ticket', 'url': 'https://monsterui.answer.ai/ticket/md', 'desc': 'MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components'}
+{'title': 'Playground', 'url': 'https://monsterui.answer.ai/playground/md', 'desc': 'FrankenUI Playground Example built with MonsterUI (original design by ShadCN)'}
 <project title="MonsterUI Documentation">> MonsterUI is a python library which brings styling to python for FastHTML apps.<api reference><doc title="API List" desc="Complete API Reference"># monsterui Module Documentation
 
 ## monsterui.core

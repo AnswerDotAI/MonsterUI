@@ -1,3 +1,38 @@
+{'title': 'API List', 'url': 'https://raw.githubusercontent.com/AnswerDotAI/MonsterUI/refs/heads/main/docs/apilist.txt', 'desc': 'Complete API Reference'}
+{'title': 'Dashboard', 'url': 'https://monsterui.answer.ai/dashboard/md', 'desc': 'FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Forms', 'url': 'https://monsterui.answer.ai/forms/md', 'desc': 'FrankenUI Forms Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Auth', 'url': 'https://monsterui.answer.ai/auth/md', 'desc': 'FrankenUI Auth Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Mail', 'url': 'https://monsterui.answer.ai/mail/md', 'desc': 'FrankenUI Mail Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Tasks', 'url': 'https://monsterui.answer.ai/tasks/md', 'desc': 'FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Music', 'url': 'https://monsterui.answer.ai/music/md', 'desc': 'FrankenUI Music Example build with MonsterUI (Original design by ShadCN)'}
+{'title': 'Scrollspy', 'url': 'https://monsterui.answer.ai/scrollspy/md', 'desc': 'MonsterUI Scrollspy Example application'}
+{'title': 'Cards', 'url': 'https://monsterui.answer.ai/cards/md', 'desc': 'FrankenUI Cards Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Ticket', 'url': 'https://monsterui.answer.ai/ticket/md', 'desc': 'MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components'}
+{'title': 'Playground', 'url': 'https://monsterui.answer.ai/playground/md', 'desc': 'FrankenUI Playground Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Accordion | Link', 'url': 'https://monsterui.answer.ai/api_ref/docs_accordion_link/md', 'desc': 'Accordion API Reference'}
+{'title': 'Button | Link', 'url': 'https://monsterui.answer.ai/api_ref/docs_button_link/md', 'desc': 'Buttons & Links API Reference'}
+{'title': 'Cards', 'url': 'https://monsterui.answer.ai/api_ref/docs_cards/md', 'desc': 'Cards API Reference'}
+{'title': 'Charts', 'url': 'https://monsterui.answer.ai/api_ref/docs_charts/md', 'desc': 'Charts API Reference'}
+{'title': 'Containers', 'url': 'https://monsterui.answer.ai/api_ref/docs_containers/md', 'desc': 'Articles, Containers & Sections API Reference'}
+{'title': 'Dividers', 'url': 'https://monsterui.answer.ai/api_ref/docs_dividers/md', 'desc': 'Dividers API Reference'}
+{'title': 'Forms', 'url': 'https://monsterui.answer.ai/api_ref/docs_forms/md', 'desc': 'Forms and User Inputs API Reference'}
+{'title': 'Html', 'url': 'https://monsterui.answer.ai/api_ref/docs_html/md', 'desc': 'HTML Styling API Reference'}
+{'title': 'Icons | Images', 'url': 'https://monsterui.answer.ai/api_ref/docs_icons_images/md', 'desc': 'Icons & Images API Reference'}
+{'title': 'Layout', 'url': 'https://monsterui.answer.ai/api_ref/docs_layout/md', 'desc': 'Layout (Flex and Grid) API Reference'}
+{'title': 'Lightbox', 'url': 'https://monsterui.answer.ai/api_ref/docs_lightbox/md', 'desc': 'Lightbox API Reference'}
+{'title': 'Lists', 'url': 'https://monsterui.answer.ai/api_ref/docs_lists/md', 'desc': 'Lists API Reference'}
+{'title': 'Loading', 'url': 'https://monsterui.answer.ai/api_ref/docs_loading/md', 'desc': 'Loading Indicators API Reference'}
+{'title': 'Markdown', 'url': 'https://monsterui.answer.ai/api_ref/docs_markdown/md', 'desc': 'Markdown + automated HTML styling API Reference'}
+{'title': 'Modals', 'url': 'https://monsterui.answer.ai/api_ref/docs_modals/md', 'desc': 'Modals API Reference'}
+{'title': 'Navigation', 'url': 'https://monsterui.answer.ai/api_ref/docs_navigation/md', 'desc': 'Navigation (Nav, NavBar, Tabs, etc.) API Reference'}
+{'title': 'Notifications', 'url': 'https://monsterui.answer.ai/api_ref/docs_notifications/md', 'desc': 'Alerts & Toasts API Reference'}
+{'title': 'Sliders', 'url': 'https://monsterui.answer.ai/api_ref/docs_sliders/md', 'desc': 'Carousel Sliders API Reference'}
+{'title': 'Steps', 'url': 'https://monsterui.answer.ai/api_ref/docs_steps/md', 'desc': 'Steps API Reference'}
+{'title': 'Tables', 'url': 'https://monsterui.answer.ai/api_ref/docs_tables/md', 'desc': 'Tables API Reference'}
+{'title': 'Theme | Headers', 'url': 'https://monsterui.answer.ai/api_ref/docs_theme_headers/md', 'desc': 'Theme and Headers API Reference'}
+{'title': 'Typography', 'url': 'https://monsterui.answer.ai/api_ref/docs_typography/md', 'desc': 'Typography API Reference'}
+{'title': 'Layout', 'url': 'https://monsterui.answer.ai/tutorial_layout/md', 'desc': 'MonsterUI Page Layout Guide'}
+{'title': 'Spacing', 'url': 'https://monsterui.answer.ai/tutorial_spacing/md', 'desc': 'Padding & Margin & Spacing, Oh my! (MonsterUI Spacing Guide)'}
 <project title="MonsterUI Documentation">> MonsterUI is a python library which brings styling to python for FastHTML apps.<api reference><doc title="API List" desc="Complete API Reference"># monsterui Module Documentation
 
 ## monsterui.core
