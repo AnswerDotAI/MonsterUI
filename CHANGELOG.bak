@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.0.42
+
+### New Features
+
+- Add `normalize_html` to sanitize HTML when `class_map` is disabled ([#155](https://github.com/AnswerDotAI/MonsterUI/issues/155))
+
+
 ## 1.0.41
 
 ### New Features

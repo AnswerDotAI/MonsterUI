@@ -2,7 +2,7 @@
 
 <!-- do not remove -->
 
-## 1.0.42
+## 1.0.43
 
 ### New Features
 
