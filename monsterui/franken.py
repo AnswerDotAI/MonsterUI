@@ -14,11 +14,11 @@ __all__ = ['Textarea', 'franken_class_map', 'spy_js', 'spy_scrolling', 'TextT', 
            'ModalCloseButton', 'Modal', 'Placeholder', 'Progress', 'UkIcon', 'UkIconLink', 'DiceBearAvatar', 'Center',
            'FlexT', 'Grid', 'DivFullySpaced', 'DivCentered', 'DivLAligned', 'DivRAligned', 'DivVStacked', 'DivHStacked',
            'NavT', 'NavContainer', 'NavParentLi', 'NavDividerLi', 'NavHeaderLi', 'NavSubtitle', 'NavCloseLi',
-           'ScrollspyT', 'NavBar', 'SliderContainer', 'SliderItems', 'SliderNav', 'Slider', 'DropDownNavContainer',
-           'TabContainer', 'CardT', 'CardTitle', 'CardHeader', 'CardBody', 'CardFooter', 'CardContainer', 'Card',
-           'TableT', 'Table', 'Td', 'Th', 'Tbody', 'TableFromLists', 'TableFromDicts', 'apply_classes',
-           'FrankenRenderer', 'normalize_html', 'render_md', 'ThemePicker', 'LightboxContainer', 'LightboxItem',
-           'ApexChart', 'ScrollSpy', 'LoaderButton', 'ToggleBtn']
+           'ScrollspyT', 'ResponsiveDiv', 'NavBar', 'SliderContainer', 'SliderItems', 'SliderNav', 'Slider',
+           'DropDownNavContainer', 'TabContainer', 'CardT', 'CardTitle', 'CardHeader', 'CardBody', 'CardFooter',
+           'CardContainer', 'Card', 'TableT', 'Table', 'Td', 'Th', 'Tbody', 'TableFromLists', 'TableFromDicts',
+           'apply_classes', 'FrankenRenderer', 'normalize_html', 'render_md', 'ThemePicker', 'LightboxContainer',
+           'LightboxItem', 'ApexChart', 'ScrollSpy', 'LoaderButton', 'ToggleBtn']
 
 # %% ../nbs/02_franken.ipynb #a9b7e605
 import fasthtml.common as fh
@@ -1244,35 +1244,42 @@ class ScrollspyT(VEnum):
     bold = 'navbar-bold'
 
 # %% ../nbs/02_franken.ipynb #398e8988
+def _bp(cls, bp='md'):
+    "Prefix each class with a responsive breakpoint"
+    return ' '.join(f'{bp}:{c}' for c in cls.split())
+
+def ResponsiveDiv(*c, mobile_cls='', desktop_cls='', bp='md', cls='', **kwargs):
+    "One copy of children, two layout modes swapped at breakpoint"
+    # tw: md:contents md:flex
+    inner = Div(*c, cls=f'contents {bp}:flex {bp}:ml-auto {_bp(desktop_cls, bp)}')
+    return Div(inner, cls=f'{cls} {mobile_cls} {bp}:contents', **kwargs)
+
+
 def NavBar(*c, # Component for right side of navbar (Often A tag links)
            brand=H3("Title"), # Brand/logo component for left side
-           right_cls='items-center space-x-4', # Spacing for desktop links
-           mobile_cls='space-y-4', # Spacing for mobile links
+           right_cls='flex items-center space-x-4', # Styling for desktop links
+           mobile_cls='flex flex-col space-y-4', # Styling for mobile links
            sticky:bool=False, # Whether to stick to the top of the page while scrolling
            uk_scrollspy_nav:bool|str=False, # Whether to use scrollspy for navigation
            cls='p-4', # Classes for navbar
            scrollspy_cls=ScrollspyT.underline, # Scrollspy class (usually ScrollspyT.*)
-           menu_id=None, # ID for menu container (used for mobile toggle)
-           )->FT: # Responsive NavBar
-    "Creates a responsive navigation bar with mobile menu support"
-    if menu_id is None: menu_id = fh.unqid()
-    sticky_cls = 'sticky top-4 bg-base-100/80 backdrop-blur-sm z-50' if sticky else ''
-    if uk_scrollspy_nav == True: uk_scrollspy_nav = 'closest: a; scroll: true'
-
-    mobile_icon = A(UkIcon("menu", width=30, height=30), cls="md:hidden", data_uk_toggle=f"target: #{menu_id}; cls: hidden")
-    return Div(
-        Div(
-            DivFullySpaced(
-                brand, # Brand/logo component for left side
-                mobile_icon, # Hamburger menu icon
-                Div(*c,cls=(stringify(right_cls),'hidden md:flex'), uk_scrollspy_nav=uk_scrollspy_nav)),# Desktop Navbar (right side)
-            cls=('monster-navbar', stringify(cls), stringify(scrollspy_cls))
-            ),
-        DivCentered(*c, 
-                    cls=(stringify(mobile_cls),stringify(cls), stringify(scrollspy_cls),
-                         'hidden md:hidden monster-navbar'), 
-                    id=menu_id, uk_scrollspy_nav=uk_scrollspy_nav),
-        cls=sticky_cls)
+           menu_id='mobile-menu', # ID for mobile menu toggle
+           bp='md', # Responsive breakpoint for mobile/desktop switch
+           **kwargs):
+    "Responsive navbar with mobile hamburger menu"
+    sticky_cls = 'sticky top-0 z-50 bg-background/80 backdrop-blur-sm' if sticky else ''
+    scrollspy_cls = f'uk-scrollspy-nav={uk_scrollspy_nav}' if uk_scrollspy_nav else ''
+    mobile_icon = Button(
+        UkIcon('menu'), cls=f'{bp}:hidden',
+        uk_toggle=f'target: #{menu_id}; cls: hidden')
+    header = DivFullySpaced(brand, mobile_icon,
+                            cls=('monster-navbar', cls, scrollspy_cls))
+    links = ResponsiveDiv(*c, mobile_cls=mobile_cls, desktop_cls=right_cls,
+                          bp=bp, id=menu_id, cls=f'hidden {scrollspy_cls}',
+                          uk_scrollspy_nav=uk_scrollspy_nav)
+    return Div(header, links,
+               cls=(sticky_cls, f'monster-navbar flex flex-wrap {bp}:flex-nowrap items-center gap-4'),
+               **kwargs)
 
 # %% ../nbs/02_franken.ipynb #a6ea2c0e
 def SliderContainer(
