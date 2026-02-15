@@ -14,11 +14,11 @@ __all__ = ['Textarea', 'franken_class_map', 'spy_js', 'spy_scrolling', 'TextT', 
            'ModalCloseButton', 'Modal', 'Placeholder', 'Progress', 'UkIcon', 'UkIconLink', 'DiceBearAvatar', 'Center',
            'FlexT', 'Grid', 'DivFullySpaced', 'DivCentered', 'DivLAligned', 'DivRAligned', 'DivVStacked', 'DivHStacked',
            'NavT', 'NavContainer', 'NavParentLi', 'NavDividerLi', 'NavHeaderLi', 'NavSubtitle', 'NavCloseLi',
-           'ScrollspyT', 'ResponsiveDiv', 'NavBar', 'SliderContainer', 'SliderItems', 'SliderNav', 'Slider',
-           'DropDownNavContainer', 'TabContainer', 'CardT', 'CardTitle', 'CardHeader', 'CardBody', 'CardFooter',
-           'CardContainer', 'Card', 'TableT', 'Table', 'Td', 'Th', 'Tbody', 'TableFromLists', 'TableFromDicts',
-           'apply_classes', 'FrankenRenderer', 'normalize_html', 'render_md', 'ThemePicker', 'LightboxContainer',
-           'LightboxItem', 'ApexChart', 'ScrollSpy', 'LoaderButton', 'ToggleBtn']
+           'ScrollspyT', 'NavBar', 'SliderContainer', 'SliderItems', 'SliderNav', 'Slider', 'DropDownNavContainer',
+           'TabContainer', 'CardT', 'CardTitle', 'CardHeader', 'CardBody', 'CardFooter', 'CardContainer', 'Card',
+           'TableT', 'Table', 'Td', 'Th', 'Tbody', 'TableFromLists', 'TableFromDicts', 'apply_classes',
+           'FrankenRenderer', 'normalize_html', 'render_md', 'ThemePicker', 'LightboxContainer', 'LightboxItem',
+           'ApexChart', 'ScrollSpy', 'LoaderButton', 'ToggleBtn']
 
 # %% ../nbs/02_franken.ipynb #a9b7e605
 import fasthtml.common as fh
@@ -1246,40 +1246,34 @@ class ScrollspyT(VEnum):
 # %% ../nbs/02_franken.ipynb #398e8988
 def _bp(cls, bp='md'):
     "Prefix each class with a responsive breakpoint"
-    return ' '.join(f'{bp}:{c}' for c in cls.split())
+    return ' '.join(f'{bp}:{c}' for c in stringify(cls).split())
 
-def ResponsiveDiv(*c, mobile_cls='', desktop_cls='', bp='md', cls='', **kwargs):
-    "One copy of children, two layout modes swapped at breakpoint"
-    # tw: md:contents md:flex
-    inner = Div(*c, cls=f'contents {bp}:flex {bp}:ml-auto {_bp(desktop_cls, bp)}')
-    return Div(inner, cls=f'{cls} {mobile_cls} {bp}:contents', **kwargs)
-
-
-def NavBar(*c, # Component for right side of navbar (Often A tag links)
+def NavBar(*c, # Components for right side of navbar (often A tag links)
            brand=H3("Title"), # Brand/logo component for left side
-           right_cls='flex items-center space-x-4', # Styling for desktop links
-           mobile_cls='flex flex-col space-y-4', # Styling for mobile links
-           sticky:bool=False, # Whether to stick to the top of the page while scrolling
-           uk_scrollspy_nav:bool|str=False, # Whether to use scrollspy for navigation
-           cls='p-4', # Classes for navbar
+           right_cls='items-center gap-3', # Classes for desktop links layout
+           mobile_cls='gap-3 flex-col items-end', # Classes for mobile links layout
+           sticky:bool=False, # Whether to stick to top while scrolling
+           uk_scrollspy_nav:bool|str=False, # Scrollspy nav option
+           cls='p-3', # Extra classes for navbar
+           wrapper_cls='', # Classes for outer wrapper div (hidden from breakpoint)
            scrollspy_cls=ScrollspyT.underline, # Scrollspy class (usually ScrollspyT.*)
-           menu_id='mobile-menu', # ID for mobile menu toggle
+           menu_id='mobile-menu', # ID for mobile menu toggle (unique id if None)
+           mobile_icon=None, # Custom icon for toggle button
            bp='md', # Responsive breakpoint for mobile/desktop switch
            **kwargs):
     "Responsive navbar with mobile hamburger menu"
+    base_cls = f'monster-navbar flex flex-wrap items-center justify-between w-full {stringify(cls)}'
+    if not menu_id: menu_id = unqid()
+    if not mobile_icon: mobile_icon = UkIcon('menu', height=24, width=24, cls='size-6')
+    if uk_scrollspy_nav is True: uk_scrollspy_nav = 'closest: a; scroll: true'
+    if not uk_scrollspy_nav: scrollspy_cls=''
     sticky_cls = 'sticky top-0 z-50 bg-background/80 backdrop-blur-sm' if sticky else ''
-    scrollspy_cls = f'uk-scrollspy-nav={uk_scrollspy_nav}' if uk_scrollspy_nav else ''
-    mobile_icon = Button(
-        UkIcon('menu'), cls=f'{bp}:hidden',
-        uk_toggle=f'target: #{menu_id}; cls: hidden')
-    header = DivFullySpaced(brand, mobile_icon,
-                            cls=('monster-navbar', cls, scrollspy_cls))
-    links = ResponsiveDiv(*c, mobile_cls=mobile_cls, desktop_cls=right_cls,
-                          bp=bp, id=menu_id, cls=f'hidden {scrollspy_cls}',
-                          uk_scrollspy_nav=uk_scrollspy_nav)
-    return Div(header, links,
-               cls=(sticky_cls, f'monster-navbar flex flex-wrap {bp}:flex-nowrap items-center gap-4'),
-               **kwargs)
+    tgl_btn = fh.Button(Span('Open main menu', cls='sr-only'), mobile_icon, aria_controls=menu_id,
+                        type='button', data_uk_toggle=f'target: #{menu_id}; cls: hidden',
+                        cls=f'{bp}:hidden inline-flex items-center justify-center uk-rounded focus:outline-none focus:ring-2 p-2')
+    links = Div(Div(*c, cls=f'flex {mobile_cls} {bp}:flex-row {_bp(right_cls, bp)}', uk_scrollspy_nav=uk_scrollspy_nav),
+                id=menu_id, cls=f'hidden mt-2 {bp}:mt-0 w-full {bp}:block {bp}:w-auto {stringify(wrapper_cls)}')
+    return Nav(brand, tgl_btn, links, cls=(base_cls, stringify(scrollspy_cls), sticky_cls), **kwargs)
 
 # %% ../nbs/02_franken.ipynb #a6ea2c0e
 def SliderContainer(
