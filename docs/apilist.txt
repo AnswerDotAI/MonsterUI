@@ -435,8 +435,8 @@
     Members: underline, bold
 
 
-- `def NavBar(*c)`
-    Creates a responsive navigation bar with mobile menu support
+- `def NavBar(*c, **kwargs)`
+    Responsive navbar with mobile hamburger menu
 
 - `def SliderContainer(*c, **kwargs)`
     Creates a slider container
