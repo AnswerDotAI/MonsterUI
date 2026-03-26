@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.0.45
+
+### New Features
+
+- Update deps
+
+
 ## 1.0.44
 
 ### New Features

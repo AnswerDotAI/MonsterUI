@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.0.44
+
+### New Features
+
+- Deduplicate UI elements for NavBar ([#156](https://github.com/AnswerDotAI/MonsterUI/pull/156)), thanks to [@erikgaas](https://github.com/erikgaas)
+
+
 ## 1.0.43
 
 ### New Features
