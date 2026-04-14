@@ -864,7 +864,8 @@ def Select(*option,            # Options for the select dropdown (use `Options` 
         has_selected = any(getattr(o, 'selected', None) or (hasattr(o, 'get') and o.get('selected'))
                           for o in opts)
         opts = [fh.Option(placeholder, value="", selected=not has_selected, disabled=True)] + opts
-    return fh.Select(*opts, cls=('uk-select', inp_cls, cls), id=id, name=name, **kwargs)
+    select = fh.Select(*opts, cls=('uk-select', inp_cls), id=id, name=name, **kwargs)
+    return Div(cls=cls)(select) if cls else select
 
 
 # %% ../nbs/02_franken.ipynb #3b50363e
