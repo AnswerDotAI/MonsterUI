@@ -876,7 +876,8 @@ def Select(*option,            # Options for the select dropdown (use `Options` 
     # Default: native <select> with uk-select styling
     opts = list(option)
     if placeholder:
-        has_selected = any(getattr(o, 'selected', None) or (hasattr(o, 'get') and o.get('selected'))
+        _chk = lambda o: getattr(o, 'selected', None) or (hasattr(o, 'get') and o.get('selected'))
+        has_selected = any(_chk(o) or (hasattr(o, 'children') and any(_chk(c) for c in o.children))
                           for o in opts)
         opts = [fh.Option(placeholder, value="", selected=not has_selected, disabled=True)] + opts
     select = fh.Select(*opts, cls=('uk-select', inp_cls), id=id, name=name, **kwargs)
