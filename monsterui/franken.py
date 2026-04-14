@@ -822,53 +822,48 @@ def Options(*c,                    # Content for an `Option`
     return [fh.Option(o,selected=i==selected_idx, disabled=disabled_idxs and i in disabled_idxs) for i,o in enumerate(c)]
 
 # %% ../nbs/02_franken.ipynb #477a3c8e
-def Select(*option,            # Options for the select dropdown (can use `Options` helper function to create)
-          inp_cls=(),         # Additional classes for the select input
-          cls=('h-10',),      # Classes for the outer div (default h-10 for consistent height)
-          cls_custom='button: uk-input-fake; dropdown: w-full', # Classes for the Uk_Select web component
-          id="",              # ID for the select input
-          name="",            # Name attribute for the select input
-          placeholder="",     # Placeholder text for the select input
-          searchable=False,   # Whether the select should be searchable
-          insertable=False,   # Whether to allow user-defined options to be added
-          select_kwargs=None, # Additional Arguments passed to Select
-          
-           **kwargs           # Additional arguments passed to Uk_select
-          ):          
+def Select(*option,            # Options for the select dropdown (use `Options` helper or `fh.Option`/`fh.Optgroup`)
+          inp_cls=(),         # Classes for the select element (deprecated alias for cls)
+          cls=(),             # Classes for the native <select> element
+          cls_custom='button: uk-input-fake; dropdown: w-full', # Classes for the Uk_Select web component (searchable/insertable only)
+          id="",              # ID for the select element
+          name="",            # Name attribute for the select element
+          placeholder="",     # Placeholder text for the select
+          searchable=False,   # Whether the select should be searchable (uses Uk_select web component)
+          insertable=False,   # Whether to allow user-defined options (uses Uk_select web component)
+          select_kwargs=None, # Additional arguments passed to the inner hidden Select (searchable/insertable only)
+          **kwargs            # Additional arguments
+         ):
     "Creates a select dropdown with uk styling and option for adding a search box"
-    inp_cls, cls, cls_custom= map(stringify, (inp_cls, cls, cls_custom))
+    inp_cls, cls, cls_custom = map(stringify, (inp_cls, cls, cls_custom))
     select_kwargs = ifnone(select_kwargs, {})
 
-    if 'hx_trigger' not in kwargs: kwargs['hx_trigger']=''
-    if 'change' in kwargs['hx_trigger']:
-        if not id: id = fh.unqid()
-        kwargs['hx_trigger'] = kwargs['hx_trigger'].replace('changed', f'uk-select:input from:#{id}')
-        kwargs['hx_trigger'] = kwargs['hx_trigger'].replace('change', f'uk-select:input from:#{id}')
-    
-    if 'delay' not in kwargs['hx_trigger']:
-        kwargs['hx_trigger'] +=  ' delay:100ms'
-    
-    if 'hx_include' not in kwargs: kwargs['hx_include']=''
-    kwargs['hx_include'] += ' this'
-    kwargs['hx_include'] = kwargs['hx_include'].strip()
-        
     if id and not name: name = id
 
-    uk_select = Uk_select(fh.Select(*option, hidden=True, 
-                                    **select_kwargs, 
-                                    
-                                    ),
-                         cls_custom=cls_custom,
-                         searchable=searchable,
-                         placeholder=placeholder,
-                         insertable=insertable,
-                         cls=inp_cls,
-                          id=id,
-                          name=name,
-                          **kwargs
-                         )
-    
-    return Div(cls=cls)(uk_select)
+    # Searchable/insertable: use Uk_select web component (existing behavior)
+    if searchable or insertable:
+        if 'hx_trigger' not in kwargs: kwargs['hx_trigger'] = ''
+        if 'change' in kwargs['hx_trigger']:
+            if not id: id = fh.unqid()
+            kwargs['hx_trigger'] = kwargs['hx_trigger'].replace('changed', f'uk-select:input from:#{id}')
+            kwargs['hx_trigger'] = kwargs['hx_trigger'].replace('change', f'uk-select:input from:#{id}')
+        if 'delay' not in kwargs['hx_trigger']:
+            kwargs['hx_trigger'] += ' delay:100ms'
+        if 'hx_include' not in kwargs: kwargs['hx_include'] = ''
+        kwargs['hx_include'] += ' this'
+        kwargs['hx_include'] = kwargs['hx_include'].strip()
+        uk_select = Uk_select(fh.Select(*option, hidden=True, **select_kwargs),
+                             cls_custom=cls_custom, searchable=searchable,
+                             placeholder=placeholder, insertable=insertable,
+                             cls=inp_cls, id=id, name=name, **kwargs)
+        return Div(cls=('h-10', cls) if not cls else cls)(uk_select)
+
+    # Default: native <select> with uk-select styling
+    opts = list(option)
+    if placeholder:
+        opts = [fh.Option(placeholder, value="", selected=True, disabled=True)] + opts
+    return fh.Select(*opts, cls=('uk-select', inp_cls, cls), id=id, name=name, **kwargs)
+
 
 # %% ../nbs/02_franken.ipynb #3b50363e
 def LabelSelect(*option,            # Options for the select dropdown (can use `Options` helper function to create) 

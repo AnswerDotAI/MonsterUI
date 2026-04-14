@@ -67,10 +67,10 @@ teams = [["Alicia Koch"],['Acme Inc', 'Monster Inc.'],['Create a Team']]
 
 opt_hdrs = ["Personal", "Team", ""]
 
-team_dropdown = Select(
+team_dropdown = Div(Select(
     Optgroup(Option(A("Alicia Koch")), label="Personal Account"),
     Optgroup(Option(A("Acme Inc")), Option(A("Monster Inc.")), label="Teams"),
-    Option(A("Create a Team")),
+    Option(A("Create a Team"))),
     cls='flex items-center')
 
 hotkeys = [('Profile','⇧⌘P'),('Billing','⌘B'),('Settings','⌘S'),('New Team', ''), ('Logout', '')]
