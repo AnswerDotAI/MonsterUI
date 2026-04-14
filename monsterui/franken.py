@@ -840,22 +840,37 @@ def Select(*option,            # Options for the select dropdown (use `Options` 
 
     if id and not name: name = id
 
-    # Searchable/insertable: use Uk_select web component (existing behavior)
+    # Searchable/insertable: use Uk_select web component with split identity
     if searchable or insertable:
-        if 'hx_trigger' not in kwargs: kwargs['hx_trigger'] = ''
-        if 'change' in kwargs['hx_trigger']:
-            if not id: id = fh.unqid()
-            kwargs['hx_trigger'] = kwargs['hx_trigger'].replace('changed', f'uk-select:input from:#{id}')
-            kwargs['hx_trigger'] = kwargs['hx_trigger'].replace('change', f'uk-select:input from:#{id}')
-        if 'delay' not in kwargs['hx_trigger']:
-            kwargs['hx_trigger'] += ' delay:100ms'
-        if 'hx_include' not in kwargs: kwargs['hx_include'] = ''
-        kwargs['hx_include'] += ' this'
-        kwargs['hx_include'] = kwargs['hx_include'].strip()
-        uk_select = Uk_select(fh.Select(*option, hidden=True, **select_kwargs),
+        public_id = id or fh.unqid()
+        wrapper_id = f'{public_id}__uk'
+        public_name = name or public_id
+
+        hx_trigger = kwargs.get('hx_trigger', '')
+        if 'change' in hx_trigger:
+            hx_trigger = hx_trigger.replace('changed', f'uk-select:input from:#{wrapper_id}')
+            hx_trigger = hx_trigger.replace('change', f'uk-select:input from:#{wrapper_id}')
+        if 'delay' not in hx_trigger:
+            hx_trigger = f'{hx_trigger} delay:100ms'.strip()
+        kwargs['hx_trigger'] = hx_trigger
+
+        hx_include = kwargs.get('hx_include', '').strip()
+        self_include = f'#{public_id}'
+        kwargs['hx_include'] = f'{hx_include}, {self_include}' if hx_include else self_include
+
+        kwargs['id'] = wrapper_id
+        kwargs['data_hidden_select'] = f'#{public_id}'
+        kwargs['aria_controls'] = public_id
+
+        select_kwargs = dict(select_kwargs)
+        select_kwargs['hidden'] = True
+        select_kwargs['id'] = public_id
+        select_kwargs['name'] = public_name
+
+        uk_select = Uk_select(fh.Select(*option, **select_kwargs),
                              cls_custom=cls_custom, searchable=searchable,
                              placeholder=placeholder, insertable=insertable,
-                             cls=inp_cls, id=id, name=name, **kwargs)
+                             cls=inp_cls, **kwargs)
         return Div(cls=('h-10', cls) if not cls else cls)(uk_select)
 
     # Default: native <select> with uk-select styling
