@@ -823,8 +823,8 @@ def Options(*c,                    # Content for an `Option`
 
 # %% ../nbs/02_franken.ipynb #477a3c8e
 def Select(*option,            # Options for the select dropdown (use `Options` helper or `fh.Option`/`fh.Optgroup`)
-          inp_cls=(),         # Classes for the select element (deprecated alias for cls)
-          cls=(),             # Classes for the native <select> element
+          inp_cls=(),         # Classes for the select control element itself
+          cls=(),             # Classes for the outer container div (omitted if empty in native path)
           cls_custom='button: uk-input-fake; dropdown: w-full', # Classes for the Uk_Select web component (searchable/insertable only)
           id="",              # ID for the select element
           name="",            # Name attribute for the select element
