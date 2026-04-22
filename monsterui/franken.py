@@ -1568,7 +1568,7 @@ class FrankenRenderer(ExtendedHtmlRenderer):
 from bs4 import BeautifulSoup
 
 # %% ../nbs/02_franken.ipynb #cc4d2c00
-def normalize_html(s): return BeautifulSoup(s, 'lxml').body.decode_contents(formatter='html')
+def normalize_html(s): return b.decode_contents(formatter='html') if (b:=BeautifulSoup(s, 'lxml').body) else ''
 
 def render_md(md_content:str, # Markdown content
              class_map=None, # Class map
