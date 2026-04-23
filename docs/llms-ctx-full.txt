@@ -1,14 +1,14 @@
 {'title': 'API List', 'url': 'https://raw.githubusercontent.com/AnswerDotAI/MonsterUI/refs/heads/main/docs/apilist.txt', 'desc': 'Complete API Reference'}
-{'title': 'Ticket', 'url': 'https://monsterui.answer.ai/ticket/md', 'desc': 'MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components'}
-{'title': 'Tasks', 'url': 'https://monsterui.answer.ai/tasks/md', 'desc': 'FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)'}
-{'title': 'Auth', 'url': 'https://monsterui.answer.ai/auth/md', 'desc': 'FrankenUI Auth Example built with MonsterUI (original design by ShadCN)'}
-{'title': 'Scrollspy', 'url': 'https://monsterui.answer.ai/scrollspy/md', 'desc': 'MonsterUI Scrollspy Example application'}
-{'title': 'Playground', 'url': 'https://monsterui.answer.ai/playground/md', 'desc': 'FrankenUI Playground Example built with MonsterUI (original design by ShadCN)'}
-{'title': 'Forms', 'url': 'https://monsterui.answer.ai/forms/md', 'desc': 'FrankenUI Forms Example built with MonsterUI (original design by ShadCN)'}
-{'title': 'Music', 'url': 'https://monsterui.answer.ai/music/md', 'desc': 'FrankenUI Music Example build with MonsterUI (Original design by ShadCN)'}
-{'title': 'Mail', 'url': 'https://monsterui.answer.ai/mail/md', 'desc': 'FrankenUI Mail Example built with MonsterUI (original design by ShadCN)'}
-{'title': 'Dashboard', 'url': 'https://monsterui.answer.ai/dashboard/md', 'desc': 'FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)'}
 {'title': 'Cards', 'url': 'https://monsterui.answer.ai/cards/md', 'desc': 'FrankenUI Cards Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Auth', 'url': 'https://monsterui.answer.ai/auth/md', 'desc': 'FrankenUI Auth Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Playground', 'url': 'https://monsterui.answer.ai/playground/md', 'desc': 'FrankenUI Playground Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Scrollspy', 'url': 'https://monsterui.answer.ai/scrollspy/md', 'desc': 'MonsterUI Scrollspy Example application'}
+{'title': 'Music', 'url': 'https://monsterui.answer.ai/music/md', 'desc': 'FrankenUI Music Example build with MonsterUI (Original design by ShadCN)'}
+{'title': 'Dashboard', 'url': 'https://monsterui.answer.ai/dashboard/md', 'desc': 'FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Tasks', 'url': 'https://monsterui.answer.ai/tasks/md', 'desc': 'FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Forms', 'url': 'https://monsterui.answer.ai/forms/md', 'desc': 'FrankenUI Forms Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Ticket', 'url': 'https://monsterui.answer.ai/ticket/md', 'desc': 'MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components'}
+{'title': 'Mail', 'url': 'https://monsterui.answer.ai/mail/md', 'desc': 'FrankenUI Mail Example built with MonsterUI (original design by ShadCN)'}
 {'title': 'Accordion | Link', 'url': 'https://monsterui.answer.ai/api_ref/docs_accordion_link/md', 'desc': 'Accordion API Reference'}
 {'title': 'Button | Link', 'url': 'https://monsterui.answer.ai/api_ref/docs_button_link/md', 'desc': 'Buttons & Links API Reference'}
 {'title': 'Cards', 'url': 'https://monsterui.answer.ai/api_ref/docs_cards/md', 'desc': 'Cards API Reference'}
@@ -561,216 +561,145 @@
 
 - `def ToggleBtn(*c, **kwargs)`
     Styled toggle button component, acts like a switch
-</doc></api reference><examples><doc title="Ticket" desc="MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components">"""MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components"""
-from fasthtml.common import *
-from monsterui.all import *
-from datetime import datetime
-
-app, rt = fast_app(hdrs=Theme.blue.headers(daisy=True))
-
-def TicketSteps(step):
-    return Steps(
-        LiStep("Submitted", data_content="📝",
-               cls=StepT.success if step > 0 else StepT.primary if step == 0 else StepT.neutral),
-        LiStep("In Review", data_content="🔎",
-               cls=StepT.success if step > 1 else StepT.primary if step == 1 else StepT.neutral),
-        LiStep("Processing", data_content="⚙️",
-               cls=StepT.success if step > 2 else StepT.primary if step == 2 else StepT.neutral),
-        LiStep("Resolved", data_content="✅",
-               cls=StepT.success if step > 3 else StepT.primary if step == 3 else StepT.neutral),
-        cls="w-full")
-
-def StatusBadge(status):
-    styles = {'high': AlertT.error, 'medium': AlertT.warning,'low': AlertT.info}
-    alert_type = styles.get(status, AlertT.info)
-    return Alert(f"{status.title()} Priority", cls=(alert_type,"w-32 shadow-sm"))
-
-def TicketCard(id, title, description, status, step, department):
-    return Card(
-        CardHeader(
-            DivFullySpaced(
-                Div(H3(f"#{id}", cls=TextT.muted), 
-                    H4(title), 
-                    cls='space-y-2'),
-                StatusBadge(status))),
-        CardBody(
-            P(description, cls=(TextT.muted, "mb-6")),
-            DividerSplit(cls="my-6"),
-            TicketSteps(step),
-            DividerSplit(cls="my-6"), 
-            DivFullySpaced(
-                Div(Strong("Department"),
-                    P(department),
-                    cls=('space-y-3', TextPresets.muted_sm)),
-                Div(Strong("Last Updated"),
-                    P(Time(datetime.now().strftime('%b %d, %H:%M'))),
-                    cls=('space-y-3', TextPresets.muted_sm)),
-                Button("View Details", cls=ButtonT.primary),
-                cls='mt-6')),
-        cls=CardT.hover)
-
-def NewTicketModal():
-    return Modal(
-        ModalHeader(H3("Create New Support Ticket")),
-        ModalBody(
-            Alert(
-                DivLAligned(UkIcon("info"), Span("Please provide as much detail as possible to help us assist you quickly.")),
-                cls=(AlertT.info,"mb-4")),
-            Form(
-                Grid(LabelInput("Title", id="title", placeholder="Brief description of your issue"),
-                     LabelSelect(Options("IT Support", "HR", "Facilities", "Finance"), label="Department", id="department")),
-                LabelSelect(Options("Low", "Medium", "High"), label="Priority Level",  id="priority"),
-                LabelTextArea("Description", id="description", placeholder="Please provide detailed information about your issue"),
-                DivRAligned(
-                    Button("Cancel", cls=ButtonT.ghost, data_uk_toggle="target: #new-ticket"),
-                    Button(Loading(cls=LoadingT.spinner), "Submit Ticket", cls=ButtonT.primary, data_uk_toggle="target: #success-toast; target: #new-ticket")),
-                cls='space-y-8')),
-            id="new-ticket")
-
-@rt
-def index():
-    tickets = [
-        {'id': "TK-1001", 'title': "Cloud Storage Access Error", 
-         'description': "Unable to access cloud storage with persistent authorization errors. Multiple users affected across marketing department.",
-         'status': 'high', 'step': 2, 'department': 'IT Support'},
-        {'id': "TK-1002", 'title': "Email Integration Issue", 
-         'description': "Exchange server not syncing with mobile devices. Affecting external client communications.",
-         'status': 'medium', 'step': 1, 'department': 'IT Support'},
-        {'id': "TK-1003", 'title': "Office Equipment Setup", 
-         'description': "New department printer needs configuration and network integration. Required for upcoming client presentation.",
-         'status': 'low', 'step': 0, 'department': 'Facilities'}
-    ]
-
-    return Title("Help Desk Dashboard"), Container(
-        Section(
-            DivFullySpaced(
-                H2("Active Tickets"),
-                Button(UkIcon("plus-circle", cls="mr-2"), "New Ticket", cls=ButtonT.primary, data_uk_toggle="target: #new-ticket"),
-                cls='mb-8'),
-            Grid(*[TicketCard(**ticket) for ticket in tickets], cols=1),
-            cls="my-6"),
-        NewTicketModal(),
-        Toast(DivLAligned(UkIcon('check-circle', cls='mr-2'), "Ticket submitted successfully! Our team will review it shortly."), id="success-toast", alert_cls=AlertT.success, cls=(ToastHT.end, ToastVT.bottom)),
-        Loading(htmx_indicator=True, type=LoadingT.dots, cls="fixed top-0 right-0 m-4"),
-        cls="mx-auto max-w-7xl"
-    )   
-
-serve()</doc><doc title="Tasks" desc="FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)"""
+</doc></api reference><examples><doc title="Cards" desc="FrankenUI Cards Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Cards Example built with MonsterUI (original design by ShadCN)"""
 
 from fasthtml.common import *
-from monsterui.all import *
+from fasthtml.components import Uk_input_tag
 from fasthtml.svg import *
-import json
+from monsterui.all import *
+import calendar
+from datetime import datetime
 
 app, rt = fast_app(hdrs=Theme.blue.headers())
 
-def LAlignedCheckTxt(txt): return DivLAligned(UkIcon(icon='check'), P(txt, cls=TextPresets.muted_sm))
+CreateAccount = Card(
+    Grid(Button(DivLAligned(UkIcon('github'),Div('Github'))),Button('Google')),
+            DividerSplit("OR CONTINUE WITH", text_cls=TextPresets.muted_sm),
+            LabelInput('Email',    id='email',   placeholder='m@example.com'),
+            LabelInput('Password', id='password',placeholder='Password', type='Password'),
+            header=(H3('Create an Account'),Subtitle('Enter your email below to create your account')),
+            footer=Button('Create Account',cls=(ButtonT.primary,'w-full')))
 
-with open('data_/status_list.json', 'r') as f: data     = json.load(f)
-with open('data_/statuses.json',    'r') as f: statuses = json.load(f)
+PaypalSVG_data = "M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.93 4.778-4.005 7.201-9.138 7.201h-2.19a.563.563 0 0 0-.556.479l-1.187 7.527h-.506l-.24 1.516a.56.56 0 0 0 .554.647h3.882c.46 0 .85-.334.922-.788.06-.26.76-4.852.816-5.09a.932.932 0 0 1 .923-.788h.58c3.76 0 6.705-1.528 7.565-5.946.36-1.847.174-3.388-.777-4.471z"
+AppleSVG_data = "M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
+Card1Svg  = Svg(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke_linecap="round", stroke_linejoin="round", stroke_width="2", cls="h-6 w-6 mr-1")(Rect(width="20", height="14", x="2", y="5", rx="2"),Path(d="M2 10h20"))
+PaypalSvg = Svg(role="img", viewBox="0 0 24 24", cls="h-6 w-6 mr-1")(Path(d=PaypalSVG_data, fill="currentColor")),
+AppleSvg  = Svg(role="img", viewBox="0 0 24 24", cls="h-6 w-6 mr-1")(Path(d=AppleSVG_data, fill="currentColor"))
 
-def _create_tbl_data(d):
-    return {'Done': d['selected'], 'Task': d['id'], 'Title': d['title'],
-            'Status'  : d['status'], 'Priority': d['priority'] }
+PaymentMethod = Card(
+    Grid(Button(DivCentered(Card1Svg,  "Card"),   cls='h-20 border-2 border-primary'),
+         Button(DivCentered(PaypalSvg, "PayPal"), cls='h-20'),
+         Button(DivCentered(AppleSvg,  "Apple"),  cls='h-20')),
+    Form(LabelInput('Name',        id='name',        placeholder='John Doe'),
+         LabelInput('Card Number', id='card_number', placeholder='m@example.com'),
+         Grid(LabelSelect(*Options(*calendar.month_name[1:],selected_idx=0),label='Expires',id='expire_month'),
+              LabelSelect(*Options(*range(2024,2030),selected_idx=0),       label='Year',   id='expire_year'),
+              LabelInput('CVV', id='cvv',placeholder='CVV', cls='mt-0'))),
+        header=(H3('Payment Method'),Subtitle('Add a new payment method to your account.')))
 
-data = [_create_tbl_data(d)  for d in data]
-page_size = 15
-current_page = 0
-paginated_data = data[current_page*page_size:(current_page+1)*page_size]
+area_opts = ('Team','Billing','Account','Deployment','Support')
+severity_opts = ('Severity 1 (Highest)', 'Severity 2', 'Severity 3', 'Severity 4 (Lowest)')
+ReportIssue = Card(
+    Grid(Div(LabelSelect(*Options(*area_opts),    label='Area',    id='area')),
+         Div(LabelSelect(*Options(*severity_opts),label='Severity',id='area'))),
+    LabelInput(    label='Subject',     id='subject',    placeholder='I need help with'),
+    LabelTextArea( label='Description', id='description',placeholder='Please include all information relevant to your issue'),
+    Div(FormLabel('Tags', fr='#tags'),
+        Uk_input_tag(name="Tags",state="danger", value="Spam,Invalid", uk_cloak=True, id='tags')),
+    header=(H3('Report Issue'),Subtitle('What area are you having problems with?')),
+    footer = DivFullySpaced(Button('Cancel'), Button(cls=ButtonT.primary)('Submit')))
 
-priority_dd = [{'priority': "low", 'count': 36 }, {'priority': "medium", 'count': 33 }, {'priority': "high", 'count': 31 }]
+monster_desc ="Python-first beautifully designed components because you deserve to focus on features that matter and your app deserves to be beautiful from day one."
+MonsterUI = Card(H4("Monster UI"),
+              Subtitle(monster_desc),
+              DivLAligned(
+                    Div("Python"),
+                    DivLAligned(UkIcon('star'),Div("20k"), cls='space-x-1'),
+                    Div(datetime.now().strftime("%B %d, %Y")),
+                    cls=('space-x-4',TextPresets.muted_sm)))
 
-status_dd = [{'status': "backlog", 'count': 21 },{'status': "todo", 'count': 21 },{'status': "progress", 'count': 20 },{'status': "done",'count': 19 },{'status': "cancelled", 'count': 19 }]
+def CookieTableRow(heading, description, active=False):
+    return Tr(Td(H5(heading)),
+              Td(P(description, cls=TextPresets.muted_sm)),
+              Td(Switch(checked=active)))
 
-def create_hotkey_li(hotkey): return NavCloseLi(A(DivFullySpaced(hotkey[0], Span(hotkey[1], cls=TextPresets.muted_sm))))
+CookieSettings = Card(
+    Table(Tbody(
+        CookieTableRow('Strictly Necessary', 'These cookies are essential in order to use the website and use its features.', True),
+        CookieTableRow('Functional Cookies', 'These cookies allow the website to provide personalized functionality.'),
+        CookieTableRow('Performance Cookies', 'These cookies help to improve the performance of the website.'))),
+    header=(H4('Cookie Settings'),Subtitle('Manage your cookie settings here.')),
+    footer=Button('Save Preferences', cls=(ButtonT.primary, 'w-full')))
 
-hotkeys_a = (('Profile','⇧⌘P'),('Billing','⌘B'),('Settings','⌘S'),('New Team',''))
-hotkeys_b = (('Logout',''), )
-
-avatar_opts = DropDownNavContainer(
-    NavHeaderLi(P('sveltecult'),NavSubtitle('leader@sveltecult.com')),
-    NavDividerLi(),
-    *map(create_hotkey_li, hotkeys_a),
-    NavDividerLi(),
-    *map(create_hotkey_li, hotkeys_b),)
-
-def CreateTaskModal():
-    return Modal(
-        Div(cls='p-6')(
-            ModalTitle('Create Task'),
-            P('Fill out the information below to create a new task', cls=TextPresets.muted_sm),
-            Br(),
-            Form(cls='space-y-6')(
-                Grid(Div(Select(*map(Option,('Documentation', 'Bug', 'Feature')), label='Task Type', id='task_type')),
-                     Div(Select(*map(Option,('In Progress', 'Backlog', 'Todo', 'Cancelled', 'Done')), label='Status', id='task_status')),
-                     Div(Select(*map(Option, ('Low', 'Medium', 'High')), label='Priority', id='task_priority'))),
-                TextArea(label='Title', placeholder='Please describe the task that needs to be completed'),
-                DivRAligned(
-                    ModalCloseButton('Cancel', cls=ButtonT.ghost),
-                    ModalCloseButton('Submit', cls=ButtonT.primary),
-                    cls='space-x-5'))),
-        id='TaskForm')
-
-page_heading = DivFullySpaced(cls='space-y-2')(
-            Div(cls='space-y-2')(
-                H2('Welcome back!'),P("Here's a list of your tasks for this month!", cls=TextPresets.muted_sm)),
-            Div(DiceBearAvatar("sveltcult",8,8),avatar_opts))
-
-table_controls =(Input(cls='w-[250px]',placeholder='Filter task'),
-     Button("Status"),
-     DropDownNavContainer(map(NavCloseLi,[A(DivFullySpaced(P(a['status']), P(a['count'])),cls='capitalize') for a in status_dd])), 
-     Button("Priority"),
-     DropDownNavContainer(map(NavCloseLi,[A(DivFullySpaced(LAlignedCheckTxt(a['priority']), a['count']),cls='capitalize') for a in priority_dd])),
-     Button("View"),
-     DropDownNavContainer(map(NavCloseLi,[A(LAlignedCheckTxt(o)) for o in ['Title','Status','Priority']])),
-     Button('Create Task',cls=(ButtonT.primary, TextPresets.bold_sm), data_uk_toggle="target: #TaskForm"))
-
-def task_dropdown():
-    return Div(Button(UkIcon('ellipsis')),
-               DropDownNavContainer(
-                   map(NavCloseLi,[
-                       *map(A,('Edit', 'Make a copy', 'Favorite')),
-                        A(DivFullySpaced(*[P(o, cls=TextPresets.muted_sm) for o in ('Delete', '⌘⌫')]))])))
-def header_render(col):
-    match col:
-        case "Done":    return Th(CheckboxX(), shrink=True)
-        case 'Actions': return Th("",          shrink=True)
-        case _:         return Th(col,         expand=True)
-
-def cell_render(col, val):
-    def _Td(*args,cls='', **kwargs): return Td(*args, cls=f'p-2 {cls}',**kwargs)
-    match col:
-        case "Done": return _Td(shrink=True)(CheckboxX(selected=val))
-        case "Task":  return _Td(val, cls='uk-visible@s')  # Hide on small screens
-        case "Title": return _Td(val, cls='font-medium', expand=True)
-        case "Status" | "Priority": return _Td(cls='uk-visible@m uk-text-nowrap capitalize')(Span(val))
-        case "Actions": return _Td(task_dropdown(), shrink=True)
-        case _: raise ValueError(f"Unknown column: {col}")
-
-task_columns = ["Done", 'Task', 'Title', 'Status', 'Priority', 'Actions']
-
-tasks_table = Div(cls='mt-4')(
-    TableFromDicts(
-        header_data=task_columns,
-        body_data=paginated_data,
-        body_cell_render=cell_render,
-        header_cell_render=header_render,
-        sortable=True,
-        cls=(TableT.responsive, TableT.sm, TableT.divider)))
-
-
-def footer():
-    total_pages = (len(data) + page_size - 1) // page_size
+team_members = [("Sofia Davis", "m@example.com", "Owner"),("Jackson Lee", "p@example.com", "Member"),]
+def TeamMemberRow(name, email, role):
     return DivFullySpaced(
-        Div('1 of 100 row(s) selected.', cls=TextPresets.muted_sm),
         DivLAligned(
-            DivCentered(f'Page {current_page + 1} of {total_pages}', cls=TextT.sm),
-            DivLAligned(*[UkIconLink(icon=i,  button=True) for i in ('chevrons-left', 'chevron-left', 'chevron-right', 'chevrons-right')])))
+            DiceBearAvatar(name, 10,10),
+            Div(P(name, cls=(TextT.sm, TextT.medium)),
+                P(email, cls=TextPresets.muted_sm))),
+        Button(role, UkIcon('chevron-down', cls='ml-4')),
+        DropDownNavContainer(map(NavCloseLi, [
+            A(Div('Viewer',    NavSubtitle('Can view and comment.'))),
+            A(Div('Developer', NavSubtitle('Can view, comment and edit.'))),
+            A(Div('Billing',   NavSubtitle('Can view, comment and manage billing.'))),
+            A(Div('Owner',     NavSubtitle('Admin-level access to all resources.')))])))
 
-tasks_ui = Div(DivFullySpaced(DivLAligned(table_controls), cls='mt-8'), tasks_table, footer())
+TeamMembers = Card(*[TeamMemberRow(*member) for member in team_members],
+        header = (H4('Team Members'),Subtitle('Invite your team members to collaborate.')))
+
+access_roles = ("Read and write access", "Read-only access")
+team_members = [("Olivia Martin", "m@example.com", "Read and write access"),
+                ("Isabella Nguyen", "b@example.com", "Read-only access"),
+                ("Sofia Davis", "p@example.com", "Read-only access")]
+
+def TeamMemberRow(name, email, role):
+    return DivFullySpaced(
+        DivLAligned(DiceBearAvatar(name, 10,10),
+                    Div(P(name, cls=(TextT.sm, TextT.medium)),
+                        P(email, cls=TextPresets.muted_sm))),
+        Select(*Options(*access_roles, selected_idx=access_roles.index(role))))
+
+ShareDocument = Card(
+    DivLAligned(Input(value='http://example.com/link/to/document'),Button('Copy link', cls='whitespace-nowrap')),
+    Divider(),
+    H4('People with access', cls=TextPresets.bold_sm),
+    *[TeamMemberRow(*member) for member in team_members],
+    header = (H4('Share this document'),Subtitle('Anyone with the link can view this document.')))
+
+DateCard = Card(Button('Jan 20, 2024 - Feb 09, 2024'))
+
+section_content =(('bell','Everything',"Email digest, mentions & all activity."), 
+                  ('user',"Available","Only mentions and comments"),
+                  ('ban', "Ignoring","Turn of all notifications"))
+
+def NotificationRow(icon, name, desc):
+    return Li(cls='-mx-1')(A(DivLAligned(UkIcon(icon),Div(P(name),P(desc, cls=TextPresets.muted_sm)))))
+
+Notifications = Card(
+    NavContainer(
+        *[NotificationRow(*row) for row in section_content],
+        cls=NavT.secondary),
+    header = (H4('Notification'),Subtitle('Choose what you want to be notified about.')),
+    body_cls='pt-0')
+
+TeamCard = Card(
+    DivLAligned(
+        DiceBearAvatar("Isaac Flath", h=24, w=24),
+        Div(H3("Isaac Flath"), P("Library Creator"))),
+    footer=DivFullySpaced(
+        DivHStacked(UkIcon("map-pin", height=16), P("Alexandria, VA")),
+        DivHStacked(*(UkIconLink(icon, height=16) for icon in ("mail", "linkedin", "github")))),
+    cls=CardT.hover)
 
 @rt
-def index(): return Container(page_heading, tasks_ui, CreateTaskModal())
+def index():
+    return Title("Cards Example"),Container(Grid(
+            *map(Div,(
+                      Div(PaymentMethod,CreateAccount, TeamCard, cls='space-y-4'),
+                      Div(TeamMembers, ShareDocument,DateCard,Notifications, cls='space-y-4'),
+                      Div(ReportIssue,MonsterUI,CookieSettings, cls='space-y-4'))),
+         cols_md=1, cols_lg=2, cols_xl=3))
 
 serve()</doc><doc title="Auth" desc="FrankenUI Auth Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Auth Example built with MonsterUI (original design by ShadCN)"""
 
@@ -810,6 +739,74 @@ def index():
     
     return Title("Auth Example"),Grid(left,right,cols=2, gap=0,cls='h-screen')
 
+
+serve()</doc><doc title="Playground" desc="FrankenUI Playground Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Playground Example built with MonsterUI (original design by ShadCN)"""
+
+from fasthtml.common import *
+from monsterui.all import *
+from fasthtml.svg import *
+
+app, rt = fast_app(hdrs=Theme.blue.headers())
+
+preset_options = ["Grammatical Standard English", "Summarize for a 2nd grader",
+        "Text to command","Q&A","English to other languages","Parse unstructured data",
+        "Classification","Natural language to Python","Explain code","Chat","More examples"]
+
+def playground_navbar():
+    save_modal = Modal(
+        ModalTitle("Save preset"),
+        P("This will save the current playground state as a preset which you can access later or share with others.",cls=("mt-1.5", TextPresets.muted_sm)),
+        LabelInput("Name",        id="name"), 
+        LabelInput("Description", id="description"),
+        ModalCloseButton("Save", cls=ButtonT.primary),
+        id="save")
+    
+    share_dd = Div(cls="space-y-6 p-4")(
+        H3("Share preset"),
+        P("Anyone who has this link and an OpenAI account will be able to view this.", cls=TextPresets.muted_sm),
+        Div(Input(value="https://platform.openai.com/playground/p/7bbKYQvsVkNmVb8NGcdUOLae?model=text-davinci-003", readonly=True),
+            Button(UkIcon('copy'), cls=(ButtonT.primary, "uk-drop-close",'mt-4'))))
+
+    rnav = (
+        Select(*Options(*preset_options), name='preset', optgroup_label="Examples",
+                 placeholder='Load a preset', searchable=True, cls='h-9 w-[200px] lg:w-[300px]'),
+        Button("Save",         cls=ButtonT.secondary, data_uk_toggle="#save"),save_modal,
+        Button("View Code",    cls=ButtonT.secondary),
+        Button("Share",        cls=ButtonT.secondary),DropDownNavContainer(share_dd),
+        Button(UkIcon(icon="ellipsis"), cls=ButtonT.secondary),
+        DropDownNavContainer(
+            Li(A("Content filter preferences")),
+            NavDividerLi(),
+            Li(A("Delete preset", cls="text-destructive")),
+        uk_dropdown="mode: click"))
+    
+    return NavBar(*rnav, brand=H4('Playground'))
+
+rsidebar = NavContainer(
+    Select(
+        Optgroup(map(Option,("text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001")),label='GPT-3'),
+        Optgroup(map(Option,("code-davinci-002", "code-cushman-001")),label='Codex'),
+        label="Model",
+        searchable=True),
+    LabelRange(label='Temperature', value='12'),
+    LabelRange(label='Maximum Length', value='80'),
+    LabelRange(label='Top P', value='40'),
+    cls='space-y-6 mt-8')
+
+@rt
+def index(): 
+    navbar = playground_navbar()
+    main_content = Div(
+        Div(cls="flex-1")(
+            Textarea(cls="uk-textarea h-full p-4", placeholder="Write a tagline for an ice cream shop")),
+            cls="flex h-[700px] p-8 w-4/5")
+    
+    bottom_buttons = Div(
+        Button("Submit", cls=ButtonT.primary),
+        Button(UkIcon(icon="history"), cls=ButtonT.secondary),
+        cls="flex gap-x-2")
+    
+    return Title("Playground Example"),Div(navbar, Div(cls="flex w-full")(main_content, rsidebar), bottom_buttons)
 
 serve()</doc><doc title="Scrollspy" desc="MonsterUI Scrollspy Example application">"MonsterUI Scrollspy Example application" 
 
@@ -935,73 +932,364 @@ def index():
                      id="code-section")), 
             cls=(ContainerT.xl,'uk-container-expand'))
 
-serve()</doc><doc title="Playground" desc="FrankenUI Playground Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Playground Example built with MonsterUI (original design by ShadCN)"""
+serve()</doc><doc title="Music" desc="FrankenUI Music Example build with MonsterUI (Original design by ShadCN)">"""FrankenUI Music Example build with MonsterUI (Original design by ShadCN)"""
+
+from fasthtml.common import *
+
+from monsterui.all import *
+
+app, rt = fast_app(hdrs=Theme.blue.headers())
+
+def MusicLi(t,hk=''): return Li(A(DivFullySpaced(t,P(hk,cls=TextPresets.muted_sm))))
+
+music_items = [("About Music", ""   ),
+               ("Preferences", "⌘"  ),
+               ("Hide Music" , "⌘H" ),
+               ("Hide Others", "⇧⌘H"),
+               ("Quit Music" , "⌘Q" )]
+
+file_dd_items = [("New",                   ""),
+                 ("Open Stream URL",       "⌘U"),
+                 ("Close Window",          "⌘W"),
+                 ("Library",               ""),
+                 ("Import",                "⌘O"),
+                 ("Burn Playlist to Disc", ""),
+                 ("Show in Finder",        "⇧⌘R"),
+                 ("Convert",               ""),
+                 ("Page Setup",            "Print")]
+
+edit_actions = [("Undo",         "⌘Z"),
+                ("Redo",         "⇧⌘Z"),
+                ("Cut",          "⌘X"),
+                ("Copy",         "⌘C"),
+                ("Paste",        "⌘V"),
+                ("Select All",   "⌘A"),
+                ("Deselect All", "⇧⌘A")]
+
+view_dd_data = ["Show Playing Next", "Show Lyrics", "Show Status Bar", "Hide Sidebar", "Enter Full Screen"]
+
+
+music_headers = NavBar(
+    Button("Music", cls=ButtonT.ghost+TextT.gray),DropDownNavContainer(Li(A("Music"),NavContainer(map(lambda x: MusicLi(*x), music_items)))),
+    Button("File", cls=ButtonT.ghost+TextT.gray), DropDownNavContainer(Li(A("File"), NavContainer(map(lambda x: MusicLi(*x), file_dd_items)))),
+    Button("Edit", cls=ButtonT.ghost+TextT.gray), DropDownNavContainer(Li(A("Edit")),NavContainer(
+            *map(lambda x: MusicLi(*x), edit_actions),
+            Li(A(DivFullySpaced("Smart Dictation",UkIcon("mic")))),
+            Li(A(DivFullySpaced("Emojis & Symbols",UkIcon("globe")))))),
+    Button("View", cls=ButtonT.ghost+TextT.gray),DropDownNavContainer(Li(A("View"),NavContainer(map(lambda x: MusicLi(x), view_dd_data)))),
+    brand=DivLAligned(H2("Purrify"))
+    )
+    
+
+
+
+# music_headers = NavBarContainer(
+#             NavBarLSide(
+#                 NavBarNav(
+#                 Li(A("Music"),NavBarNavContainer(map(lambda x: MusicLi(*x), music_items))),
+#                 Li(A("File"), NavBarNavContainer(map(lambda x: MusicLi(*x), file_dd_items))),
+#                 Li(A("Edit")),
+#                     NavBarNavContainer(
+#                         *map(lambda x: MusicLi(*x), edit_actions),
+#                         Li(A(DivFullySpaced("Smart Dictation",UkIcon("mic")))),
+#                         Li(A(DivFullySpaced("Emojis & Symbols",UkIcon("globe"))))),
+#                 Li(A("View"),
+#                 NavBarNavContainer(map(lambda x: MusicLi(x), view_dd_data))),
+#                 Li(A("Account"),
+#                     NavBarNavContainer(
+#                         NavHeaderLi("Switch Account"),
+#                         *map(MusicLi, ("Andy", "Benoit", "Luis", "Manage Family", "Add Account")))))))
+
+
+def Album(title,artist):
+    img_url = 'https://ucarecdn.com/e5607eaf-2b2a-43b9-ada9-330824b6afd7/music1.webp'
+    return Div(
+        Div(cls="overflow-hidden rounded-md")(Img(cls="transition-transform duration-200 hover:scale-105", src=img_url)),
+        Div(cls='space-y-1')(Strong(title),P(artist,cls=TextT.muted)))
+        
+listen_now_albums = (("Roar", "Catty Perry"), ("Feline on a Prayer", "Cat Jovi"),("Fur Elise", "Ludwig van Beethovpurr"),("Purrple Rain", "Prince's Cat"))
+
+made_for_you_albums = [("Like a Feline",         "Catdonna"),
+                       ("Livin' La Vida Purrda", "Ricky Catin"),
+                       ("Meow Meow Rocket",      "Elton Cat"),
+                       ("Rolling in the Purr",   "Catdelle"),
+                       ("Purrs of Silence",      "Cat Garfunkel"),
+                       ("Meow Me Maybe",         "Carly Rae Purrsen"),]
+
+music_content = (Div(H3("Listen Now"), cls="mt-6 space-y-1"),
+                    Subtitle("Top picks for you. Updated daily."),
+                    DividerLine(),
+                    Grid(*[Album(t,a) for t,a in listen_now_albums], cls='gap-8'),
+                    Div(H3("Made for You"), cls="mt-6 space-y-1"),
+                    Subtitle("Your personal playlists. Updated daily."),
+                    DividerLine(),
+                    Grid(*[Album(t,a) for t,a in made_for_you_albums], cols_xl=6))
+
+tabs = TabContainer(
+    Li(A('Music',    href='#'),    cls='uk-active'),
+    Li(A('Podcasts', href='#')),
+    Li(A('Live', cls='opacity-50'), cls='uk-disabled'),
+    uk_switcher='connect: #component-nav; animation: uk-animation-fade',
+    alt=True)
+
+def podcast_tab():
+    return Div(
+        Div(cls='space-y-3 mt-6')(
+            H3("New Episodes"),
+            Subtitle("Your favorite podcasts. Updated daily.")),
+        Div(cls="uk-placeholder flex h-[450px] items-center justify-center rounded-md mt-4",uk_placeholder=True)(
+            DivVStacked(cls="space-y-6")(
+                UkIcon("microphone", 3),
+                H4("No episodes added"),
+                Subtitle("You have not added any podcasts. Add one below."),
+                Button("Add Podcast", cls=ButtonT.primary))))
+
+discoved_data =  [("play-circle","Listen Now"), ("binoculars", "Browse"), ("rss","Radio")]
+library_data =   [("play-circle", "Playlists"), ("music", "Songs"), ("user", "Made for You"), ("users", "Artists"), ("bookmark", "Albums")]
+playlists_data = [("library","Recently Added"), ("library","Recently Played")]
+
+def MusicSidebarLi(icon, text): return Li(A(DivLAligned(UkIcon(icon), P(text))))
+sidebar = NavContainer(
+    NavHeaderLi(H3("Discover")), *[MusicSidebarLi(*o) for o in discoved_data],
+    NavHeaderLi(H3("Library")),  *[MusicSidebarLi(*o) for o in library_data],
+    NavHeaderLi(H3("Playlists")),*[MusicSidebarLi(*o) for o in playlists_data],
+    cls=(NavT.primary,'space-y-3','pl-8'))
+
+@rt
+def index():
+    return Title("Music Example"),Container(music_headers, DividerSplit(),
+        Grid(sidebar,
+            Div(cls="col-span-4 border-l border-border")(
+                Div(cls="px-8 py-6")(
+                    DivFullySpaced(
+                        Div(cls="max-w-80")(tabs),
+                        Button(cls=ButtonT.primary)(DivLAligned(UkIcon('circle-plus')),Div("Add music"))),
+                    Ul(id="component-nav", cls="uk-switcher")(
+                        Li(*music_content),
+                        Li(podcast_tab())))),
+            cols_sm=1, cols_md=1, cols_lg=5, cols_xl=5))
+
+serve()</doc><doc title="Dashboard" desc="FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)"""
+
+from fasthtml.common import * # Bring in all of fasthtml
+import fasthtml.common as fh # Used to get unstyled components
+from monsterui.all import * # Bring in all of monsterui, including shadowing fasthtml components with styled components
+from fasthtml.svg import *
+import numpy as np
+import plotly.express as px
+import pandas as pd
+import numpy as np
+
+app, rt = fast_app(hdrs=Theme.blue.headers())
+
+def generate_chart(num_points=30):
+    df = pd.DataFrame({
+        'Date': pd.date_range('2024-01-01', periods=num_points),
+        'Revenue': np.random.normal(100, 10, num_points).cumsum(),
+        'Users': np.random.normal(80, 8, num_points).cumsum(), 
+        'Growth': np.random.normal(60, 6, num_points).cumsum()})
+    
+    fig = px.line(df, x='Date', y=['Revenue', 'Users', 'Growth'],  template='plotly_white', line_shape='spline')
+    
+    fig.update_traces(mode='lines+markers')
+    fig.update_layout(
+        margin=dict(l=20, r=20, t=20, b=20), hovermode='x unified',
+        showlegend=True, legend=dict(orientation='h', yanchor='bottom', y=1.02,  xanchor='right', x=1),
+        plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(showgrid=True, gridwidth=1, gridcolor='rgba(0,0,0,0.1)'),
+        yaxis=dict(showgrid=True, gridwidth=1, gridcolor='rgba(0,0,0,0.1)'))
+    
+    return fig.to_html(include_plotlyjs=True, full_html=False, config={'displayModeBar': False})
+
+def InfoCard(title, value, change): return Card(H3(value),P(change, cls=TextPresets.muted_sm), header = H4(title))
+
+rev = InfoCard("Total Revenue", "$45,231.89", "+20.1% from last month")
+sub = InfoCard("Subscriptions", "+2350", "+180.1% from last month")
+sal = InfoCard("Sales", "+12,234", "+19% from last month")
+act = InfoCard("Active Now", "+573", "+201 since last hour")
+
+info_card_data = [("Total Revenue", "$45,231.89", "+20.1% from last month"),
+                   ("Subscriptions", "+2350", "+180.1% from last month"),
+                   ("Sales", "+12,234", "+19% from last month"),
+                   ("Active Now", "+573", "+201 since last hour")]
+
+top_info_row = Grid(*[InfoCard(*row) for row in info_card_data])
+
+def AvatarItem(name, email, amount):
+    return DivFullySpaced(
+        DivLAligned(
+            DiceBearAvatar(name, 9,9),
+            Div(Strong(name, cls=TextT.sm), 
+                Address(A(email,href=f'mailto:{email}')))),
+        fh.Data(amount, cls="ml-auto font-medium", value=amount[2:]))
+
+recent_sales = Card(
+    Div(cls="space-y-8")(
+        *[AvatarItem(n,e,d) for (n,e,d) in (
+            ("Olivia Martin",   "olivia.martin@email.com",   "+$1,999.00"),
+            ("Jackson Lee",     "jackson.lee@email.com",     "+$39.00"),
+            ("Isabella Nguyen", "isabella.nguyen@email.com", "+$299.00"),
+            ("William Kim",     "will@email.com",            "+$99.00"),
+            ("Sofia Davis",     "sofia.davis@email.com",     "+$39.00"))]),
+    header=Div(H3("Recent Sales"),Subtitle("You made 265 sales this month.")),
+    cls='col-span-3')
+
+teams = [["Alicia Koch"],['Acme Inc', 'Monster Inc.'],['Create a Team']]
+
+opt_hdrs = ["Personal", "Team", ""]
+
+team_dropdown = Select(
+    Optgroup(Option(A("Alicia Koch")), label="Personal Account"),
+    Optgroup(Option(A("Acme Inc")), Option(A("Monster Inc.")), label="Teams"),
+    Option(A("Create a Team")),
+    cls='flex items-center')
+
+hotkeys = [('Profile','⇧⌘P'),('Billing','⌘B'),('Settings','⌘S'),('New Team', ''), ('Logout', '')]
+
+def NavSpacedLi(t,s): return NavCloseLi(A(DivFullySpaced(P(t),P(s,cls=TextPresets.muted_sm))))
+
+avatar_dropdown = Div(
+      DiceBearAvatar('Alicia Koch',8,8),
+      DropDownNavContainer(
+          NavHeaderLi('sveltecult',NavSubtitle("leader@sveltecult.com")),
+          *[NavSpacedLi(*hk) for hk in hotkeys],))
+
+top_nav = NavBar(
+    team_dropdown, *map(A, ["Overview", "Customers", "Products", "Settings"]),
+    brand=DivLAligned(avatar_dropdown, Input(placeholder='Search')))
+
+@rt
+def index():
+    return Title("Dashboard Example"), Container(
+        top_nav,
+        H2('Dashboard'),
+        TabContainer(
+            Li(A("Overview"),cls='uk-active'),
+            *map(lambda x: Li(A(x)), ["Analytics", "Reports", "Notifications"]),
+            alt=True),
+        top_info_row,
+        Grid(
+            Card(Safe(generate_chart(100)), cls='col-span-4'),
+            recent_sales,
+            gap=4,cols_xl=7,cols_lg=7,cols_md=1,cols_sm=1,cols_xs=1),
+        cls=('space-y-4', ContainerT.xl))
+
+serve()</doc><doc title="Tasks" desc="FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)"""
 
 from fasthtml.common import *
 from monsterui.all import *
 from fasthtml.svg import *
+import json
 
 app, rt = fast_app(hdrs=Theme.blue.headers())
 
-preset_options = ["Grammatical Standard English", "Summarize for a 2nd grader",
-        "Text to command","Q&A","English to other languages","Parse unstructured data",
-        "Classification","Natural language to Python","Explain code","Chat","More examples"]
+def LAlignedCheckTxt(txt): return DivLAligned(UkIcon(icon='check'), P(txt, cls=TextPresets.muted_sm))
 
-def playground_navbar():
-    save_modal = Modal(
-        ModalTitle("Save preset"),
-        P("This will save the current playground state as a preset which you can access later or share with others.",cls=("mt-1.5", TextPresets.muted_sm)),
-        LabelInput("Name",        id="name"), 
-        LabelInput("Description", id="description"),
-        ModalCloseButton("Save", cls=ButtonT.primary),
-        id="save")
-    
-    share_dd = Div(cls="space-y-6 p-4")(
-        H3("Share preset"),
-        P("Anyone who has this link and an OpenAI account will be able to view this.", cls=TextPresets.muted_sm),
-        Div(Input(value="https://platform.openai.com/playground/p/7bbKYQvsVkNmVb8NGcdUOLae?model=text-davinci-003", readonly=True),
-            Button(UkIcon('copy'), cls=(ButtonT.primary, "uk-drop-close",'mt-4'))))
+with open('data_/status_list.json', 'r') as f: data     = json.load(f)
+with open('data_/statuses.json',    'r') as f: statuses = json.load(f)
 
-    rnav = (
-        Select(*Options(*preset_options), name='preset', optgroup_label="Examples",
-                 placeholder='Load a preset', searchable=True, cls='h-9 w-[200px] lg:w-[300px]'),
-        Button("Save",         cls=ButtonT.secondary, data_uk_toggle="#save"),save_modal,
-        Button("View Code",    cls=ButtonT.secondary),
-        Button("Share",        cls=ButtonT.secondary),DropDownNavContainer(share_dd),
-        Button(UkIcon(icon="ellipsis"), cls=ButtonT.secondary),
-        DropDownNavContainer(
-            Li(A("Content filter preferences")),
-            NavDividerLi(),
-            Li(A("Delete preset", cls="text-destructive")),
-        uk_dropdown="mode: click"))
-    
-    return NavBar(*rnav, brand=H4('Playground'))
+def _create_tbl_data(d):
+    return {'Done': d['selected'], 'Task': d['id'], 'Title': d['title'],
+            'Status'  : d['status'], 'Priority': d['priority'] }
 
-rsidebar = NavContainer(
-    Select(
-        Optgroup(map(Option,("text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001")),label='GPT-3'),
-        Optgroup(map(Option,("code-davinci-002", "code-cushman-001")),label='Codex'),
-        label="Model",
-        searchable=True),
-    LabelRange(label='Temperature', value='12'),
-    LabelRange(label='Maximum Length', value='80'),
-    LabelRange(label='Top P', value='40'),
-    cls='space-y-6 mt-8')
+data = [_create_tbl_data(d)  for d in data]
+page_size = 15
+current_page = 0
+paginated_data = data[current_page*page_size:(current_page+1)*page_size]
+
+priority_dd = [{'priority': "low", 'count': 36 }, {'priority': "medium", 'count': 33 }, {'priority': "high", 'count': 31 }]
+
+status_dd = [{'status': "backlog", 'count': 21 },{'status': "todo", 'count': 21 },{'status': "progress", 'count': 20 },{'status': "done",'count': 19 },{'status': "cancelled", 'count': 19 }]
+
+def create_hotkey_li(hotkey): return NavCloseLi(A(DivFullySpaced(hotkey[0], Span(hotkey[1], cls=TextPresets.muted_sm))))
+
+hotkeys_a = (('Profile','⇧⌘P'),('Billing','⌘B'),('Settings','⌘S'),('New Team',''))
+hotkeys_b = (('Logout',''), )
+
+avatar_opts = DropDownNavContainer(
+    NavHeaderLi(P('sveltecult'),NavSubtitle('leader@sveltecult.com')),
+    NavDividerLi(),
+    *map(create_hotkey_li, hotkeys_a),
+    NavDividerLi(),
+    *map(create_hotkey_li, hotkeys_b),)
+
+def CreateTaskModal():
+    return Modal(
+        Div(cls='p-6')(
+            ModalTitle('Create Task'),
+            P('Fill out the information below to create a new task', cls=TextPresets.muted_sm),
+            Br(),
+            Form(cls='space-y-6')(
+                Grid(Div(Select(*map(Option,('Documentation', 'Bug', 'Feature')), label='Task Type', id='task_type')),
+                     Div(Select(*map(Option,('In Progress', 'Backlog', 'Todo', 'Cancelled', 'Done')), label='Status', id='task_status')),
+                     Div(Select(*map(Option, ('Low', 'Medium', 'High')), label='Priority', id='task_priority'))),
+                TextArea(label='Title', placeholder='Please describe the task that needs to be completed'),
+                DivRAligned(
+                    ModalCloseButton('Cancel', cls=ButtonT.ghost),
+                    ModalCloseButton('Submit', cls=ButtonT.primary),
+                    cls='space-x-5'))),
+        id='TaskForm')
+
+page_heading = DivFullySpaced(cls='space-y-2')(
+            Div(cls='space-y-2')(
+                H2('Welcome back!'),P("Here's a list of your tasks for this month!", cls=TextPresets.muted_sm)),
+            Div(DiceBearAvatar("sveltcult",8,8),avatar_opts))
+
+table_controls =(Input(cls='w-[250px]',placeholder='Filter task'),
+     Button("Status"),
+     DropDownNavContainer(map(NavCloseLi,[A(DivFullySpaced(P(a['status']), P(a['count'])),cls='capitalize') for a in status_dd])), 
+     Button("Priority"),
+     DropDownNavContainer(map(NavCloseLi,[A(DivFullySpaced(LAlignedCheckTxt(a['priority']), a['count']),cls='capitalize') for a in priority_dd])),
+     Button("View"),
+     DropDownNavContainer(map(NavCloseLi,[A(LAlignedCheckTxt(o)) for o in ['Title','Status','Priority']])),
+     Button('Create Task',cls=(ButtonT.primary, TextPresets.bold_sm), data_uk_toggle="target: #TaskForm"))
+
+def task_dropdown():
+    return Div(Button(UkIcon('ellipsis')),
+               DropDownNavContainer(
+                   map(NavCloseLi,[
+                       *map(A,('Edit', 'Make a copy', 'Favorite')),
+                        A(DivFullySpaced(*[P(o, cls=TextPresets.muted_sm) for o in ('Delete', '⌘⌫')]))])))
+def header_render(col):
+    match col:
+        case "Done":    return Th(CheckboxX(), shrink=True)
+        case 'Actions': return Th("",          shrink=True)
+        case _:         return Th(col,         expand=True)
+
+def cell_render(col, val):
+    def _Td(*args,cls='', **kwargs): return Td(*args, cls=f'p-2 {cls}',**kwargs)
+    match col:
+        case "Done": return _Td(shrink=True)(CheckboxX(selected=val))
+        case "Task":  return _Td(val, cls='uk-visible@s')  # Hide on small screens
+        case "Title": return _Td(val, cls='font-medium', expand=True)
+        case "Status" | "Priority": return _Td(cls='uk-visible@m uk-text-nowrap capitalize')(Span(val))
+        case "Actions": return _Td(task_dropdown(), shrink=True)
+        case _: raise ValueError(f"Unknown column: {col}")
+
+task_columns = ["Done", 'Task', 'Title', 'Status', 'Priority', 'Actions']
+
+tasks_table = Div(cls='mt-4')(
+    TableFromDicts(
+        header_data=task_columns,
+        body_data=paginated_data,
+        body_cell_render=cell_render,
+        header_cell_render=header_render,
+        sortable=True,
+        cls=(TableT.responsive, TableT.sm, TableT.divider)))
+
+
+def footer():
+    total_pages = (len(data) + page_size - 1) // page_size
+    return DivFullySpaced(
+        Div('1 of 100 row(s) selected.', cls=TextPresets.muted_sm),
+        DivLAligned(
+            DivCentered(f'Page {current_page + 1} of {total_pages}', cls=TextT.sm),
+            DivLAligned(*[UkIconLink(icon=i,  button=True) for i in ('chevrons-left', 'chevron-left', 'chevron-right', 'chevrons-right')])))
+
+tasks_ui = Div(DivFullySpaced(DivLAligned(table_controls), cls='mt-8'), tasks_table, footer())
 
 @rt
-def index(): 
-    navbar = playground_navbar()
-    main_content = Div(
-        Div(cls="flex-1")(
-            Textarea(cls="uk-textarea h-full p-4", placeholder="Write a tagline for an ice cream shop")),
-            cls="flex h-[700px] p-8 w-4/5")
-    
-    bottom_buttons = Div(
-        Button("Submit", cls=ButtonT.primary),
-        Button(UkIcon(icon="history"), cls=ButtonT.secondary),
-        cls="flex gap-x-2")
-    
-    return Title("Playground Example"),Div(navbar, Div(cls="flex w-full")(main_content, rsidebar), bottom_buttons)
+def index(): return Container(page_heading, tasks_ui, CreateTaskModal())
 
 serve()</doc><doc title="Forms" desc="FrankenUI Forms Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Forms Example built with MonsterUI (original design by ShadCN)"""
 
@@ -1152,142 +1440,99 @@ def index():
                     Li(cls="uk-active")(profile_form(),
                     *map(Li, [account_form(), appearance_form(), notifications_form(), display_form()])))))
 
-serve()</doc><doc title="Music" desc="FrankenUI Music Example build with MonsterUI (Original design by ShadCN)">"""FrankenUI Music Example build with MonsterUI (Original design by ShadCN)"""
-
+serve()</doc><doc title="Ticket" desc="MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components">"""MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components"""
 from fasthtml.common import *
-
 from monsterui.all import *
+from datetime import datetime
 
-app, rt = fast_app(hdrs=Theme.blue.headers())
+app, rt = fast_app(hdrs=Theme.blue.headers(daisy=True))
 
-def MusicLi(t,hk=''): return Li(A(DivFullySpaced(t,P(hk,cls=TextPresets.muted_sm))))
+def TicketSteps(step):
+    return Steps(
+        LiStep("Submitted", data_content="📝",
+               cls=StepT.success if step > 0 else StepT.primary if step == 0 else StepT.neutral),
+        LiStep("In Review", data_content="🔎",
+               cls=StepT.success if step > 1 else StepT.primary if step == 1 else StepT.neutral),
+        LiStep("Processing", data_content="⚙️",
+               cls=StepT.success if step > 2 else StepT.primary if step == 2 else StepT.neutral),
+        LiStep("Resolved", data_content="✅",
+               cls=StepT.success if step > 3 else StepT.primary if step == 3 else StepT.neutral),
+        cls="w-full")
 
-music_items = [("About Music", ""   ),
-               ("Preferences", "⌘"  ),
-               ("Hide Music" , "⌘H" ),
-               ("Hide Others", "⇧⌘H"),
-               ("Quit Music" , "⌘Q" )]
+def StatusBadge(status):
+    styles = {'high': AlertT.error, 'medium': AlertT.warning,'low': AlertT.info}
+    alert_type = styles.get(status, AlertT.info)
+    return Alert(f"{status.title()} Priority", cls=(alert_type,"w-32 shadow-sm"))
 
-file_dd_items = [("New",                   ""),
-                 ("Open Stream URL",       "⌘U"),
-                 ("Close Window",          "⌘W"),
-                 ("Library",               ""),
-                 ("Import",                "⌘O"),
-                 ("Burn Playlist to Disc", ""),
-                 ("Show in Finder",        "⇧⌘R"),
-                 ("Convert",               ""),
-                 ("Page Setup",            "Print")]
+def TicketCard(id, title, description, status, step, department):
+    return Card(
+        CardHeader(
+            DivFullySpaced(
+                Div(H3(f"#{id}", cls=TextT.muted), 
+                    H4(title), 
+                    cls='space-y-2'),
+                StatusBadge(status))),
+        CardBody(
+            P(description, cls=(TextT.muted, "mb-6")),
+            DividerSplit(cls="my-6"),
+            TicketSteps(step),
+            DividerSplit(cls="my-6"), 
+            DivFullySpaced(
+                Div(Strong("Department"),
+                    P(department),
+                    cls=('space-y-3', TextPresets.muted_sm)),
+                Div(Strong("Last Updated"),
+                    P(Time(datetime.now().strftime('%b %d, %H:%M'))),
+                    cls=('space-y-3', TextPresets.muted_sm)),
+                Button("View Details", cls=ButtonT.primary),
+                cls='mt-6')),
+        cls=CardT.hover)
 
-edit_actions = [("Undo",         "⌘Z"),
-                ("Redo",         "⇧⌘Z"),
-                ("Cut",          "⌘X"),
-                ("Copy",         "⌘C"),
-                ("Paste",        "⌘V"),
-                ("Select All",   "⌘A"),
-                ("Deselect All", "⇧⌘A")]
-
-view_dd_data = ["Show Playing Next", "Show Lyrics", "Show Status Bar", "Hide Sidebar", "Enter Full Screen"]
-
-
-music_headers = NavBar(
-    Button("Music", cls=ButtonT.ghost+TextT.gray),DropDownNavContainer(Li(A("Music"),NavContainer(map(lambda x: MusicLi(*x), music_items)))),
-    Button("File", cls=ButtonT.ghost+TextT.gray), DropDownNavContainer(Li(A("File"), NavContainer(map(lambda x: MusicLi(*x), file_dd_items)))),
-    Button("Edit", cls=ButtonT.ghost+TextT.gray), DropDownNavContainer(Li(A("Edit")),NavContainer(
-            *map(lambda x: MusicLi(*x), edit_actions),
-            Li(A(DivFullySpaced("Smart Dictation",UkIcon("mic")))),
-            Li(A(DivFullySpaced("Emojis & Symbols",UkIcon("globe")))))),
-    Button("View", cls=ButtonT.ghost+TextT.gray),DropDownNavContainer(Li(A("View"),NavContainer(map(lambda x: MusicLi(x), view_dd_data)))),
-    brand=DivLAligned(H2("Purrify"))
-    )
-    
-
-
-
-# music_headers = NavBarContainer(
-#             NavBarLSide(
-#                 NavBarNav(
-#                 Li(A("Music"),NavBarNavContainer(map(lambda x: MusicLi(*x), music_items))),
-#                 Li(A("File"), NavBarNavContainer(map(lambda x: MusicLi(*x), file_dd_items))),
-#                 Li(A("Edit")),
-#                     NavBarNavContainer(
-#                         *map(lambda x: MusicLi(*x), edit_actions),
-#                         Li(A(DivFullySpaced("Smart Dictation",UkIcon("mic")))),
-#                         Li(A(DivFullySpaced("Emojis & Symbols",UkIcon("globe"))))),
-#                 Li(A("View"),
-#                 NavBarNavContainer(map(lambda x: MusicLi(x), view_dd_data))),
-#                 Li(A("Account"),
-#                     NavBarNavContainer(
-#                         NavHeaderLi("Switch Account"),
-#                         *map(MusicLi, ("Andy", "Benoit", "Luis", "Manage Family", "Add Account")))))))
-
-
-def Album(title,artist):
-    img_url = 'https://ucarecdn.com/e5607eaf-2b2a-43b9-ada9-330824b6afd7/music1.webp'
-    return Div(
-        Div(cls="overflow-hidden rounded-md")(Img(cls="transition-transform duration-200 hover:scale-105", src=img_url)),
-        Div(cls='space-y-1')(Strong(title),P(artist,cls=TextT.muted)))
-        
-listen_now_albums = (("Roar", "Catty Perry"), ("Feline on a Prayer", "Cat Jovi"),("Fur Elise", "Ludwig van Beethovpurr"),("Purrple Rain", "Prince's Cat"))
-
-made_for_you_albums = [("Like a Feline",         "Catdonna"),
-                       ("Livin' La Vida Purrda", "Ricky Catin"),
-                       ("Meow Meow Rocket",      "Elton Cat"),
-                       ("Rolling in the Purr",   "Catdelle"),
-                       ("Purrs of Silence",      "Cat Garfunkel"),
-                       ("Meow Me Maybe",         "Carly Rae Purrsen"),]
-
-music_content = (Div(H3("Listen Now"), cls="mt-6 space-y-1"),
-                    Subtitle("Top picks for you. Updated daily."),
-                    DividerLine(),
-                    Grid(*[Album(t,a) for t,a in listen_now_albums], cls='gap-8'),
-                    Div(H3("Made for You"), cls="mt-6 space-y-1"),
-                    Subtitle("Your personal playlists. Updated daily."),
-                    DividerLine(),
-                    Grid(*[Album(t,a) for t,a in made_for_you_albums], cols_xl=6))
-
-tabs = TabContainer(
-    Li(A('Music',    href='#'),    cls='uk-active'),
-    Li(A('Podcasts', href='#')),
-    Li(A('Live', cls='opacity-50'), cls='uk-disabled'),
-    uk_switcher='connect: #component-nav; animation: uk-animation-fade',
-    alt=True)
-
-def podcast_tab():
-    return Div(
-        Div(cls='space-y-3 mt-6')(
-            H3("New Episodes"),
-            Subtitle("Your favorite podcasts. Updated daily.")),
-        Div(cls="uk-placeholder flex h-[450px] items-center justify-center rounded-md mt-4",uk_placeholder=True)(
-            DivVStacked(cls="space-y-6")(
-                UkIcon("microphone", 3),
-                H4("No episodes added"),
-                Subtitle("You have not added any podcasts. Add one below."),
-                Button("Add Podcast", cls=ButtonT.primary))))
-
-discoved_data =  [("play-circle","Listen Now"), ("binoculars", "Browse"), ("rss","Radio")]
-library_data =   [("play-circle", "Playlists"), ("music", "Songs"), ("user", "Made for You"), ("users", "Artists"), ("bookmark", "Albums")]
-playlists_data = [("library","Recently Added"), ("library","Recently Played")]
-
-def MusicSidebarLi(icon, text): return Li(A(DivLAligned(UkIcon(icon), P(text))))
-sidebar = NavContainer(
-    NavHeaderLi(H3("Discover")), *[MusicSidebarLi(*o) for o in discoved_data],
-    NavHeaderLi(H3("Library")),  *[MusicSidebarLi(*o) for o in library_data],
-    NavHeaderLi(H3("Playlists")),*[MusicSidebarLi(*o) for o in playlists_data],
-    cls=(NavT.primary,'space-y-3','pl-8'))
+def NewTicketModal():
+    return Modal(
+        ModalHeader(H3("Create New Support Ticket")),
+        ModalBody(
+            Alert(
+                DivLAligned(UkIcon("info"), Span("Please provide as much detail as possible to help us assist you quickly.")),
+                cls=(AlertT.info,"mb-4")),
+            Form(
+                Grid(LabelInput("Title", id="title", placeholder="Brief description of your issue"),
+                     LabelSelect(Options("IT Support", "HR", "Facilities", "Finance"), label="Department", id="department")),
+                LabelSelect(Options("Low", "Medium", "High"), label="Priority Level",  id="priority"),
+                LabelTextArea("Description", id="description", placeholder="Please provide detailed information about your issue"),
+                DivRAligned(
+                    Button("Cancel", cls=ButtonT.ghost, data_uk_toggle="target: #new-ticket"),
+                    Button(Loading(cls=LoadingT.spinner), "Submit Ticket", cls=ButtonT.primary, data_uk_toggle="target: #success-toast; target: #new-ticket")),
+                cls='space-y-8')),
+            id="new-ticket")
 
 @rt
 def index():
-    return Title("Music Example"),Container(music_headers, DividerSplit(),
-        Grid(sidebar,
-            Div(cls="col-span-4 border-l border-border")(
-                Div(cls="px-8 py-6")(
-                    DivFullySpaced(
-                        Div(cls="max-w-80")(tabs),
-                        Button(cls=ButtonT.primary)(DivLAligned(UkIcon('circle-plus')),Div("Add music"))),
-                    Ul(id="component-nav", cls="uk-switcher")(
-                        Li(*music_content),
-                        Li(podcast_tab())))),
-            cols_sm=1, cols_md=1, cols_lg=5, cols_xl=5))
+    tickets = [
+        {'id': "TK-1001", 'title': "Cloud Storage Access Error", 
+         'description': "Unable to access cloud storage with persistent authorization errors. Multiple users affected across marketing department.",
+         'status': 'high', 'step': 2, 'department': 'IT Support'},
+        {'id': "TK-1002", 'title': "Email Integration Issue", 
+         'description': "Exchange server not syncing with mobile devices. Affecting external client communications.",
+         'status': 'medium', 'step': 1, 'department': 'IT Support'},
+        {'id': "TK-1003", 'title': "Office Equipment Setup", 
+         'description': "New department printer needs configuration and network integration. Required for upcoming client presentation.",
+         'status': 'low', 'step': 0, 'department': 'Facilities'}
+    ]
+
+    return Title("Help Desk Dashboard"), Container(
+        Section(
+            DivFullySpaced(
+                H2("Active Tickets"),
+                Button(UkIcon("plus-circle", cls="mr-2"), "New Ticket", cls=ButtonT.primary, data_uk_toggle="target: #new-ticket"),
+                cls='mb-8'),
+            Grid(*[TicketCard(**ticket) for ticket in tickets], cols=1),
+            cls="my-6"),
+        NewTicketModal(),
+        Toast(DivLAligned(UkIcon('check-circle', cls='mr-2'), "Ticket submitted successfully! Our team will review it shortly."), id="success-toast", alert_cls=AlertT.success, cls=(ToastHT.end, ToastVT.bottom)),
+        Loading(htmx_indicator=True, type=LoadingT.dots, cls="fixed top-0 right-0 m-4"),
+        cls="mx-auto max-w-7xl"
+    )   
 
 serve()</doc><doc title="Mail" desc="FrankenUI Mail Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Mail Example built with MonsterUI (original design by ShadCN)"""
 
@@ -1398,251 +1643,6 @@ def index():
              cols_sm=1, cols_md=1, cols_lg=5, cols_xl=5, 
              gap=0, cls='flex-1'),
         cls=('flex', ContainerT.xl))
-
-serve()</doc><doc title="Dashboard" desc="FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)"""
-
-from fasthtml.common import * # Bring in all of fasthtml
-import fasthtml.common as fh # Used to get unstyled components
-from monsterui.all import * # Bring in all of monsterui, including shadowing fasthtml components with styled components
-from fasthtml.svg import *
-import numpy as np
-import plotly.express as px
-import pandas as pd
-import numpy as np
-
-app, rt = fast_app(hdrs=Theme.blue.headers())
-
-def generate_chart(num_points=30):
-    df = pd.DataFrame({
-        'Date': pd.date_range('2024-01-01', periods=num_points),
-        'Revenue': np.random.normal(100, 10, num_points).cumsum(),
-        'Users': np.random.normal(80, 8, num_points).cumsum(), 
-        'Growth': np.random.normal(60, 6, num_points).cumsum()})
-    
-    fig = px.line(df, x='Date', y=['Revenue', 'Users', 'Growth'],  template='plotly_white', line_shape='spline')
-    
-    fig.update_traces(mode='lines+markers')
-    fig.update_layout(
-        margin=dict(l=20, r=20, t=20, b=20), hovermode='x unified',
-        showlegend=True, legend=dict(orientation='h', yanchor='bottom', y=1.02,  xanchor='right', x=1),
-        plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(showgrid=True, gridwidth=1, gridcolor='rgba(0,0,0,0.1)'),
-        yaxis=dict(showgrid=True, gridwidth=1, gridcolor='rgba(0,0,0,0.1)'))
-    
-    return fig.to_html(include_plotlyjs=True, full_html=False, config={'displayModeBar': False})
-
-def InfoCard(title, value, change): return Card(H3(value),P(change, cls=TextPresets.muted_sm), header = H4(title))
-
-rev = InfoCard("Total Revenue", "$45,231.89", "+20.1% from last month")
-sub = InfoCard("Subscriptions", "+2350", "+180.1% from last month")
-sal = InfoCard("Sales", "+12,234", "+19% from last month")
-act = InfoCard("Active Now", "+573", "+201 since last hour")
-
-info_card_data = [("Total Revenue", "$45,231.89", "+20.1% from last month"),
-                   ("Subscriptions", "+2350", "+180.1% from last month"),
-                   ("Sales", "+12,234", "+19% from last month"),
-                   ("Active Now", "+573", "+201 since last hour")]
-
-top_info_row = Grid(*[InfoCard(*row) for row in info_card_data])
-
-def AvatarItem(name, email, amount):
-    return DivFullySpaced(
-        DivLAligned(
-            DiceBearAvatar(name, 9,9),
-            Div(Strong(name, cls=TextT.sm), 
-                Address(A(email,href=f'mailto:{email}')))),
-        fh.Data(amount, cls="ml-auto font-medium", value=amount[2:]))
-
-recent_sales = Card(
-    Div(cls="space-y-8")(
-        *[AvatarItem(n,e,d) for (n,e,d) in (
-            ("Olivia Martin",   "olivia.martin@email.com",   "+$1,999.00"),
-            ("Jackson Lee",     "jackson.lee@email.com",     "+$39.00"),
-            ("Isabella Nguyen", "isabella.nguyen@email.com", "+$299.00"),
-            ("William Kim",     "will@email.com",            "+$99.00"),
-            ("Sofia Davis",     "sofia.davis@email.com",     "+$39.00"))]),
-    header=Div(H3("Recent Sales"),Subtitle("You made 265 sales this month.")),
-    cls='col-span-3')
-
-teams = [["Alicia Koch"],['Acme Inc', 'Monster Inc.'],['Create a Team']]
-
-opt_hdrs = ["Personal", "Team", ""]
-
-team_dropdown = Select(
-    Optgroup(Option(A("Alicia Koch")), label="Personal Account"),
-    Optgroup(Option(A("Acme Inc")), Option(A("Monster Inc.")), label="Teams"),
-    Option(A("Create a Team")),
-    cls='flex items-center')
-
-hotkeys = [('Profile','⇧⌘P'),('Billing','⌘B'),('Settings','⌘S'),('New Team', ''), ('Logout', '')]
-
-def NavSpacedLi(t,s): return NavCloseLi(A(DivFullySpaced(P(t),P(s,cls=TextPresets.muted_sm))))
-
-avatar_dropdown = Div(
-      DiceBearAvatar('Alicia Koch',8,8),
-      DropDownNavContainer(
-          NavHeaderLi('sveltecult',NavSubtitle("leader@sveltecult.com")),
-          *[NavSpacedLi(*hk) for hk in hotkeys],))
-
-top_nav = NavBar(
-    team_dropdown, *map(A, ["Overview", "Customers", "Products", "Settings"]),
-    brand=DivLAligned(avatar_dropdown, Input(placeholder='Search')))
-
-@rt
-def index():
-    return Title("Dashboard Example"), Container(
-        top_nav,
-        H2('Dashboard'),
-        TabContainer(
-            Li(A("Overview"),cls='uk-active'),
-            *map(lambda x: Li(A(x)), ["Analytics", "Reports", "Notifications"]),
-            alt=True),
-        top_info_row,
-        Grid(
-            Card(Safe(generate_chart(100)), cls='col-span-4'),
-            recent_sales,
-            gap=4,cols_xl=7,cols_lg=7,cols_md=1,cols_sm=1,cols_xs=1),
-        cls=('space-y-4', ContainerT.xl))
-
-serve()</doc><doc title="Cards" desc="FrankenUI Cards Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Cards Example built with MonsterUI (original design by ShadCN)"""
-
-from fasthtml.common import *
-from fasthtml.components import Uk_input_tag
-from fasthtml.svg import *
-from monsterui.all import *
-import calendar
-from datetime import datetime
-
-app, rt = fast_app(hdrs=Theme.blue.headers())
-
-CreateAccount = Card(
-    Grid(Button(DivLAligned(UkIcon('github'),Div('Github'))),Button('Google')),
-            DividerSplit("OR CONTINUE WITH", text_cls=TextPresets.muted_sm),
-            LabelInput('Email',    id='email',   placeholder='m@example.com'),
-            LabelInput('Password', id='password',placeholder='Password', type='Password'),
-            header=(H3('Create an Account'),Subtitle('Enter your email below to create your account')),
-            footer=Button('Create Account',cls=(ButtonT.primary,'w-full')))
-
-PaypalSVG_data = "M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.93 4.778-4.005 7.201-9.138 7.201h-2.19a.563.563 0 0 0-.556.479l-1.187 7.527h-.506l-.24 1.516a.56.56 0 0 0 .554.647h3.882c.46 0 .85-.334.922-.788.06-.26.76-4.852.816-5.09a.932.932 0 0 1 .923-.788h.58c3.76 0 6.705-1.528 7.565-5.946.36-1.847.174-3.388-.777-4.471z"
-AppleSVG_data = "M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
-Card1Svg  = Svg(viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke_linecap="round", stroke_linejoin="round", stroke_width="2", cls="h-6 w-6 mr-1")(Rect(width="20", height="14", x="2", y="5", rx="2"),Path(d="M2 10h20"))
-PaypalSvg = Svg(role="img", viewBox="0 0 24 24", cls="h-6 w-6 mr-1")(Path(d=PaypalSVG_data, fill="currentColor")),
-AppleSvg  = Svg(role="img", viewBox="0 0 24 24", cls="h-6 w-6 mr-1")(Path(d=AppleSVG_data, fill="currentColor"))
-
-PaymentMethod = Card(
-    Grid(Button(DivCentered(Card1Svg,  "Card"),   cls='h-20 border-2 border-primary'),
-         Button(DivCentered(PaypalSvg, "PayPal"), cls='h-20'),
-         Button(DivCentered(AppleSvg,  "Apple"),  cls='h-20')),
-    Form(LabelInput('Name',        id='name',        placeholder='John Doe'),
-         LabelInput('Card Number', id='card_number', placeholder='m@example.com'),
-         Grid(LabelSelect(*Options(*calendar.month_name[1:],selected_idx=0),label='Expires',id='expire_month'),
-              LabelSelect(*Options(*range(2024,2030),selected_idx=0),       label='Year',   id='expire_year'),
-              LabelInput('CVV', id='cvv',placeholder='CVV', cls='mt-0'))),
-        header=(H3('Payment Method'),Subtitle('Add a new payment method to your account.')))
-
-area_opts = ('Team','Billing','Account','Deployment','Support')
-severity_opts = ('Severity 1 (Highest)', 'Severity 2', 'Severity 3', 'Severity 4 (Lowest)')
-ReportIssue = Card(
-    Grid(Div(LabelSelect(*Options(*area_opts),    label='Area',    id='area')),
-         Div(LabelSelect(*Options(*severity_opts),label='Severity',id='area'))),
-    LabelInput(    label='Subject',     id='subject',    placeholder='I need help with'),
-    LabelTextArea( label='Description', id='description',placeholder='Please include all information relevant to your issue'),
-    Div(FormLabel('Tags', fr='#tags'),
-        Uk_input_tag(name="Tags",state="danger", value="Spam,Invalid", uk_cloak=True, id='tags')),
-    header=(H3('Report Issue'),Subtitle('What area are you having problems with?')),
-    footer = DivFullySpaced(Button('Cancel'), Button(cls=ButtonT.primary)('Submit')))
-
-monster_desc ="Python-first beautifully designed components because you deserve to focus on features that matter and your app deserves to be beautiful from day one."
-MonsterUI = Card(H4("Monster UI"),
-              Subtitle(monster_desc),
-              DivLAligned(
-                    Div("Python"),
-                    DivLAligned(UkIcon('star'),Div("20k"), cls='space-x-1'),
-                    Div(datetime.now().strftime("%B %d, %Y")),
-                    cls=('space-x-4',TextPresets.muted_sm)))
-
-def CookieTableRow(heading, description, active=False):
-    return Tr(Td(H5(heading)),
-              Td(P(description, cls=TextPresets.muted_sm)),
-              Td(Switch(checked=active)))
-
-CookieSettings = Card(
-    Table(Tbody(
-        CookieTableRow('Strictly Necessary', 'These cookies are essential in order to use the website and use its features.', True),
-        CookieTableRow('Functional Cookies', 'These cookies allow the website to provide personalized functionality.'),
-        CookieTableRow('Performance Cookies', 'These cookies help to improve the performance of the website.'))),
-    header=(H4('Cookie Settings'),Subtitle('Manage your cookie settings here.')),
-    footer=Button('Save Preferences', cls=(ButtonT.primary, 'w-full')))
-
-team_members = [("Sofia Davis", "m@example.com", "Owner"),("Jackson Lee", "p@example.com", "Member"),]
-def TeamMemberRow(name, email, role):
-    return DivFullySpaced(
-        DivLAligned(
-            DiceBearAvatar(name, 10,10),
-            Div(P(name, cls=(TextT.sm, TextT.medium)),
-                P(email, cls=TextPresets.muted_sm))),
-        Button(role, UkIcon('chevron-down', cls='ml-4')),
-        DropDownNavContainer(map(NavCloseLi, [
-            A(Div('Viewer',    NavSubtitle('Can view and comment.'))),
-            A(Div('Developer', NavSubtitle('Can view, comment and edit.'))),
-            A(Div('Billing',   NavSubtitle('Can view, comment and manage billing.'))),
-            A(Div('Owner',     NavSubtitle('Admin-level access to all resources.')))])))
-
-TeamMembers = Card(*[TeamMemberRow(*member) for member in team_members],
-        header = (H4('Team Members'),Subtitle('Invite your team members to collaborate.')))
-
-access_roles = ("Read and write access", "Read-only access")
-team_members = [("Olivia Martin", "m@example.com", "Read and write access"),
-                ("Isabella Nguyen", "b@example.com", "Read-only access"),
-                ("Sofia Davis", "p@example.com", "Read-only access")]
-
-def TeamMemberRow(name, email, role):
-    return DivFullySpaced(
-        DivLAligned(DiceBearAvatar(name, 10,10),
-                    Div(P(name, cls=(TextT.sm, TextT.medium)),
-                        P(email, cls=TextPresets.muted_sm))),
-        Select(*Options(*access_roles, selected_idx=access_roles.index(role))))
-
-ShareDocument = Card(
-    DivLAligned(Input(value='http://example.com/link/to/document'),Button('Copy link', cls='whitespace-nowrap')),
-    Divider(),
-    H4('People with access', cls=TextPresets.bold_sm),
-    *[TeamMemberRow(*member) for member in team_members],
-    header = (H4('Share this document'),Subtitle('Anyone with the link can view this document.')))
-
-DateCard = Card(Button('Jan 20, 2024 - Feb 09, 2024'))
-
-section_content =(('bell','Everything',"Email digest, mentions & all activity."), 
-                  ('user',"Available","Only mentions and comments"),
-                  ('ban', "Ignoring","Turn of all notifications"))
-
-def NotificationRow(icon, name, desc):
-    return Li(cls='-mx-1')(A(DivLAligned(UkIcon(icon),Div(P(name),P(desc, cls=TextPresets.muted_sm)))))
-
-Notifications = Card(
-    NavContainer(
-        *[NotificationRow(*row) for row in section_content],
-        cls=NavT.secondary),
-    header = (H4('Notification'),Subtitle('Choose what you want to be notified about.')),
-    body_cls='pt-0')
-
-TeamCard = Card(
-    DivLAligned(
-        DiceBearAvatar("Isaac Flath", h=24, w=24),
-        Div(H3("Isaac Flath"), P("Library Creator"))),
-    footer=DivFullySpaced(
-        DivHStacked(UkIcon("map-pin", height=16), P("Alexandria, VA")),
-        DivHStacked(*(UkIconLink(icon, height=16) for icon in ("mail", "linkedin", "github")))),
-    cls=CardT.hover)
-
-@rt
-def index():
-    return Title("Cards Example"),Container(Grid(
-            *map(Div,(
-                      Div(PaymentMethod,CreateAccount, TeamCard, cls='space-y-4'),
-                      Div(TeamMembers, ShareDocument,DateCard,Notifications, cls='space-y-4'),
-                      Div(ReportIssue,MonsterUI,CookieSettings, cls='space-y-4'))),
-         cols_md=1, cols_lg=2, cols_xl=3))
 
 serve()</doc></examples><optional><doc title="Accordion | Link" desc="Accordion API Reference"># Accordion API Reference
 
@@ -2823,7 +2823,7 @@ Source
 
 [code]
 
-    LabelCheckboxX(label: str | fastcore.xml.FT, lbl_cls='', input_cls='', container=functools.partial(<function ft at 0x76bbaf945580>, 'div', void_=False), cls='flex items-center space-x-2', id='', **kwargs) -> fastcore.xml.FT
+    LabelCheckboxX(label: str | fastcore.xml.FT, lbl_cls='', input_cls='', container=functools.partial(<function ft at 0x79ede7bc9580>, 'div', void_=False), cls='flex items-center space-x-2', id='', **kwargs) -> fastcore.xml.FT
 [/code]
 
 > A FormLabel and CheckboxX pair that provides default spacing and links/names them based on id
@@ -2852,7 +2852,7 @@ Source
 
 [code]
 
-    LabelSwitch(label: str | fastcore.xml.FT, lbl_cls='', input_cls='', cls='space-x-2', id='', *, container=functools.partial(<function ft at 0x76bbaf945580>, 'div', void_=False)) -> fastcore.xml.FT
+    LabelSwitch(label: str | fastcore.xml.FT, lbl_cls='', input_cls='', cls='space-x-2', id='', *, container=functools.partial(<function ft at 0x79ede7bc9580>, 'div', void_=False)) -> fastcore.xml.FT
 [/code]
 
 > **Params**
@@ -2877,7 +2877,7 @@ Source
 
 [code]
 
-    LabelRange(label: str | fastcore.xml.FT, lbl_cls='', input_cls='', cls='space-y-6', id='', value='', min=None, max=None, step=None, label_range=True, *, container=functools.partial(<function ft at 0x76bbaf945580>, 'div', void_=False)) -> fastcore.xml.FT
+    LabelRange(label: str | fastcore.xml.FT, lbl_cls='', input_cls='', cls='space-y-6', id='', value='', min=None, max=None, step=None, label_range=True, *, container=functools.partial(<function ft at 0x79ede7bc9580>, 'div', void_=False)) -> fastcore.xml.FT
 [/code]
 
 > A FormLabel and Range pair that provides default spacing and links/names them based on id
@@ -2941,7 +2941,7 @@ Source
 
 [code]
 
-    LabelRadio(label: str | fastcore.xml.FT, lbl_cls='', input_cls='', container=functools.partial(<function ft at 0x76bbaf945580>, 'div', void_=False), cls='flex items-center space-x-2', id='', **kwargs) -> fastcore.xml.FT
+    LabelRadio(label: str | fastcore.xml.FT, lbl_cls='', input_cls='', container=functools.partial(<function ft at 0x79ede7bc9580>, 'div', void_=False), cls='flex items-center space-x-2', id='', **kwargs) -> fastcore.xml.FT
 [/code]
 
 > A FormLabel and Radio pair that provides default spacing and links/names them based on id
@@ -5546,7 +5546,7 @@ Source
 
 [code]
 
-    TableFromLists(header_data: Sequence, body_data: Sequence[Sequence], footer_data=None, header_cell_render=<function Th at 0x76bb096d99e0>, body_cell_render=<function Td at 0x76bb096d9940>, footer_cell_render=<function Td at 0x76bb096d9940>, cls=(<TableT.middle: 'uk-table-middle'>, <TableT.divider: 'uk-table-divider'>, <TableT.hover: 'uk-table-hover'>, <TableT.sm: 'uk-table-sm'>), sortable=False, **kwargs) -> fastcore.xml.FT
+    TableFromLists(header_data: Sequence, body_data: Sequence[Sequence], footer_data=None, header_cell_render=<function Th at 0x79ed419699e0>, body_cell_render=<function Td at 0x79ed41969940>, footer_cell_render=<function Td at 0x79ed41969940>, cls=(<TableT.middle: 'uk-table-middle'>, <TableT.divider: 'uk-table-divider'>, <TableT.hover: 'uk-table-hover'>, <TableT.sm: 'uk-table-sm'>), sortable=False, **kwargs) -> fastcore.xml.FT
 [/code]
 
 > Creates a Table from a list of header data and a list of lists of body data
@@ -5579,7 +5579,7 @@ Source
 
 [code]
 
-    TableFromDicts(header_data: Sequence, body_data: Sequence[dict], footer_data=None, header_cell_render=<function Th at 0x76bb096d99e0>, body_cell_render=<function <lambda> at 0x76bb096d9b20>, footer_cell_render=<function <lambda> at 0x76bb096d9bc0>, cls=(<TableT.middle: 'uk-table-middle'>, <TableT.divider: 'uk-table-divider'>, <TableT.hover: 'uk-table-hover'>, <TableT.sm: 'uk-table-sm'>), sortable=False, **kwargs) -> fastcore.xml.FT
+    TableFromDicts(header_data: Sequence, body_data: Sequence[dict], footer_data=None, header_cell_render=<function Th at 0x79ed419699e0>, body_cell_render=<function <lambda> at 0x79ed41969b20>, footer_cell_render=<function <lambda> at 0x79ed41969bc0>, cls=(<TableT.middle: 'uk-table-middle'>, <TableT.divider: 'uk-table-divider'>, <TableT.hover: 'uk-table-hover'>, <TableT.sm: 'uk-table-sm'>), sortable=False, **kwargs) -> fastcore.xml.FT
 [/code]
 
 > Creates a Table from a list of header data and a list of dicts of body data
@@ -5772,7 +5772,7 @@ Source
 
 [code]
 
-    fast_app(*args, pico=False, db_file: Optional[str] = None, render: Optional[<built-in function callable>] = None, hdrs: Optional[tuple] = None, ftrs: Optional[tuple] = None, tbls: Optional[dict] = None, before: Union[tuple, NoneType, fasthtml.core.Beforeware] = None, middleware: Optional[tuple] = None, live: bool = False, debug: bool = False, title: str = 'FastHTML page', routes: Optional[tuple] = None, exception_handlers: Optional[dict] = None, on_startup: Optional[<built-in function callable>] = None, on_shutdown: Optional[<built-in function callable>] = None, lifespan: Optional[<built-in function callable>] = None, default_hdrs=True, surreal: Optional[bool] = True, htmx: Optional[bool] = True, exts: Union[list, str, NoneType] = None, canonical: bool = True, secret_key: Optional[str] = None, key_fname: str = '.sesskey', session_cookie: str = 'session_', max_age: int = 31536000, sess_path: str = '/', same_site: str = 'lax', sess_https_only: bool = False, sess_domain: Optional[str] = None, htmlkw: Optional[dict] = None, bodykw: Optional[dict] = None, reload_attempts: Optional[int] = 1, reload_interval: Optional[int] = 1000, static_path: str = '.', body_wrap: <built-in function callable> = <function noop_body at 0x76bbaf1c3ce0>, nb_hdrs: bool = False)
+    fast_app(*args, pico=False, db_file: Optional[str] = None, render: Optional[<built-in function callable>] = None, hdrs: Optional[tuple] = None, ftrs: Optional[tuple] = None, tbls: Optional[dict] = None, before: Union[tuple, NoneType, fasthtml.core.Beforeware] = None, middleware: Optional[tuple] = None, live: bool = False, debug: bool = False, title: str = 'FastHTML page', routes: Optional[tuple] = None, exception_handlers: Optional[dict] = None, on_startup: Optional[<built-in function callable>] = None, on_shutdown: Optional[<built-in function callable>] = None, lifespan: Optional[<built-in function callable>] = None, default_hdrs=True, surreal: Optional[bool] = True, htmx: Optional[bool] = True, exts: Union[list, str, NoneType] = None, canonical: bool = True, secret_key: Optional[str] = None, key_fname: str = '.sesskey', session_cookie: str = 'session_', max_age: int = 31536000, sess_path: str = '/', same_site: str = 'lax', sess_https_only: bool = False, sess_domain: Optional[str] = None, htmlkw: Optional[dict] = None, bodykw: Optional[dict] = None, reload_attempts: Optional[int] = 1, reload_interval: Optional[int] = 1000, static_path: str = '.', body_wrap: <built-in function callable> = <function noop_body at 0x79ede743fce0>, nb_hdrs: bool = False)
 [/code]
 
 > Create a FastHTML or FastHTMLWithLiveReload app with `bg-background text-foreground` to bodykw for frankenui themes
@@ -5859,7 +5859,7 @@ Source
 
 [code]
 
-    FastHTML(*args, pico=False, debug=False, routes=None, middleware=None, title: str = 'FastHTML page', exception_handlers=None, on_startup=None, on_shutdown=None, lifespan=None, hdrs=None, ftrs=None, exts=None, before=None, after=None, surreal=True, htmx=True, default_hdrs=True, sess_cls=<class 'starlette.middleware.sessions.SessionMiddleware'>, secret_key=None, session_cookie='session_', max_age=31536000, sess_path='/', same_site='lax', sess_https_only=False, sess_domain=None, key_fname='.sesskey', body_wrap=<function noop_body at 0x76bbaf1c3ce0>, htmlkw=None, nb_hdrs=False, canonical=True)
+    FastHTML(*args, pico=False, debug=False, routes=None, middleware=None, title: str = 'FastHTML page', exception_handlers=None, on_startup=None, on_shutdown=None, lifespan=None, hdrs=None, ftrs=None, exts=None, before=None, after=None, surreal=True, htmx=True, default_hdrs=True, sess_cls=<class 'starlette.middleware.sessions.SessionMiddleware'>, secret_key=None, session_cookie='session_', max_age=31536000, sess_path='/', same_site='lax', sess_https_only=False, sess_domain=None, key_fname='.sesskey', body_wrap=<function noop_body at 0x79ede743fce0>, htmlkw=None, nb_hdrs=False, canonical=True)
 [/code]
 
 > Create a FastHTML app and adds `bg-background text-foreground` to bodykw for frankenui themes
