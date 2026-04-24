@@ -44,9 +44,9 @@ def CreateTaskModal():
             P('Fill out the information below to create a new task', cls=TextPresets.muted_sm),
             Br(),
             Form(cls='space-y-6')(
-                Grid(Div(Select(*map(Option,('Documentation', 'Bug', 'Feature')), label='Task Type', id='task_type')),
-                     Div(Select(*map(Option,('In Progress', 'Backlog', 'Todo', 'Cancelled', 'Done')), label='Status', id='task_status')),
-                     Div(Select(*map(Option, ('Low', 'Medium', 'High')), label='Priority', id='task_priority'))),
+                Grid(Div(LabelSelect(*map(Option,('Documentation', 'Bug', 'Feature')), label='Task Type', id='task_type')),
+                     Div(LabelSelect(*map(Option,('In Progress', 'Backlog', 'Todo', 'Cancelled', 'Done')), label='Status', id='task_status')),
+                     Div(LabelSelect(*map(Option, ('Low', 'Medium', 'High')), label='Priority', id='task_priority'))),
                 TextArea(label='Title', placeholder='Please describe the task that needs to be completed'),
                 DivRAligned(
                     ModalCloseButton('Cancel', cls=ButtonT.ghost),
