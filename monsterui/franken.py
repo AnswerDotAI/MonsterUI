@@ -839,6 +839,10 @@ def Select(*option,            # Options for the select dropdown (can use `Optio
     inp_cls, cls, cls_custom= map(stringify, (inp_cls, cls, cls_custom))
     select_kwargs = ifnone(select_kwargs, {})
 
+    if not (searchable or insertable):
+        if id and not name: name = id
+        return fh.Select(*option, cls=('uk-select', inp_cls), id=id, name=name, **kwargs)
+
     if 'hx_trigger' not in kwargs: kwargs['hx_trigger']=''
     if 'change' in kwargs['hx_trigger']:
         if not id: id = fh.unqid()
