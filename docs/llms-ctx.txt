@@ -1,14 +1,14 @@
 {'title': 'API List', 'url': 'https://raw.githubusercontent.com/AnswerDotAI/MonsterUI/refs/heads/main/docs/apilist.txt', 'desc': 'Complete API Reference'}
+{'title': 'Mail', 'url': 'https://monsterui.answer.ai/mail/md', 'desc': 'FrankenUI Mail Example built with MonsterUI (original design by ShadCN)'}
 {'title': 'Cards', 'url': 'https://monsterui.answer.ai/cards/md', 'desc': 'FrankenUI Cards Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Dashboard', 'url': 'https://monsterui.answer.ai/dashboard/md', 'desc': 'FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Music', 'url': 'https://monsterui.answer.ai/music/md', 'desc': 'FrankenUI Music Example build with MonsterUI (Original design by ShadCN)'}
+{'title': 'Tasks', 'url': 'https://monsterui.answer.ai/tasks/md', 'desc': 'FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)'}
 {'title': 'Auth', 'url': 'https://monsterui.answer.ai/auth/md', 'desc': 'FrankenUI Auth Example built with MonsterUI (original design by ShadCN)'}
 {'title': 'Playground', 'url': 'https://monsterui.answer.ai/playground/md', 'desc': 'FrankenUI Playground Example built with MonsterUI (original design by ShadCN)'}
-{'title': 'Scrollspy', 'url': 'https://monsterui.answer.ai/scrollspy/md', 'desc': 'MonsterUI Scrollspy Example application'}
-{'title': 'Music', 'url': 'https://monsterui.answer.ai/music/md', 'desc': 'FrankenUI Music Example build with MonsterUI (Original design by ShadCN)'}
-{'title': 'Dashboard', 'url': 'https://monsterui.answer.ai/dashboard/md', 'desc': 'FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)'}
-{'title': 'Tasks', 'url': 'https://monsterui.answer.ai/tasks/md', 'desc': 'FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)'}
-{'title': 'Forms', 'url': 'https://monsterui.answer.ai/forms/md', 'desc': 'FrankenUI Forms Example built with MonsterUI (original design by ShadCN)'}
 {'title': 'Ticket', 'url': 'https://monsterui.answer.ai/ticket/md', 'desc': 'MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components'}
-{'title': 'Mail', 'url': 'https://monsterui.answer.ai/mail/md', 'desc': 'FrankenUI Mail Example built with MonsterUI (original design by ShadCN)'}
+{'title': 'Scrollspy', 'url': 'https://monsterui.answer.ai/scrollspy/md', 'desc': 'MonsterUI Scrollspy Example application'}
+{'title': 'Forms', 'url': 'https://monsterui.answer.ai/forms/md', 'desc': 'FrankenUI Forms Example built with MonsterUI (original design by ShadCN)'}
 <project title="MonsterUI Documentation">> MonsterUI is a python library which brings styling to python for FastHTML apps.<api reference><doc title="API List" desc="Complete API Reference"># monsterui Module Documentation
 
 ## monsterui.core
@@ -537,7 +537,117 @@
 
 - `def ToggleBtn(*c, **kwargs)`
     Styled toggle button component, acts like a switch
-</doc></api reference><examples><doc title="Cards" desc="FrankenUI Cards Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Cards Example built with MonsterUI (original design by ShadCN)"""
+</doc></api reference><examples><doc title="Mail" desc="FrankenUI Mail Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Mail Example built with MonsterUI (original design by ShadCN)"""
+
+from fasthtml.common import *
+from monsterui.all import *
+from fasthtml.svg import *
+import pathlib, json
+from datetime import datetime
+
+app, rt = fast_app(hdrs=Theme.blue.headers())
+
+sidebar_group1 = (('home', 'Inbox', '128'), ('file-text', 'Drafts', '9'), (' arrow-up-right', 'Sent', ''),
+    ('ban', 'Junk', '23'), ('trash', 'Trash', ''), ('folder', 'Archive', ''))
+
+sidebar_group2 = (('globe','Social','972'),('info','Updates','342'),('messages-square','Forums','128'),
+    ('shopping-cart','Shopping','8'),('shopping-bag','Promotions','21'),)
+
+def MailSbLi(icon, title, cnt): 
+    return Li(A(DivLAligned(Span(UkIcon(icon)),Span(title),P(cnt, cls=TextPresets.muted_sm)),href='#',  cls='hover:bg-secondary p-4'))
+
+sidebar = NavContainer(
+    NavHeaderLi(H3("Email"), cls='p-3'),
+    Li(Select(map(Option, ('alicia@example.com','alicia@gmail.com', 'alicia@yahoo.com')))),
+    *[MailSbLi(i, t, c) for i, t, c in sidebar_group1],
+    Li(Hr()),
+    *[MailSbLi(i, t, c) for i, t, c in sidebar_group2],
+    cls='mt-3')
+
+mail_data = json.load(open(pathlib.Path('data_/mail.json')))
+
+def format_date(date_str):
+    date_obj = datetime.fromisoformat(date_str)
+    return date_obj.strftime("%Y-%m-%d %I:%M %p")
+
+def MailItem(mail):
+    cls_base = 'relative rounded-lg border border-border p-3 text-sm hover:bg-secondary space-y-2'
+    cls = f"{cls_base} {'bg-muted' if mail == mail_data[0] else ''} {'tag-unread' if not mail['read'] else 'tag-mail'}"
+    
+    return Li(
+        DivFullySpaced(
+            DivLAligned(
+                Strong(mail['name']),
+                    Span(cls='flex h-2 w-2 rounded-full bg-blue-600') if not mail['read'] else ''),
+                Time(format_date(mail['date']), cls='text-xs')),
+            Small(mail['subject'], href=f"#mail-{mail['id']}"),
+            Div(mail['text'][:100] + '...', cls=TextPresets.muted_sm),
+            DivLAligned(
+                *[Label(A(label, href='#'), cls='uk-label-primary' if label == 'work' else '') for label in mail['labels']]),
+        cls=cls)
+
+def MailList(mails): return Ul(cls='js-filter space-y-2 p-4 pt-0')(*[MailItem(mail) for mail in mails])
+
+def MailContent():
+    return Div(cls='flex flex-col',uk_filter="target: .js-filter")(
+        Div(cls='flex px-4 py-2 ')(
+            H3('Inbox'),
+            TabContainer(Li(A("All Mail",href='#', role='button'),cls='uk-active', uk_filter_control="filter: .tag-mail"), 
+                         Li(A("Unread",href='#', role='button'),                   uk_filter_control="filter: .tag-unread"), 
+                         alt=True, cls='ml-auto max-w-40', )),
+        Div(cls='flex flex-1 flex-col')(
+            Div(cls='p-4')(
+                Div(cls='uk-inline w-full')(
+                    Span(cls='uk-form-icon text-muted-foreground')(UkIcon('search')),
+                    Input(placeholder='Search'))),
+            Div(cls='flex-1 overflow-y-auto max-h-[600px]')(MailList(mail_data))))
+
+def IconNavItem(*d): return [Li(A(UkIcon(o[0],uk_tooltip=o[1]))) for o in d]  
+def IconNav(*c,cls=''): return Ul(cls=f'uk-iconnav {cls}')(*c)
+
+def MailDetailView(mail):
+    top_icons = [('folder','Archive'), ('ban','Move to junk'), ('trash','Move to trash')]
+    reply_icons = [('reply','Reply'), ('reply','Reply all'), ('forward','Forward')]
+    dropdown_items = ['Mark as unread', 'Star read', 'Add Label', 'Mute Thread']
+    
+    return Container(
+            DivFullySpaced(
+                DivLAligned(
+                    DivLAligned(*[UkIcon(o[0],uk_tooltip=o[1]) for o in top_icons]),  
+                    Div(UkIcon('clock', uk_tooltip='Snooze'), cls='pl-2'),
+                    cls='space-x-2 divide-x divide-border'),
+                DivLAligned(
+                    *[UkIcon(o[0],uk_tooltip=o[1]) for o in reply_icons],
+                    Div(UkIcon('ellipsis-vertical',button=True)),
+                    DropDownNavContainer(*map(lambda x: Li(A(x)), dropdown_items)))),
+            DivLAligned(
+                Span(mail['name'][:2], cls='flex h-10 w-10 items-center justify-center rounded-full bg-muted'),
+                Div(Strong(mail['name']),
+                    Div(mail['subject']),
+                    DivLAligned(P('Reply-To:'), A(mail['email'], href=f"mailto:{mail['email']}"), cls='space-x-1'),
+                    P(Time(format_date(mail['date']))),
+                    cls='space-y-1'+TextT.sm),
+                    cls='m-4 space-x-4'),
+            DividerLine(),
+            P(mail['text'], cls=TextT.sm +'p-4'),
+            DividerLine(),
+        Div(TextArea(id='message', placeholder=f"Reply {mail['name']}"),
+            DivFullySpaced(
+                LabelSwitch('Mute this thread',id='mute'),
+                Button('Send', cls=ButtonT.primary)),
+            cls='space-y-4'))
+
+@rt
+def index():
+    return Title("Mail Example"),Container(
+        Grid(Div(sidebar, cls='col-span-1'),
+             Div(MailContent(), cls='col-span-2'),
+             Div(MailDetailView(mail_data[0]), cls='col-span-2'),
+             cols_sm=1, cols_md=1, cols_lg=5, cols_xl=5, 
+             gap=0, cls='flex-1'),
+        cls=('flex', ContainerT.xl))
+
+serve()</doc><doc title="Cards" desc="FrankenUI Cards Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Cards Example built with MonsterUI (original design by ShadCN)"""
 
 from fasthtml.common import *
 from fasthtml.components import Uk_input_tag
@@ -677,236 +787,110 @@ def index():
                       Div(ReportIssue,MonsterUI,CookieSettings, cls='space-y-4'))),
          cols_md=1, cols_lg=2, cols_xl=3))
 
-serve()</doc><doc title="Auth" desc="FrankenUI Auth Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Auth Example built with MonsterUI (original design by ShadCN)"""
+serve()</doc><doc title="Dashboard" desc="FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)"""
 
-from fasthtml.common import *
-from monsterui.all import *
+from fasthtml.common import * # Bring in all of fasthtml
+import fasthtml.common as fh # Used to get unstyled components
+from monsterui.all import * # Bring in all of monsterui, including shadowing fasthtml components with styled components
 from fasthtml.svg import *
+import numpy as np
+import plotly.express as px
+import pandas as pd
+import numpy as np
 
 app, rt = fast_app(hdrs=Theme.blue.headers())
 
-@rt
-def index():    
-    left = Div(cls="col-span-1 hidden flex-col justify-between bg-zinc-900 p-8 text-white lg:flex")(
-        Div(cls=(TextT.bold))("Acme Inc"),
-        Blockquote(cls="space-y-2")(
-            P(cls=TextT.lg)('"This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster than ever before."'),
-            Footer(cls=TextT.sm)("Sofia Davis")))
-
-    right = Div(cls="col-span-2 flex flex-col p-8 lg:col-span-1")(
-        DivRAligned(Button("Login", cls=ButtonT.ghost)),
-        DivCentered(cls='flex-1')(
-            Container(
-                DivVStacked(
-                    H3("Create an account"),
-                    Small("Enter your email below to create your account", cls=TextT.muted)),
-                Form(
-                    Input(placeholder="name@example.com"),
-                    Button(Span(cls="mr-2", uk_spinner="ratio: 0.54"), "Sign in with Email", cls=(ButtonT.primary, "w-full"), disabled=True),
-                    DividerSplit(Small("Or continue with"),cls=TextT.muted),
-                    Button(UkIcon('github',cls='mr-2'), "Github", cls=(ButtonT.default, "w-full")),
-                    cls='space-y-6'),
-                DivVStacked(Small(
-                        "By clicking continue, you agree to our ",
-                        A(cls=AT.muted, href="#demo")("Terms of Service")," and ",
-                        A(cls=AT.muted, href="#demo")("Privacy Policy"),".",
-                        cls=(TextT.muted,"text-center"))),
-                cls="space-y-6")))
+def generate_chart(num_points=30):
+    df = pd.DataFrame({
+        'Date': pd.date_range('2024-01-01', periods=num_points),
+        'Revenue': np.random.normal(100, 10, num_points).cumsum(),
+        'Users': np.random.normal(80, 8, num_points).cumsum(), 
+        'Growth': np.random.normal(60, 6, num_points).cumsum()})
     
-    return Title("Auth Example"),Grid(left,right,cols=2, gap=0,cls='h-screen')
-
-
-serve()</doc><doc title="Playground" desc="FrankenUI Playground Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Playground Example built with MonsterUI (original design by ShadCN)"""
-
-from fasthtml.common import *
-from monsterui.all import *
-from fasthtml.svg import *
-
-app, rt = fast_app(hdrs=Theme.blue.headers())
-
-preset_options = ["Grammatical Standard English", "Summarize for a 2nd grader",
-        "Text to command","Q&A","English to other languages","Parse unstructured data",
-        "Classification","Natural language to Python","Explain code","Chat","More examples"]
-
-def playground_navbar():
-    save_modal = Modal(
-        ModalTitle("Save preset"),
-        P("This will save the current playground state as a preset which you can access later or share with others.",cls=("mt-1.5", TextPresets.muted_sm)),
-        LabelInput("Name",        id="name"), 
-        LabelInput("Description", id="description"),
-        ModalCloseButton("Save", cls=ButtonT.primary),
-        id="save")
+    fig = px.line(df, x='Date', y=['Revenue', 'Users', 'Growth'],  template='plotly_white', line_shape='spline')
     
-    share_dd = Div(cls="space-y-6 p-4")(
-        H3("Share preset"),
-        P("Anyone who has this link and an OpenAI account will be able to view this.", cls=TextPresets.muted_sm),
-        Div(Input(value="https://platform.openai.com/playground/p/7bbKYQvsVkNmVb8NGcdUOLae?model=text-davinci-003", readonly=True),
-            Button(UkIcon('copy'), cls=(ButtonT.primary, "uk-drop-close",'mt-4'))))
-
-    rnav = (
-        Select(*Options(*preset_options), name='preset', optgroup_label="Examples",
-                 placeholder='Load a preset', searchable=True, cls='h-9 w-[200px] lg:w-[300px]'),
-        Button("Save",         cls=ButtonT.secondary, data_uk_toggle="#save"),save_modal,
-        Button("View Code",    cls=ButtonT.secondary),
-        Button("Share",        cls=ButtonT.secondary),DropDownNavContainer(share_dd),
-        Button(UkIcon(icon="ellipsis"), cls=ButtonT.secondary),
-        DropDownNavContainer(
-            Li(A("Content filter preferences")),
-            NavDividerLi(),
-            Li(A("Delete preset", cls="text-destructive")),
-        uk_dropdown="mode: click"))
+    fig.update_traces(mode='lines+markers')
+    fig.update_layout(
+        margin=dict(l=20, r=20, t=20, b=20), hovermode='x unified',
+        showlegend=True, legend=dict(orientation='h', yanchor='bottom', y=1.02,  xanchor='right', x=1),
+        plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(showgrid=True, gridwidth=1, gridcolor='rgba(0,0,0,0.1)'),
+        yaxis=dict(showgrid=True, gridwidth=1, gridcolor='rgba(0,0,0,0.1)'))
     
-    return NavBar(*rnav, brand=H4('Playground'))
+    return fig.to_html(include_plotlyjs=True, full_html=False, config={'displayModeBar': False})
 
-rsidebar = NavContainer(
-    Select(
-        Optgroup(map(Option,("text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001")),label='GPT-3'),
-        Optgroup(map(Option,("code-davinci-002", "code-cushman-001")),label='Codex'),
-        label="Model",
-        searchable=True),
-    LabelRange(label='Temperature', value='12'),
-    LabelRange(label='Maximum Length', value='80'),
-    LabelRange(label='Top P', value='40'),
-    cls='space-y-6 mt-8')
+def InfoCard(title, value, change): return Card(H3(value),P(change, cls=TextPresets.muted_sm), header = H4(title))
 
-@rt
-def index(): 
-    navbar = playground_navbar()
-    main_content = Div(
-        Div(cls="flex-1")(
-            Textarea(cls="uk-textarea h-full p-4", placeholder="Write a tagline for an ice cream shop")),
-            cls="flex h-[700px] p-8 w-4/5")
-    
-    bottom_buttons = Div(
-        Button("Submit", cls=ButtonT.primary),
-        Button(UkIcon(icon="history"), cls=ButtonT.secondary),
-        cls="flex gap-x-2")
-    
-    return Title("Playground Example"),Div(navbar, Div(cls="flex w-full")(main_content, rsidebar), bottom_buttons)
+rev = InfoCard("Total Revenue", "$45,231.89", "+20.1% from last month")
+sub = InfoCard("Subscriptions", "+2350", "+180.1% from last month")
+sal = InfoCard("Sales", "+12,234", "+19% from last month")
+act = InfoCard("Active Now", "+573", "+201 since last hour")
 
-serve()</doc><doc title="Scrollspy" desc="MonsterUI Scrollspy Example application">"MonsterUI Scrollspy Example application" 
+info_card_data = [("Total Revenue", "$45,231.89", "+20.1% from last month"),
+                   ("Subscriptions", "+2350", "+180.1% from last month"),
+                   ("Sales", "+12,234", "+19% from last month"),
+                   ("Active Now", "+573", "+201 since last hour")]
 
-from fasthtml.common import *
-from monsterui.all import *
-import random
+top_info_row = Grid(*[InfoCard(*row) for row in info_card_data])
 
-# Using the "slate" theme with Highlight.js enabled
-hdrs = Theme.slate.headers(highlightjs=True)
-app, rt = fast_app(hdrs=hdrs)
-
-################################
-### Example Data and Content ###
-################################
-products = [
-    {"name": "Laptop", "price": "$999"},
-    {"name": "Smartphone", "price": "$599"}
-]
-
-code_example = """
-# Python Code Example
-def greet(name):
-    return f"Hello, {name}!"
-
-print(greet("World"))
-"""
-testimonials = [
-    {"name": "Alice", "feedback": "Great products and excellent customer service!"},
-    {"name": "Bob", "feedback": "Fast shipping and amazing quality!"},
-    {"name": "Charlie", "feedback": "Amazing experience! Will definitely buy again."},
-    {"name": "Diana", "feedback": "Affordable prices and great variety!"},
-    {"name": "Edward", "feedback": "Customer support was very helpful."},
-    {"name": "Fiona", "feedback": "Loved the design and quality!"}
-]
-
-# Team members
-team = [
-    {"name": "Isaac Flath", "role": "CEO"},
-    {"name": "Benjamin Clavié", "role": "AI Researcher"},
-    {"name": "Alexis Gallagher", "role": "ML Engineer"},
-    {"name": "Hamel Husain", "role": "Data Scientist"},
-    {"name": "Austin Huang", "role": "Software Engineer"},
-    {"name": "Benjamin Warner", "role": "Product Manager"},
-    {"name": "Jonathan Whitaker", "role": "UX Designer"},
-    {"name": "Kerem Turgutlu", "role": "DevOps Engineer"},
-    {"name": "Curtis Allan", "role": "DevOps Engineer"},
-    {"name": "Audrey Roy Greenfeld", "role": "Security Analyst"},
-    {"name": "Nathan Cooper", "role": "Full Stack Developer"},
-    {"name": "Jeremy Howard", "role": "CTO"},
-    {"name": "Wayde Gilliam", "role": "Cloud Architect"},
-    {"name": "Daniel Roy Greenfeld", "role": "Blockchain Expert"},
-    {"name": "Tommy Collins", "role": "AI Ethics Researcher"}
-]
-
-
-def ProductCard(p,img_id=1):
-    return Card(
-        PicSumImg(w=500, height=100, id=img_id),
-        DivFullySpaced(H4(p["name"]), P(Strong(p["price"], cls=TextT.sm))), 
-        Button("Details", cls=(ButtonT.primary, "w-full")))
-
-def TestimonialCard(t,img_id=1):
-    return Card(
-        DivLAligned(PicSumImg(w=50, h=50, cls='rounded-full', id=img_id), H4(t["name"])), 
-        P(Q((t["feedback"]))))
-
-
-def TeamCard(m,img_id=1): 
-    return Card(
+def AvatarItem(name, email, amount):
+    return DivFullySpaced(
         DivLAligned(
-            PicSumImg(w=50, h=50, cls='rounded-full', id=img_id), 
-            Div(H4(m["name"]), P(m["role"]))),
-        DivRAligned(
-            UkIcon('twitter', cls='w-5 h-5'), 
-            UkIcon('linkedin', cls='w-5 h-5'),
-            UkIcon('github', cls='w-5 h-5'),
-            cls=TextT.gray+'space-x-2'
-        ),
-        cls='p-3')
+            DiceBearAvatar(name, 9,9),
+            Div(Strong(name, cls=TextT.sm), 
+                Address(A(email,href=f'mailto:{email}')))),
+        fh.Data(amount, cls="ml-auto font-medium", value=amount[2:]))
 
-################################
-### Navigation and Scrollspy ###
-################################
+recent_sales = Card(
+    Div(cls="space-y-8")(
+        *[AvatarItem(n,e,d) for (n,e,d) in (
+            ("Olivia Martin",   "olivia.martin@email.com",   "+$1,999.00"),
+            ("Jackson Lee",     "jackson.lee@email.com",     "+$39.00"),
+            ("Isabella Nguyen", "isabella.nguyen@email.com", "+$299.00"),
+            ("William Kim",     "will@email.com",            "+$99.00"),
+            ("Sofia Davis",     "sofia.davis@email.com",     "+$39.00"))]),
+    header=Div(H3("Recent Sales"),Subtitle("You made 265 sales this month.")),
+    cls='col-span-3')
 
-scrollspy_links = (
-                A("Welcome",      href="#welcome-section"),
-                A("Products",     href="#products-section"),
-                A("Testimonials", href="#testimonials-section"), 
-                A("Team",         href="#team-section"),
-                A("Code Example", href="#code-section"))
+teams = [["Alicia Koch"],['Acme Inc', 'Monster Inc.'],['Create a Team']]
+
+opt_hdrs = ["Personal", "Team", ""]
+
+team_dropdown = Select(
+    Optgroup(Option(A("Alicia Koch")), label="Personal Account"),
+    Optgroup(Option(A("Acme Inc")), Option(A("Monster Inc.")), label="Teams"),
+    Option(A("Create a Team")),
+    cls='flex items-center')
+
+hotkeys = [('Profile','⇧⌘P'),('Billing','⌘B'),('Settings','⌘S'),('New Team', ''), ('Logout', '')]
+
+def NavSpacedLi(t,s): return NavCloseLi(A(DivFullySpaced(P(t),P(s,cls=TextPresets.muted_sm))))
+
+avatar_dropdown = Div(
+      DiceBearAvatar('Alicia Koch',8,8),
+      DropDownNavContainer(
+          NavHeaderLi('sveltecult',NavSubtitle("leader@sveltecult.com")),
+          *[NavSpacedLi(*hk) for hk in hotkeys],))
+
+top_nav = NavBar(
+    team_dropdown, *map(A, ["Overview", "Customers", "Products", "Settings"]),
+    brand=DivLAligned(avatar_dropdown, Input(placeholder='Search')))
+
 @rt
 def index():
-    def _Section(*c, **kwargs): return Section(*c, cls='space-y-3 my-48',**kwargs)
-    return Container(
-        NavBar(
-            *scrollspy_links,
-            brand=DivLAligned(H3("Scrollspy Demo!"),UkIcon('rocket',height=30,width=30)),
-            sticky=True, uk_scrollspy_nav=True,
-            scrollspy_cls=ScrollspyT.bold),
-        NavContainer(
-            *map(Li, scrollspy_links),
-            uk_scrollspy_nav=True,
-            sticky=True,
-            cls=(NavT.primary,'pt-20 px-5 pr-10')),
-        Container(
-            # Notice the ID of each section corresponds to the `scrollspy_links` dictionary
-            # So in scollspy `NavContainer` the `href` of each `Li` is the ID of the section
-            DivCentered(
-                H1("Welcome to the Store!"), 
-                Subtitle("Explore our products and enjoy dynamic code examples."), 
-                id="welcome-section"),
-            _Section(H2("Products"),
-                     Grid(*[ProductCard(p,img_id=i) for i,p in enumerate(products)], cols_lg=2),                   
-                     id="products-section"),
-            _Section(H2("Testimonials"), 
-                     Slider(*[TestimonialCard(t,img_id=i) for i,t in enumerate(testimonials)]),       
-                     id="testimonials-section"),
-            _Section(H2("Our Team"), 
-                     Grid(*[TeamCard(m,img_id=i) for i,m in enumerate(team)], cols_lg=2, cols_max=3),                          
-                     id="team-section"),
-            _Section(H2("Code Example"), 
-                     CodeBlock(code_example, lang="python"),                             
-                     id="code-section")), 
-            cls=(ContainerT.xl,'uk-container-expand'))
+    return Title("Dashboard Example"), Container(
+        top_nav,
+        H2('Dashboard'),
+        TabContainer(
+            Li(A("Overview"),cls='uk-active'),
+            *map(lambda x: Li(A(x)), ["Analytics", "Reports", "Notifications"]),
+            alt=True),
+        top_info_row,
+        Grid(
+            Card(Safe(generate_chart(100)), cls='col-span-4'),
+            recent_sales,
+            gap=4,cols_xl=7,cols_lg=7,cols_md=1,cols_sm=1,cols_xs=1),
+        cls=('space-y-4', ContainerT.xl))
 
 serve()</doc><doc title="Music" desc="FrankenUI Music Example build with MonsterUI (Original design by ShadCN)">"""FrankenUI Music Example build with MonsterUI (Original design by ShadCN)"""
 
@@ -1045,111 +1029,6 @@ def index():
                         Li(podcast_tab())))),
             cols_sm=1, cols_md=1, cols_lg=5, cols_xl=5))
 
-serve()</doc><doc title="Dashboard" desc="FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Dashboard Example built with MonsterUI (original design by ShadCN)"""
-
-from fasthtml.common import * # Bring in all of fasthtml
-import fasthtml.common as fh # Used to get unstyled components
-from monsterui.all import * # Bring in all of monsterui, including shadowing fasthtml components with styled components
-from fasthtml.svg import *
-import numpy as np
-import plotly.express as px
-import pandas as pd
-import numpy as np
-
-app, rt = fast_app(hdrs=Theme.blue.headers())
-
-def generate_chart(num_points=30):
-    df = pd.DataFrame({
-        'Date': pd.date_range('2024-01-01', periods=num_points),
-        'Revenue': np.random.normal(100, 10, num_points).cumsum(),
-        'Users': np.random.normal(80, 8, num_points).cumsum(), 
-        'Growth': np.random.normal(60, 6, num_points).cumsum()})
-    
-    fig = px.line(df, x='Date', y=['Revenue', 'Users', 'Growth'],  template='plotly_white', line_shape='spline')
-    
-    fig.update_traces(mode='lines+markers')
-    fig.update_layout(
-        margin=dict(l=20, r=20, t=20, b=20), hovermode='x unified',
-        showlegend=True, legend=dict(orientation='h', yanchor='bottom', y=1.02,  xanchor='right', x=1),
-        plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(showgrid=True, gridwidth=1, gridcolor='rgba(0,0,0,0.1)'),
-        yaxis=dict(showgrid=True, gridwidth=1, gridcolor='rgba(0,0,0,0.1)'))
-    
-    return fig.to_html(include_plotlyjs=True, full_html=False, config={'displayModeBar': False})
-
-def InfoCard(title, value, change): return Card(H3(value),P(change, cls=TextPresets.muted_sm), header = H4(title))
-
-rev = InfoCard("Total Revenue", "$45,231.89", "+20.1% from last month")
-sub = InfoCard("Subscriptions", "+2350", "+180.1% from last month")
-sal = InfoCard("Sales", "+12,234", "+19% from last month")
-act = InfoCard("Active Now", "+573", "+201 since last hour")
-
-info_card_data = [("Total Revenue", "$45,231.89", "+20.1% from last month"),
-                   ("Subscriptions", "+2350", "+180.1% from last month"),
-                   ("Sales", "+12,234", "+19% from last month"),
-                   ("Active Now", "+573", "+201 since last hour")]
-
-top_info_row = Grid(*[InfoCard(*row) for row in info_card_data])
-
-def AvatarItem(name, email, amount):
-    return DivFullySpaced(
-        DivLAligned(
-            DiceBearAvatar(name, 9,9),
-            Div(Strong(name, cls=TextT.sm), 
-                Address(A(email,href=f'mailto:{email}')))),
-        fh.Data(amount, cls="ml-auto font-medium", value=amount[2:]))
-
-recent_sales = Card(
-    Div(cls="space-y-8")(
-        *[AvatarItem(n,e,d) for (n,e,d) in (
-            ("Olivia Martin",   "olivia.martin@email.com",   "+$1,999.00"),
-            ("Jackson Lee",     "jackson.lee@email.com",     "+$39.00"),
-            ("Isabella Nguyen", "isabella.nguyen@email.com", "+$299.00"),
-            ("William Kim",     "will@email.com",            "+$99.00"),
-            ("Sofia Davis",     "sofia.davis@email.com",     "+$39.00"))]),
-    header=Div(H3("Recent Sales"),Subtitle("You made 265 sales this month.")),
-    cls='col-span-3')
-
-teams = [["Alicia Koch"],['Acme Inc', 'Monster Inc.'],['Create a Team']]
-
-opt_hdrs = ["Personal", "Team", ""]
-
-team_dropdown = Select(
-    Optgroup(Option(A("Alicia Koch")), label="Personal Account"),
-    Optgroup(Option(A("Acme Inc")), Option(A("Monster Inc.")), label="Teams"),
-    Option(A("Create a Team")),
-    cls='flex items-center')
-
-hotkeys = [('Profile','⇧⌘P'),('Billing','⌘B'),('Settings','⌘S'),('New Team', ''), ('Logout', '')]
-
-def NavSpacedLi(t,s): return NavCloseLi(A(DivFullySpaced(P(t),P(s,cls=TextPresets.muted_sm))))
-
-avatar_dropdown = Div(
-      DiceBearAvatar('Alicia Koch',8,8),
-      DropDownNavContainer(
-          NavHeaderLi('sveltecult',NavSubtitle("leader@sveltecult.com")),
-          *[NavSpacedLi(*hk) for hk in hotkeys],))
-
-top_nav = NavBar(
-    team_dropdown, *map(A, ["Overview", "Customers", "Products", "Settings"]),
-    brand=DivLAligned(avatar_dropdown, Input(placeholder='Search')))
-
-@rt
-def index():
-    return Title("Dashboard Example"), Container(
-        top_nav,
-        H2('Dashboard'),
-        TabContainer(
-            Li(A("Overview"),cls='uk-active'),
-            *map(lambda x: Li(A(x)), ["Analytics", "Reports", "Notifications"]),
-            alt=True),
-        top_info_row,
-        Grid(
-            Card(Safe(generate_chart(100)), cls='col-span-4'),
-            recent_sales,
-            gap=4,cols_xl=7,cols_lg=7,cols_md=1,cols_sm=1,cols_xs=1),
-        cls=('space-y-4', ContainerT.xl))
-
 serve()</doc><doc title="Tasks" desc="FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Tasks Example built with MonsterUI (original design by ShadCN)"""
 
 from fasthtml.common import *
@@ -1266,6 +1145,331 @@ tasks_ui = Div(DivFullySpaced(DivLAligned(table_controls), cls='mt-8'), tasks_ta
 
 @rt
 def index(): return Container(page_heading, tasks_ui, CreateTaskModal())
+
+serve()</doc><doc title="Auth" desc="FrankenUI Auth Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Auth Example built with MonsterUI (original design by ShadCN)"""
+
+from fasthtml.common import *
+from monsterui.all import *
+from fasthtml.svg import *
+
+app, rt = fast_app(hdrs=Theme.blue.headers())
+
+@rt
+def index():    
+    left = Div(cls="col-span-1 hidden flex-col justify-between bg-zinc-900 p-8 text-white lg:flex")(
+        Div(cls=(TextT.bold))("Acme Inc"),
+        Blockquote(cls="space-y-2")(
+            P(cls=TextT.lg)('"This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster than ever before."'),
+            Footer(cls=TextT.sm)("Sofia Davis")))
+
+    right = Div(cls="col-span-2 flex flex-col p-8 lg:col-span-1")(
+        DivRAligned(Button("Login", cls=ButtonT.ghost)),
+        DivCentered(cls='flex-1')(
+            Container(
+                DivVStacked(
+                    H3("Create an account"),
+                    Small("Enter your email below to create your account", cls=TextT.muted)),
+                Form(
+                    Input(placeholder="name@example.com"),
+                    Button(Span(cls="mr-2", uk_spinner="ratio: 0.54"), "Sign in with Email", cls=(ButtonT.primary, "w-full"), disabled=True),
+                    DividerSplit(Small("Or continue with"),cls=TextT.muted),
+                    Button(UkIcon('github',cls='mr-2'), "Github", cls=(ButtonT.default, "w-full")),
+                    cls='space-y-6'),
+                DivVStacked(Small(
+                        "By clicking continue, you agree to our ",
+                        A(cls=AT.muted, href="#demo")("Terms of Service")," and ",
+                        A(cls=AT.muted, href="#demo")("Privacy Policy"),".",
+                        cls=(TextT.muted,"text-center"))),
+                cls="space-y-6")))
+    
+    return Title("Auth Example"),Grid(left,right,cols=2, gap=0,cls='h-screen')
+
+
+serve()</doc><doc title="Playground" desc="FrankenUI Playground Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Playground Example built with MonsterUI (original design by ShadCN)"""
+
+from fasthtml.common import *
+from monsterui.all import *
+from fasthtml.svg import *
+
+app, rt = fast_app(hdrs=Theme.blue.headers())
+
+preset_options = ["Grammatical Standard English", "Summarize for a 2nd grader",
+        "Text to command","Q&A","English to other languages","Parse unstructured data",
+        "Classification","Natural language to Python","Explain code","Chat","More examples"]
+
+def playground_navbar():
+    save_modal = Modal(
+        ModalTitle("Save preset"),
+        P("This will save the current playground state as a preset which you can access later or share with others.",cls=("mt-1.5", TextPresets.muted_sm)),
+        LabelInput("Name",        id="name"), 
+        LabelInput("Description", id="description"),
+        ModalCloseButton("Save", cls=ButtonT.primary),
+        id="save")
+    
+    share_dd = Div(cls="space-y-6 p-4")(
+        H3("Share preset"),
+        P("Anyone who has this link and an OpenAI account will be able to view this.", cls=TextPresets.muted_sm),
+        Div(Input(value="https://platform.openai.com/playground/p/7bbKYQvsVkNmVb8NGcdUOLae?model=text-davinci-003", readonly=True),
+            Button(UkIcon('copy'), cls=(ButtonT.primary, "uk-drop-close",'mt-4'))))
+
+    rnav = (
+        Select(*Options(*preset_options), name='preset', optgroup_label="Examples",
+                 placeholder='Load a preset', searchable=True, cls='h-9 w-[200px] lg:w-[300px]'),
+        Button("Save",         cls=ButtonT.secondary, data_uk_toggle="#save"),save_modal,
+        Button("View Code",    cls=ButtonT.secondary),
+        Button("Share",        cls=ButtonT.secondary),DropDownNavContainer(share_dd),
+        Button(UkIcon(icon="ellipsis"), cls=ButtonT.secondary),
+        DropDownNavContainer(
+            Li(A("Content filter preferences")),
+            NavDividerLi(),
+            Li(A("Delete preset", cls="text-destructive")),
+        uk_dropdown="mode: click"))
+    
+    return NavBar(*rnav, brand=H4('Playground'))
+
+rsidebar = NavContainer(
+    Select(
+        Optgroup(map(Option,("text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001")),label='GPT-3'),
+        Optgroup(map(Option,("code-davinci-002", "code-cushman-001")),label='Codex'),
+        label="Model",
+        searchable=True),
+    LabelRange(label='Temperature', value='12'),
+    LabelRange(label='Maximum Length', value='80'),
+    LabelRange(label='Top P', value='40'),
+    cls='space-y-6 mt-8')
+
+@rt
+def index(): 
+    navbar = playground_navbar()
+    main_content = Div(
+        Div(cls="flex-1")(
+            Textarea(cls="uk-textarea h-full p-4", placeholder="Write a tagline for an ice cream shop")),
+            cls="flex h-[700px] p-8 w-4/5")
+    
+    bottom_buttons = Div(
+        Button("Submit", cls=ButtonT.primary),
+        Button(UkIcon(icon="history"), cls=ButtonT.secondary),
+        cls="flex gap-x-2")
+    
+    return Title("Playground Example"),Div(navbar, Div(cls="flex w-full")(main_content, rsidebar), bottom_buttons)
+
+serve()</doc><doc title="Ticket" desc="MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components">"""MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components"""
+from fasthtml.common import *
+from monsterui.all import *
+from datetime import datetime
+
+app, rt = fast_app(hdrs=Theme.blue.headers(daisy=True))
+
+def TicketSteps(step):
+    return Steps(
+        LiStep("Submitted", data_content="📝",
+               cls=StepT.success if step > 0 else StepT.primary if step == 0 else StepT.neutral),
+        LiStep("In Review", data_content="🔎",
+               cls=StepT.success if step > 1 else StepT.primary if step == 1 else StepT.neutral),
+        LiStep("Processing", data_content="⚙️",
+               cls=StepT.success if step > 2 else StepT.primary if step == 2 else StepT.neutral),
+        LiStep("Resolved", data_content="✅",
+               cls=StepT.success if step > 3 else StepT.primary if step == 3 else StepT.neutral),
+        cls="w-full")
+
+def StatusBadge(status):
+    styles = {'high': AlertT.error, 'medium': AlertT.warning,'low': AlertT.info}
+    alert_type = styles.get(status, AlertT.info)
+    return Alert(f"{status.title()} Priority", cls=(alert_type,"w-32 shadow-sm"))
+
+def TicketCard(id, title, description, status, step, department):
+    return Card(
+        CardHeader(
+            DivFullySpaced(
+                Div(H3(f"#{id}", cls=TextT.muted), 
+                    H4(title), 
+                    cls='space-y-2'),
+                StatusBadge(status))),
+        CardBody(
+            P(description, cls=(TextT.muted, "mb-6")),
+            DividerSplit(cls="my-6"),
+            TicketSteps(step),
+            DividerSplit(cls="my-6"), 
+            DivFullySpaced(
+                Div(Strong("Department"),
+                    P(department),
+                    cls=('space-y-3', TextPresets.muted_sm)),
+                Div(Strong("Last Updated"),
+                    P(Time(datetime.now().strftime('%b %d, %H:%M'))),
+                    cls=('space-y-3', TextPresets.muted_sm)),
+                Button("View Details", cls=ButtonT.primary),
+                cls='mt-6')),
+        cls=CardT.hover)
+
+def NewTicketModal():
+    return Modal(
+        ModalHeader(H3("Create New Support Ticket")),
+        ModalBody(
+            Alert(
+                DivLAligned(UkIcon("info"), Span("Please provide as much detail as possible to help us assist you quickly.")),
+                cls=(AlertT.info,"mb-4")),
+            Form(
+                Grid(LabelInput("Title", id="title", placeholder="Brief description of your issue"),
+                     LabelSelect(Options("IT Support", "HR", "Facilities", "Finance"), label="Department", id="department")),
+                LabelSelect(Options("Low", "Medium", "High"), label="Priority Level",  id="priority"),
+                LabelTextArea("Description", id="description", placeholder="Please provide detailed information about your issue"),
+                DivRAligned(
+                    Button("Cancel", cls=ButtonT.ghost, data_uk_toggle="target: #new-ticket"),
+                    Button(Loading(cls=LoadingT.spinner), "Submit Ticket", cls=ButtonT.primary, data_uk_toggle="target: #success-toast; target: #new-ticket")),
+                cls='space-y-8')),
+            id="new-ticket")
+
+@rt
+def index():
+    tickets = [
+        {'id': "TK-1001", 'title': "Cloud Storage Access Error", 
+         'description': "Unable to access cloud storage with persistent authorization errors. Multiple users affected across marketing department.",
+         'status': 'high', 'step': 2, 'department': 'IT Support'},
+        {'id': "TK-1002", 'title': "Email Integration Issue", 
+         'description': "Exchange server not syncing with mobile devices. Affecting external client communications.",
+         'status': 'medium', 'step': 1, 'department': 'IT Support'},
+        {'id': "TK-1003", 'title': "Office Equipment Setup", 
+         'description': "New department printer needs configuration and network integration. Required for upcoming client presentation.",
+         'status': 'low', 'step': 0, 'department': 'Facilities'}
+    ]
+
+    return Title("Help Desk Dashboard"), Container(
+        Section(
+            DivFullySpaced(
+                H2("Active Tickets"),
+                Button(UkIcon("plus-circle", cls="mr-2"), "New Ticket", cls=ButtonT.primary, data_uk_toggle="target: #new-ticket"),
+                cls='mb-8'),
+            Grid(*[TicketCard(**ticket) for ticket in tickets], cols=1),
+            cls="my-6"),
+        NewTicketModal(),
+        Toast(DivLAligned(UkIcon('check-circle', cls='mr-2'), "Ticket submitted successfully! Our team will review it shortly."), id="success-toast", alert_cls=AlertT.success, cls=(ToastHT.end, ToastVT.bottom)),
+        Loading(htmx_indicator=True, type=LoadingT.dots, cls="fixed top-0 right-0 m-4"),
+        cls="mx-auto max-w-7xl"
+    )   
+
+serve()</doc><doc title="Scrollspy" desc="MonsterUI Scrollspy Example application">"MonsterUI Scrollspy Example application" 
+
+from fasthtml.common import *
+from monsterui.all import *
+import random
+
+# Using the "slate" theme with Highlight.js enabled
+hdrs = Theme.slate.headers(highlightjs=True)
+app, rt = fast_app(hdrs=hdrs)
+
+################################
+### Example Data and Content ###
+################################
+products = [
+    {"name": "Laptop", "price": "$999"},
+    {"name": "Smartphone", "price": "$599"}
+]
+
+code_example = """
+# Python Code Example
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))
+"""
+testimonials = [
+    {"name": "Alice", "feedback": "Great products and excellent customer service!"},
+    {"name": "Bob", "feedback": "Fast shipping and amazing quality!"},
+    {"name": "Charlie", "feedback": "Amazing experience! Will definitely buy again."},
+    {"name": "Diana", "feedback": "Affordable prices and great variety!"},
+    {"name": "Edward", "feedback": "Customer support was very helpful."},
+    {"name": "Fiona", "feedback": "Loved the design and quality!"}
+]
+
+# Team members
+team = [
+    {"name": "Isaac Flath", "role": "CEO"},
+    {"name": "Benjamin Clavié", "role": "AI Researcher"},
+    {"name": "Alexis Gallagher", "role": "ML Engineer"},
+    {"name": "Hamel Husain", "role": "Data Scientist"},
+    {"name": "Austin Huang", "role": "Software Engineer"},
+    {"name": "Benjamin Warner", "role": "Product Manager"},
+    {"name": "Jonathan Whitaker", "role": "UX Designer"},
+    {"name": "Kerem Turgutlu", "role": "DevOps Engineer"},
+    {"name": "Curtis Allan", "role": "DevOps Engineer"},
+    {"name": "Audrey Roy Greenfeld", "role": "Security Analyst"},
+    {"name": "Nathan Cooper", "role": "Full Stack Developer"},
+    {"name": "Jeremy Howard", "role": "CTO"},
+    {"name": "Wayde Gilliam", "role": "Cloud Architect"},
+    {"name": "Daniel Roy Greenfeld", "role": "Blockchain Expert"},
+    {"name": "Tommy Collins", "role": "AI Ethics Researcher"}
+]
+
+
+def ProductCard(p,img_id=1):
+    return Card(
+        PicSumImg(w=500, height=100, id=img_id),
+        DivFullySpaced(H4(p["name"]), P(Strong(p["price"], cls=TextT.sm))), 
+        Button("Details", cls=(ButtonT.primary, "w-full")))
+
+def TestimonialCard(t,img_id=1):
+    return Card(
+        DivLAligned(PicSumImg(w=50, h=50, cls='rounded-full', id=img_id), H4(t["name"])), 
+        P(Q((t["feedback"]))))
+
+
+def TeamCard(m,img_id=1): 
+    return Card(
+        DivLAligned(
+            PicSumImg(w=50, h=50, cls='rounded-full', id=img_id), 
+            Div(H4(m["name"]), P(m["role"]))),
+        DivRAligned(
+            UkIcon('twitter', cls='w-5 h-5'), 
+            UkIcon('linkedin', cls='w-5 h-5'),
+            UkIcon('github', cls='w-5 h-5'),
+            cls=TextT.gray+'space-x-2'
+        ),
+        cls='p-3')
+
+################################
+### Navigation and Scrollspy ###
+################################
+
+scrollspy_links = (
+                A("Welcome",      href="#welcome-section"),
+                A("Products",     href="#products-section"),
+                A("Testimonials", href="#testimonials-section"), 
+                A("Team",         href="#team-section"),
+                A("Code Example", href="#code-section"))
+@rt
+def index():
+    def _Section(*c, **kwargs): return Section(*c, cls='space-y-3 my-48',**kwargs)
+    return Container(
+        NavBar(
+            *scrollspy_links,
+            brand=DivLAligned(H3("Scrollspy Demo!"),UkIcon('rocket',height=30,width=30)),
+            sticky=True, uk_scrollspy_nav=True,
+            scrollspy_cls=ScrollspyT.bold),
+        NavContainer(
+            *map(Li, scrollspy_links),
+            uk_scrollspy_nav=True,
+            sticky=True,
+            cls=(NavT.primary,'pt-20 px-5 pr-10')),
+        Container(
+            # Notice the ID of each section corresponds to the `scrollspy_links` dictionary
+            # So in scollspy `NavContainer` the `href` of each `Li` is the ID of the section
+            DivCentered(
+                H1("Welcome to the Store!"), 
+                Subtitle("Explore our products and enjoy dynamic code examples."), 
+                id="welcome-section"),
+            _Section(H2("Products"),
+                     Grid(*[ProductCard(p,img_id=i) for i,p in enumerate(products)], cols_lg=2),                   
+                     id="products-section"),
+            _Section(H2("Testimonials"), 
+                     Slider(*[TestimonialCard(t,img_id=i) for i,t in enumerate(testimonials)]),       
+                     id="testimonials-section"),
+            _Section(H2("Our Team"), 
+                     Grid(*[TeamCard(m,img_id=i) for i,m in enumerate(team)], cols_lg=2, cols_max=3),                          
+                     id="team-section"),
+            _Section(H2("Code Example"), 
+                     CodeBlock(code_example, lang="python"),                             
+                     id="code-section")), 
+            cls=(ContainerT.xl,'uk-container-expand'))
 
 serve()</doc><doc title="Forms" desc="FrankenUI Forms Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Forms Example built with MonsterUI (original design by ShadCN)"""
 
@@ -1415,209 +1619,5 @@ def index():
                 Ul(id="component-nav", cls="uk-switcher max-w-2xl")(
                     Li(cls="uk-active")(profile_form(),
                     *map(Li, [account_form(), appearance_form(), notifications_form(), display_form()])))))
-
-serve()</doc><doc title="Ticket" desc="MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components">"""MonsterUI Help Desk Example - Professional Dashboard with DaisyUI components"""
-from fasthtml.common import *
-from monsterui.all import *
-from datetime import datetime
-
-app, rt = fast_app(hdrs=Theme.blue.headers(daisy=True))
-
-def TicketSteps(step):
-    return Steps(
-        LiStep("Submitted", data_content="📝",
-               cls=StepT.success if step > 0 else StepT.primary if step == 0 else StepT.neutral),
-        LiStep("In Review", data_content="🔎",
-               cls=StepT.success if step > 1 else StepT.primary if step == 1 else StepT.neutral),
-        LiStep("Processing", data_content="⚙️",
-               cls=StepT.success if step > 2 else StepT.primary if step == 2 else StepT.neutral),
-        LiStep("Resolved", data_content="✅",
-               cls=StepT.success if step > 3 else StepT.primary if step == 3 else StepT.neutral),
-        cls="w-full")
-
-def StatusBadge(status):
-    styles = {'high': AlertT.error, 'medium': AlertT.warning,'low': AlertT.info}
-    alert_type = styles.get(status, AlertT.info)
-    return Alert(f"{status.title()} Priority", cls=(alert_type,"w-32 shadow-sm"))
-
-def TicketCard(id, title, description, status, step, department):
-    return Card(
-        CardHeader(
-            DivFullySpaced(
-                Div(H3(f"#{id}", cls=TextT.muted), 
-                    H4(title), 
-                    cls='space-y-2'),
-                StatusBadge(status))),
-        CardBody(
-            P(description, cls=(TextT.muted, "mb-6")),
-            DividerSplit(cls="my-6"),
-            TicketSteps(step),
-            DividerSplit(cls="my-6"), 
-            DivFullySpaced(
-                Div(Strong("Department"),
-                    P(department),
-                    cls=('space-y-3', TextPresets.muted_sm)),
-                Div(Strong("Last Updated"),
-                    P(Time(datetime.now().strftime('%b %d, %H:%M'))),
-                    cls=('space-y-3', TextPresets.muted_sm)),
-                Button("View Details", cls=ButtonT.primary),
-                cls='mt-6')),
-        cls=CardT.hover)
-
-def NewTicketModal():
-    return Modal(
-        ModalHeader(H3("Create New Support Ticket")),
-        ModalBody(
-            Alert(
-                DivLAligned(UkIcon("info"), Span("Please provide as much detail as possible to help us assist you quickly.")),
-                cls=(AlertT.info,"mb-4")),
-            Form(
-                Grid(LabelInput("Title", id="title", placeholder="Brief description of your issue"),
-                     LabelSelect(Options("IT Support", "HR", "Facilities", "Finance"), label="Department", id="department")),
-                LabelSelect(Options("Low", "Medium", "High"), label="Priority Level",  id="priority"),
-                LabelTextArea("Description", id="description", placeholder="Please provide detailed information about your issue"),
-                DivRAligned(
-                    Button("Cancel", cls=ButtonT.ghost, data_uk_toggle="target: #new-ticket"),
-                    Button(Loading(cls=LoadingT.spinner), "Submit Ticket", cls=ButtonT.primary, data_uk_toggle="target: #success-toast; target: #new-ticket")),
-                cls='space-y-8')),
-            id="new-ticket")
-
-@rt
-def index():
-    tickets = [
-        {'id': "TK-1001", 'title': "Cloud Storage Access Error", 
-         'description': "Unable to access cloud storage with persistent authorization errors. Multiple users affected across marketing department.",
-         'status': 'high', 'step': 2, 'department': 'IT Support'},
-        {'id': "TK-1002", 'title': "Email Integration Issue", 
-         'description': "Exchange server not syncing with mobile devices. Affecting external client communications.",
-         'status': 'medium', 'step': 1, 'department': 'IT Support'},
-        {'id': "TK-1003", 'title': "Office Equipment Setup", 
-         'description': "New department printer needs configuration and network integration. Required for upcoming client presentation.",
-         'status': 'low', 'step': 0, 'department': 'Facilities'}
-    ]
-
-    return Title("Help Desk Dashboard"), Container(
-        Section(
-            DivFullySpaced(
-                H2("Active Tickets"),
-                Button(UkIcon("plus-circle", cls="mr-2"), "New Ticket", cls=ButtonT.primary, data_uk_toggle="target: #new-ticket"),
-                cls='mb-8'),
-            Grid(*[TicketCard(**ticket) for ticket in tickets], cols=1),
-            cls="my-6"),
-        NewTicketModal(),
-        Toast(DivLAligned(UkIcon('check-circle', cls='mr-2'), "Ticket submitted successfully! Our team will review it shortly."), id="success-toast", alert_cls=AlertT.success, cls=(ToastHT.end, ToastVT.bottom)),
-        Loading(htmx_indicator=True, type=LoadingT.dots, cls="fixed top-0 right-0 m-4"),
-        cls="mx-auto max-w-7xl"
-    )   
-
-serve()</doc><doc title="Mail" desc="FrankenUI Mail Example built with MonsterUI (original design by ShadCN)">"""FrankenUI Mail Example built with MonsterUI (original design by ShadCN)"""
-
-from fasthtml.common import *
-from monsterui.all import *
-from fasthtml.svg import *
-import pathlib, json
-from datetime import datetime
-
-app, rt = fast_app(hdrs=Theme.blue.headers())
-
-sidebar_group1 = (('home', 'Inbox', '128'), ('file-text', 'Drafts', '9'), (' arrow-up-right', 'Sent', ''),
-    ('ban', 'Junk', '23'), ('trash', 'Trash', ''), ('folder', 'Archive', ''))
-
-sidebar_group2 = (('globe','Social','972'),('info','Updates','342'),('messages-square','Forums','128'),
-    ('shopping-cart','Shopping','8'),('shopping-bag','Promotions','21'),)
-
-def MailSbLi(icon, title, cnt): 
-    return Li(A(DivLAligned(Span(UkIcon(icon)),Span(title),P(cnt, cls=TextPresets.muted_sm)),href='#',  cls='hover:bg-secondary p-4'))
-
-sidebar = NavContainer(
-    NavHeaderLi(H3("Email"), cls='p-3'),
-    Li(Select(map(Option, ('alicia@example.com','alicia@gmail.com', 'alicia@yahoo.com')))),
-    *[MailSbLi(i, t, c) for i, t, c in sidebar_group1],
-    Li(Hr()),
-    *[MailSbLi(i, t, c) for i, t, c in sidebar_group2],
-    cls='mt-3')
-
-mail_data = json.load(open(pathlib.Path('data_/mail.json')))
-
-def format_date(date_str):
-    date_obj = datetime.fromisoformat(date_str)
-    return date_obj.strftime("%Y-%m-%d %I:%M %p")
-
-def MailItem(mail):
-    cls_base = 'relative rounded-lg border border-border p-3 text-sm hover:bg-secondary space-y-2'
-    cls = f"{cls_base} {'bg-muted' if mail == mail_data[0] else ''} {'tag-unread' if not mail['read'] else 'tag-mail'}"
-    
-    return Li(
-        DivFullySpaced(
-            DivLAligned(
-                Strong(mail['name']),
-                    Span(cls='flex h-2 w-2 rounded-full bg-blue-600') if not mail['read'] else ''),
-                Time(format_date(mail['date']), cls='text-xs')),
-            Small(mail['subject'], href=f"#mail-{mail['id']}"),
-            Div(mail['text'][:100] + '...', cls=TextPresets.muted_sm),
-            DivLAligned(
-                *[Label(A(label, href='#'), cls='uk-label-primary' if label == 'work' else '') for label in mail['labels']]),
-        cls=cls)
-
-def MailList(mails): return Ul(cls='js-filter space-y-2 p-4 pt-0')(*[MailItem(mail) for mail in mails])
-
-def MailContent():
-    return Div(cls='flex flex-col',uk_filter="target: .js-filter")(
-        Div(cls='flex px-4 py-2 ')(
-            H3('Inbox'),
-            TabContainer(Li(A("All Mail",href='#', role='button'),cls='uk-active', uk_filter_control="filter: .tag-mail"), 
-                         Li(A("Unread",href='#', role='button'),                   uk_filter_control="filter: .tag-unread"), 
-                         alt=True, cls='ml-auto max-w-40', )),
-        Div(cls='flex flex-1 flex-col')(
-            Div(cls='p-4')(
-                Div(cls='uk-inline w-full')(
-                    Span(cls='uk-form-icon text-muted-foreground')(UkIcon('search')),
-                    Input(placeholder='Search'))),
-            Div(cls='flex-1 overflow-y-auto max-h-[600px]')(MailList(mail_data))))
-
-def IconNavItem(*d): return [Li(A(UkIcon(o[0],uk_tooltip=o[1]))) for o in d]  
-def IconNav(*c,cls=''): return Ul(cls=f'uk-iconnav {cls}')(*c)
-
-def MailDetailView(mail):
-    top_icons = [('folder','Archive'), ('ban','Move to junk'), ('trash','Move to trash')]
-    reply_icons = [('reply','Reply'), ('reply','Reply all'), ('forward','Forward')]
-    dropdown_items = ['Mark as unread', 'Star read', 'Add Label', 'Mute Thread']
-    
-    return Container(
-            DivFullySpaced(
-                DivLAligned(
-                    DivLAligned(*[UkIcon(o[0],uk_tooltip=o[1]) for o in top_icons]),  
-                    Div(UkIcon('clock', uk_tooltip='Snooze'), cls='pl-2'),
-                    cls='space-x-2 divide-x divide-border'),
-                DivLAligned(
-                    *[UkIcon(o[0],uk_tooltip=o[1]) for o in reply_icons],
-                    Div(UkIcon('ellipsis-vertical',button=True)),
-                    DropDownNavContainer(*map(lambda x: Li(A(x)), dropdown_items)))),
-            DivLAligned(
-                Span(mail['name'][:2], cls='flex h-10 w-10 items-center justify-center rounded-full bg-muted'),
-                Div(Strong(mail['name']),
-                    Div(mail['subject']),
-                    DivLAligned(P('Reply-To:'), A(mail['email'], href=f"mailto:{mail['email']}"), cls='space-x-1'),
-                    P(Time(format_date(mail['date']))),
-                    cls='space-y-1'+TextT.sm),
-                    cls='m-4 space-x-4'),
-            DividerLine(),
-            P(mail['text'], cls=TextT.sm +'p-4'),
-            DividerLine(),
-        Div(TextArea(id='message', placeholder=f"Reply {mail['name']}"),
-            DivFullySpaced(
-                LabelSwitch('Mute this thread',id='mute'),
-                Button('Send', cls=ButtonT.primary)),
-            cls='space-y-4'))
-
-@rt
-def index():
-    return Title("Mail Example"),Container(
-        Grid(Div(sidebar, cls='col-span-1'),
-             Div(MailContent(), cls='col-span-2'),
-             Div(MailDetailView(mail_data[0]), cls='col-span-2'),
-             cols_sm=1, cols_md=1, cols_lg=5, cols_xl=5, 
-             gap=0, cls='flex-1'),
-        cls=('flex', ContainerT.xl))
 
 serve()</doc></examples></project>
