@@ -23,6 +23,8 @@
 
 ## monsterui.daisy
 
+> Docs: https://monsterui.answer.ai/MonsterUIdaisy.html.md
+
 - `class AlertT(Enum)`
     Alert styles from DaisyUI
     Members: info, success, warning, error
@@ -67,6 +69,8 @@
 ## monsterui.foundations
 
 > Data Structures and Utilties
+> 
+> Docs: https://monsterui.answer.ai/MonsterUIfoundation.html.md
 
 - `def stringify(o)`
     Converts input types into strings that can be passed to FT components
