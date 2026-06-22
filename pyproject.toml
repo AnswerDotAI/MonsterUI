@@ -22,7 +22,7 @@ Documentation = "https://monsterui.answer.ai/MonsterUI"
 monsterui = "monsterui._modidx:d"
 
 [project.optional-dependencies]
-dev = ['pandas', 'jinja2', 'llms-txt', 'pysymbol_llm']
+dev = ['pandas', 'jinja2', 'llms-txt', 'pysymbol_llm', 'httpx']
 
 [tool.setuptools.dynamic]
 version = {attr = "monsterui.__version__"}

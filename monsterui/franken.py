@@ -30,7 +30,7 @@ from functools import partial
 from itertools import zip_longest
 from typing import Union, Tuple, Optional, Sequence
 from fastcore.all import *
-import copy, re, httpx, os
+import copy, re, os
 import pathlib
 from mistlefoot import ExtendedHtmlRenderer
 from mistletoe.span_token import Image
@@ -65,6 +65,8 @@ class TextT(VEnum):
     # other
     underline = 'underline'
     highlight = 'bg-yellow-200 dark:bg-yellow-800 text-black'
+
+# %% ../nbs/02_franken.ipynb #2b11e84f
 class TextPresets(VEnum):
     'Common Typography Presets'
     muted_sm = TextT.muted+TextT.sm
