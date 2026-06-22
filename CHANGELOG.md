@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.0.46
+
+### Bugs Squashed
+
+- fixed rendering crash when html produces no body ([#158](https://github.com/AnswerDotAI/MonsterUI/pull/158)), thanks to [@kafkasl](https://github.com/kafkasl)
+
+
 ## 1.0.45
 
 ### New Features
