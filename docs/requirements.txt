@@ -7,7 +7,7 @@ fastcore
 fh_matplotlib
 numpy
 matplotlib
-pysymbol_llm @ git+https://github.com/AnswerDotAI/pysymbol-llm.git
+pysymbol_llm>=0.0.6
 mistletoe
 lxml
 html2text
