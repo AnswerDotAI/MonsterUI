@@ -7,7 +7,7 @@ fastcore
 fh_matplotlib
 numpy
 matplotlib
-pysymbol_llm>=0.0.6
+pysym2md>=0.0.6
 mistletoe
 lxml
 html2text
