@@ -997,15 +997,19 @@ def Modal(*c,                 # Components to put in the `ModalBody` (often form
         )->FT: # Fully styled modal FT Component
     "Creates a modal with the appropriate classes to put the boilerplate in the appropriate places for you"
     if not id: id = fh.unqid()
-    if hx_open: kwargs["hx_on__load"] = f"UIkit.modal('#{id}').show()"
-    if hx_init and not hx_open: kwargs["hx_on__load"] = f"UIkit.modal('#{id}')"
-    if hx_open or hx_init: kwargs["hx-on:hidden"] = "this.remove()"
     cls, dialog_cls, header_cls, body_cls, footer_cls = map(stringify, (cls, dialog_cls, header_cls, body_cls, footer_cls))
     res = []
     if header: res.append(ModalHeader(cls=header_cls)(header))
     res.append(ModalBody(cls=body_cls)(*c))
     if footer: res.append(ModalFooter(cls=footer_cls)(footer))
-    return ModalContainer(ModalDialog(*res, cls=dialog_cls), cls=cls, id=id, **kwargs)
+    scr = ()
+    if hx_open or hx_init:
+        # An inline script runs when the modal is swapped in under both htmx 2 and 4 (hx-on-attribute
+        # event names differ between them), and UIkit's own hidden event handles removal
+        js = (f"UIkit.util.on('#{id}', 'hidden', e => {{ if (e.target.id === '{id}') e.target.remove() }});"
+              f"UIkit.modal('#{id}'){'.show()' if hx_open else ''};")
+        scr = (fh.Script(js),)
+    return ModalContainer(ModalDialog(*res, cls=dialog_cls), *scr, cls=cls, id=id, **kwargs)
 
 # %% ../nbs/02_franken.ipynb #062e2c65
 def Placeholder(*c, # Components to put in the placeholder
