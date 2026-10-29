@@ -2,6 +2,18 @@
 
 <!-- do not remove -->
 
+## 1.0.48
+
+### New Features
+
+- Fix modal opening and cleanup across HTMX versions ([#167](https://github.com/AnswerDotAI/MonsterUI/pull/167)), thanks to [@jph00](https://github.com/jph00)
+- Support for htmx4 modals ([#165](https://github.com/AnswerDotAI/MonsterUI/pull/165)), thanks to [@curtis-allan](https://github.com/curtis-allan)
+
+### Bugs Squashed
+
+- Update CLI flags for fastcore.script hyphenation ([#166](https://github.com/AnswerDotAI/MonsterUI/pull/166)), thanks to [@jph00](https://github.com/jph00)
+
+
 ## 1.0.47
 
 ### Bugs Squashed
